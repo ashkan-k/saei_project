@@ -1,0 +1,170 @@
+{% extends 'Layouts/front-master.html' %}
+{% load static public_tags humanize %}
+
+{% block Styles %}
+    <link rel="stylesheet" href="{% static 'front/styles/about.css' %}">
+{% endblock %}
+
+{% block content %}
+
+    <!-- Home -->
+
+    <div class="home">
+        <!-- Background image artist https://unsplash.com/@thepootphotographer -->
+        <div class="home_background parallax_background parallax-window" data-parallax="scroll"
+             data-speed="0.8"><img src="{% static 'front/images/about.jpg' %}" alt="picture"></div>
+        <div class="home_container">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="home_content text-center mt-5">
+                            <div class="home_title">درباره ما</div>
+                            <div class="breadcrumbs">
+                                <ul>
+                                    <li><a href="/">خانه</a></li>
+                                    <li>درباره ما</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- About -->
+
+    <div class="about">
+        <div class="container">
+            <div class="row about_row row-lg-eq-height">
+                <div class="col-lg-6">
+                    <div class="about_content">
+                        <div class="about_title">هدف اصلی پلتفرم ما</div>
+                        <div class="about_text">
+                            <p>{{ settings.our_platform_main_goal | safe }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="about_image"><img src="{% static 'front/images/about_1.jpg' %}"
+                                                  alt="https://unsplash.com/@jtylernix">
+                    </div>
+                </div>
+            </div>
+            <div class="row about_row row-lg-eq-height">
+                <div class="col-lg-6 order-lg-1 order-2">
+                    <div class="about_image"><img src="{% static 'front/images/about_1.jpg' %}" alt=""></div>
+                </div>
+                <div class="col-lg-6 order-lg-2 order-1">
+                    <div class="about_content">
+                        <div class="about_title">چشم انداز ساعی</div>
+                        <div class="about_text">
+                            <p>{{ settings.vision_about | safe }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Milestones -->
+
+    <div class="milestones d-sm-none d-md-block">
+        <div class="parallax_background parallax-window" data-parallax="scroll"
+             data-image-src="{% static 'front/images/milestones.jpg' %}" data-speed="0.8"></div>
+        <div class="container">
+            <div class="row milestones_container">
+
+                <!-- Milestone -->
+                <div class="col-lg-3 milestone_col">
+                    <div class="milestone text-center">
+                        <div class="milestone_icon"><img src="{% static 'front/images/milestone_1.svg' %}" alt=""></div>
+                        <div class="milestone_counter" data-end-value="{{ classes.count | default_if_none:'0' }}">0
+                        </div>
+                        <div class="milestone_text">دوره های آنلاین</div>
+                    </div>
+                </div>
+
+                <!-- Milestone -->
+                <div class="col-lg-3 milestone_col">
+                    <div class="milestone text-center">
+                        <div class="milestone_icon"><img src="{% static 'front/images/milestone_2.svg' %}" alt=""></div>
+                        <div class="milestone_counter" data-end-value="{{ students_count | default_if_none:'0' }}">0
+                        </div>
+                        <div class="milestone_text">دانشجو</div>
+                    </div>
+                </div>
+
+                <!-- Milestone -->
+                <div class="col-lg-3 milestone_col">
+                    <div class="milestone text-center">
+                        <div class="milestone_icon"><img src="{% static 'front/images/milestone_3.svg' %}" alt=""></div>
+                        <div class="milestone_counter" data-end-value="{{ teachers_count | default_if_none:'0' }}">0
+                        </div>
+                        <div class="milestone_text">استاد</div>
+                    </div>
+                </div>
+
+                <!-- Milestone -->
+                <div class="col-lg-3 milestone_col">
+                    <div class="milestone text-center">
+                        <div class="milestone_icon"><img src="{% static 'front/images/milestone_4.svg' %}" alt=""></div>
+                        <div class="milestone_counter" data-end-value="1">0</div>
+                        <div class="milestone_text">شهر</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Teachers -->
+
+    <div class="teachers">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="teachers_title text-center">با معلمان آشنا شوید</div>
+                </div>
+            </div>
+            <div class="row teachers_row">
+
+                <!-- Teacher -->
+                {% for item in teachers %}
+                    <div class="col-lg-4 col-md-6">
+                        <div class="teacher">
+                            <div class="teacher_image"><img src="{{ item.user.get_avatar }}"
+                                                            alt="https://unsplash.com/@nickkarvounis"></div>
+                            <div class="teacher_body text-center">
+                                <div class="teacher_title"><a href="#">{{ item.user.full_name }}</a></div>
+                                <!--                        <div class="teacher_subtitle">Marketing</div>-->
+                                <div class="teacher_social">
+                                    <ul>
+                                        <li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-twitter px-4" aria-hidden="true"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block Scripts %}
+    <script>
+        {% if messages %}
+            {% for item in messages %}
+                createToast('success', '{{ item }}');
+            {% endfor %}
+        {% endif %}
+
+    </script>
+{% endblock %}

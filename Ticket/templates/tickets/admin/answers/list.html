@@ -1,0 +1,183 @@
+{% extends 'Layouts/admin-master.html' %}
+{% load static public_tags acl_tags %}
+
+{% block title %} لیست پاسخ تیکت ها {% endblock %}
+
+{% block Styles %}
+    <style>
+        .card {
+            position: relative;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            min-width: 0;
+            word-wrap: break-word;
+            background-color: #fff;
+            background-clip: border-box;
+            border: 1px solid rgba(0, 0, 0, .125);
+            border-radius: 0.25rem;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+
+        {% if messages %}
+            {% for item in messages %}
+                <script>
+                    Swal.fire({
+                        title: "تبریک ! 🥳",
+                        icon: 'success',
+                        text: '{{ item }}',
+                        type: "success",
+                        cancelButtonColor: 'var(--primary)',
+                        confirmButtonText: 'اوکی',
+                    })
+                </script>
+            {% endfor %}
+        {% endif %}
+
+        <div class="col-lg-12">
+            <div class="card-box">
+                <div class="card-block">
+                    <h4 class="card-title">تیکت {{ object.title | default:'---' }}</h4>
+
+                    <hr>
+
+                    <div class="container">
+                        <div class="row mt-5" style="float: right!important; margin-bottom: 50px !important">
+                            <div class="col-12">
+                                <h2 class="text-right mb-3">
+                                    موضوع: {{ object.title|default:'---' }}
+                                </h2>
+                                <h4 class="text-right mb-3">
+                                    فرستنده: {{ object.user }}
+                                </h4>
+                                <p class="text-right">
+                                    {{ object.text }}
+                                </p>
+                                {% if object.file %}
+                                    <a target="_blank" href="{{ object.file.url }}" class="text-info ">فایل ضمیمه</a>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2">&nbsp;</div>
+
+                            {% for item in object_list %}
+                                <div class="col-md-12">
+                                    <div class="row space-16">&nbsp;</div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="thumbnail">
+                                                <div class="caption text-center">
+                                                    <h4 id="thumbnail-label">
+                                                        {% if item.user == request.user %}
+                                                            <a>{{ item.user }}</a>
+                                                        {% else %}
+                                                            {{ item.user }}
+                                                        {% endif %}
+                                                    </h4>
+                                                    <p>
+                                                        <i class="glyphicon glyphicon-calendar light-red lighter bigger-120"></i>&nbsp;{{ item.created_at | jdate }}
+                                                    </p>
+                                                    <div class="thumbnail-description smaller"
+                                                         style="word-wrap: break-word; margin-top: 30px!important;">
+                                                        {{ item.text }}
+                                                    </div>
+                                                </div>
+                                                {% if item.file %}
+                                                    <a target="_blank" href="{{ item.file.url }}" class="text-info ">فایل
+                                                        ضمیمه</a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">&nbsp;</div>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+
+                        {% if object_list %}
+                            <hr class="m-t-5">
+                        {% endif %}
+                        <div class="row my-4">
+                            <div class="col-12 my-3 text-justify">
+                                <form method="post" enctype="multipart/form-data"
+                                      action="{% url 'tickets-answers-create' object.id %}">
+                                    <div class="row">
+                                        {% for field in form %}
+                                            <div class="form-group col-md-{% if field.name == 'text' %}12{% else %}6{% endif %} {% if field.errors %}has-danger{% endif %} mt-3">
+                                                <label class="form-label"
+                                                       for="id_{{ field.name }}">{{ field.label }}:</label>
+                                                {% if field.name == 'file' %}
+                                                    <input type="file" id="file" name="file" class="dropify mt-2"
+                                                           {% if object.file %}data-default-file="{{ object.file.url }}"{% endif %}/>
+                                                {% else %}
+                                                    {{ field|addclass:"form-control" }}
+                                                {% endif %}
+                                                {% if field.help_text %}
+                                                    <p><small
+                                                            class="form-control-feedback">{{ field.help_text|safe }} </small>
+                                                    </p>
+                                                {% endif %}
+                                                {% if field.errors %}
+                                                    <p><small class="form-control-feedback"
+                                                              style="color:red">{{ field.errors.0|safe }}</small></p>
+                                                {% endif %}
+                                            </div>
+                                        {% endfor %}
+                                        {% csrf_token %}
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="m-1-25 m-b-20" style="float: left !important;">
+                                            <a href="{{ request.META.HTTP_REFERER }}"
+                                               class="btn btn-danger btn-border-radius waves-effect">
+                                                بازگشت
+                                            </a>
+                                            <button class="btn btn-info btn-border-radius waves-effect" type="submit">
+                                                ثبت
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block Scripts %}
+    <script>
+        function DeleteConfirm(id) {
+            Swal.fire({
+                title: "هشدار ! ",
+                icon: 'warning',
+                text: "آیا از حذف این آیتم اطمینان دارید؟",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: '#00aced',
+                cancelButtonColor: '#e6294b',
+                confirmButtonText: 'حذف',
+                cancelButtonText: 'انصراف'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#delete_form_' + id).submit();
+                }
+            })
+        }
+    </script>
+{% endblock %}

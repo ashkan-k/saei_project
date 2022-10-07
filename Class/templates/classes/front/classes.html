@@ -1,0 +1,167 @@
+{% extends 'Layouts/front-master.html' %}
+{% load static public_tags humanize %}
+
+{% block title %}دوره ها{% endblock %}
+
+{% block Styles %}
+
+{% endblock %}
+
+{% block content %}
+
+    <!-- Home -->
+
+    <div class="home">
+        <!-- Background image artist https://unsplash.com/@thepootphotographer -->
+        <div class="home_background parallax_background parallax-window" data-parallax="scroll"
+             data-speed="0.8"><img src="{% static 'front/images/courses.jpg' %}" alt="picture"></div>
+        <div class="home_container">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="home_content text-center mt-5">
+                            <div class="home_title">دوره ها</div>
+                            <div class="breadcrumbs">
+                                <ul>
+                                    <li><a href="/">خانه</a></li>
+                                    <li>دوره ها</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Courses -->
+
+    <div class="courses">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 offset-lg-1">
+                    <div class="section_title text-end">
+                        <h2>دوره خود را انتخاب کنید</h2>
+                    </div>
+                    <div class="section_subtitle text-end">{{ settings.courses_intro_text }}</div>
+                </div>
+            </div>
+
+            <!-- Course Search -->
+            <div class="row">
+                <div class="col">
+                    <div class="course_search">
+                        <form class="course_search_form d-flex flex-md-row flex-column align-items-start justify-content-between">
+                            <div class="course_input px-3 rounded-2"><input type="text"
+                                                                            class="course_input px-3 rounded-2"
+                                                                            placeholder="نام دوره و..." name="search"
+                                                                            value="{{ request.GET.search }}"></div>
+<!--                            {#                        <div class="course_input px-3 rounded-2"><input type="text" class="course_input px-3 rounded-2"#}-->
+<!--                            {#                                                                        placeholder="Level"#}-->
+<!--                            {#                                                                        required="required"></div>#}-->
+                            <button type="submit" class="course_button rounded-2"><span
+                                    style="padding: 5px">جستجو دوره</span><span
+                                    class="button_arrow"
+                                   ><i
+                                    class="fa fa-angle-right" aria-hidden="true"></i></span></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+            <br>
+            <br>
+            {% if last_class %}
+                <!-- Featured Course -->
+                <div class="row featured_row">
+                    <div class="col-lg-6 featured_col">
+                        <div class="featured_content">
+                            <div class="featured_header d-flex flex-row align-items-center justify-content-start">
+                                <div class="featured_tag rounded-2"><a >ویژه</a></div>
+                                <div class="featured_price ml-auto px-3">قیمت:
+                                    <span>{{ last_class.amount | persian_int | intcomma:False }} تومان</span></div>
+                            </div>
+                            <div class="featured_title">
+                                <h3><a href="{% url 'class-details' last_class.slug %}">{{ last_class.title }}</a></h3>
+                            </div>
+                            <div class="featured_text">{{ last_class.desc | truncatechars:200 }}
+                            </div>
+                            <div class="featured_footer d-flex align-items-center justify-content-start">
+                                <div class="featured_author_image"><img src="{{ last_class.teacher.user.get_avatar }}"
+                                                                        alt=""></div>
+                                <div class="featured_author_name px-3">توسط <a href="#">{{ last_class.teacher }}</a>
+                                </div>
+                                <div class="featured_sales ml-auto"><span>{{ last_class.users.count }}</span> تعداد
+                                    دانشجو
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 featured_col">
+                        <!-- Background image artist https://unsplash.com/@jtylernix -->
+                        <div class="featured_background" style="background-image:url({{ last_class.get_cover }})"></div>
+                    </div>
+                </div>
+            {% endif %}
+
+            <br>
+            <br>
+            <br>
+
+            <div class="row courses_row">
+
+                {% for item in object_list %}
+                    <!-- Course -->
+                    <div class="col-lg-4 col-md-6" style="padding: 10px">
+                        <div class="course">
+                            <div class="course_image"><img src="{{ item.get_cover }}" alt="{{ item.title }}"
+                                                           width="350.66" height="265.27">
+                            </div>
+                            <div class="course_body">
+                                <div class="course_header d-flex flex-row align-items-center justify-content-start">
+                                    <div class="course_tag rounded-2"><a >ویژه</a></div>
+                                    <div class="course_price ml-auto  px-3">قیمت:
+                                        <span> {{ item.amount | persian_int | intcomma:False }} تومان</span>
+                                    </div>
+                                </div>
+                                <div class="course_title">
+                                    <h3>
+                                        <a href="{% url 'class-details' item.slug %}">{{ item.title | default_if_none:'---' }}</a>
+                                    </h3>
+                                </div>
+                                <div class="course_text">{{ item.desc | default_if_none:'---' | truncatechars:150 }}
+                                </div>
+                                <div class="course_footer d-flex align-items-center justify-content-start">
+                                    <div class="course_author_image"><img src="{{ item.teacher.user.get_avatar }}"
+                                                                          alt="https://unsplash.com/@anthonytran"></div>
+                                    <div class="course_author_name px-3">توسط <a href="#">{{ item.teacher }}</a></div>
+                                    <div class="course_sales ml-auto"><span>{{ item.users.count }}</span> تعداد دانشجو
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            {% include 'Front/pagination.html' with page_obj=page_obj %}
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block Scripts %}
+    <script>
+        {% if messages %}
+            {% for item in messages %}
+                createToast('success', '{{ item }}');
+            {% endfor %}
+        {% endif %}
+
+
+    </script>
+{% endblock %}

@@ -1,0 +1,358 @@
+{% extends 'Layouts/admin-master.html' %}
+{% load static public_tags acl_tags %}
+{% load humanize %}
+
+{% block title %} لیست پاسخ نامه ها {% endblock %}
+
+{% block content %}
+
+    <div class="row">
+
+        {% if messages %}
+            {% for item in messages %}
+                <script>
+                    Swal.fire({
+                        title: "تبریک ! 🥳",
+                        icon: 'success',
+                        text: '{{ item }}',
+                        type: "success",
+                        cancelButtonColor: 'var(--primary)',
+                        confirmButtonText: 'اوکی',
+                    })
+                </script>
+            {% endfor %}
+        {% endif %}
+
+        <div class="col-lg-12">
+            <div class="card-box">
+                <div class="card-block">
+                    <h4 class="card-title">لیست پاسخ نامه ها</h4>
+
+                    <hr>
+                    <form id="search">
+                        <div class="form-group">
+                            <div class="row">
+                                {% include 'Admin/Filters/search_input.html' %}
+                                {% include 'Admin/Filters/limit_select_box.html' %}
+                                {% include 'Admin/Filters/select_box.html' with label='وضعیت' name='status' items=status_filter_items %}
+                            </div>
+                        </div>
+                    </form>
+
+                    <span id="list">
+                                                                      {% if object_list %}
+                                                                          <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>ردیف</th>
+                        <th>کاربر</th>
+                        <th>آزمون</th>
+                        <th>نمره(بارم)</th>
+                        <th>وضعیت</th>
+                        <th>اعمال</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for item in object_list %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+
+                            <td>{{ item.user | default:'---' }}</td>
+
+                            <td>{{ item.quiz | default:'---' }}</td>
+
+                            <td>{{ item.score | default:'---' }}</td>
+
+                             <td>
+                                {% if user|has_perm:'user_quiz_change_status' %}
+                                    <a role="button"
+                                       ng-click="ChangeStatusModal({{ item.id }}, '{{ item.status }}')"
+                                       class="label label-{{ item.get_status_class }}-border rounded">
+                                        {{ item.get_status }}
+                                    </a>
+                                {% else %}
+                                    <a role="button"
+                                       class="label label-{{ item.get_status_class }}-border rounded">
+                                        {{ item.get_status }}
+                                    </a>
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                <div class="buttons ">
+                                    <form action="{% url 'user-quizzes-delete' item.id %}"
+                                          id="delete_form_{{ item.id }}"
+                                          method="post">
+                                        {% csrf_token %}
+
+                                        {% if user|has_perm:'user_quiz_detail' %}
+                                            <a ng-click="ShowQuizAnswerSheet({{ item.id }})"
+                                               class="btn btn-warning btn-action mr-1"
+                                               data-toggle="tooltip" title=""
+                                               data-original-title="جزییات"><i
+                                                    class="fas fa-pencil-alt"></i><i
+                                                    class="fa fa-eye"> </i> </a>
+                                        {% endif %}
+
+                                        {% if user|has_perm:'user_quiz_delete' %}
+                                            <button type="button"
+                                                    data-original-title="حذف"
+                                                    data-toggle="tooltip"
+                                                    onclick="DeleteConfirm('{{ item.id }}')"
+                                                    class="delete_button btn btn-danger btn-action"><i
+                                                    class="fa fa-trash"> </i>
+                                        </button>
+                                        {% endif %}
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    </table>
+                                                                      {% else %}
+                                                                          <h4 style="text-align: center; padding: 40px">
+                                موردی یافت نشد.
+                         </h4>
+                                                                      {% endif %}
+
+
+                        {% include 'Admin/pagination.html' with page_obj=page_obj %}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+
+        {% if user|has_perm:'user_quiz_change_status' %}
+            <!-- Modal -->
+            <div class="modal fade bd-example-modal-lg" id="changeStatusModal" tabindex="-1" role="dialog"
+                 aria-labelledby="changeStatusModalTitle" aria-hidden="true" dir="rtl"
+                 style="text-align: right !important; margin-top: 250px">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+
+                    <div class="modal-content">
+                        <div class="modal-header" style="width: 100%!important;">
+                            <h5 class="modal-title"
+                                id="exampleModalLongTitle">تغییر وضعیت</h5>
+
+                            <button type="button" class="close ml-2" data-dismiss="modal"
+                                    style="position: absolute!important;left: 0!important; top: 10px"
+                                    aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        {% for field in change_status_form %}
+                            <div class="modal-body">
+                                <label class="form-label"
+                                       for="id_{{ field.name }}">{{ field.label }}:</label>
+
+                                <div>
+                                    {{ field|addclass:"form-control" }}
+
+                                    {% if field.help_text %}
+                                        <p><small style="font-size: 14px">{{ field.help_text|safe }} </small></p>
+                                    {% endif %}
+                                    {% if field.errors %}
+                                        <p><small class="text-danger" style="font-size: 14px"
+                                                  style="color:red">{{ field.errors.0|safe }}</small></p>
+                                    {% endif %}
+                                    {% if field.non_field_errors %}
+                                        <p><small class="text-danger" style="font-size: 20px"
+                                                  style="color:red">{{ field.non_field_errors.0|safe }}</small></p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" ng-disabled="is_submited">
+                                بستن
+                            </button>&nbsp;
+                            <button type="button" ng-click="ChangeStatus();" ng-disabled="is_submited"
+                                    class="btn btn-primary">ذخیره
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        {% endif %}
+
+
+        {% if user|has_perm:'user_quiz_detail' %}
+            <!-- Modal -->
+            <div class="modal fade bd-example-modal-lg" id="QuizDetailModal" tabindex="-1" role="dialog"
+                 aria-labelledby="QuizDetailModalTitle" aria-hidden="true" dir="rtl"
+                 style="text-align: right !important; margin-top: 50px;">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+
+                    <div class="modal-content">
+                        <div class="modal-header" style="width: 100%!important;">
+                            <h5 class="modal-title"
+                                id="exampleModalLongTitle">پاسخ ها</h5>
+
+                            <button type="button" class="close ml-2" data-dismiss="modal"
+                                    style="position: absolute!important;left: 0!important; top: 10px"
+                                    aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body form-group"
+                             ng-repeat="(key, item) in user_quiz_info.quiz.questions"
+                             style="margin-top: 20px; margin-bottom: 80px">
+                            <div>
+                                <div ng-show="key != 0 && key != user_quiz_info.user_quiz_questions.length">
+                                    <hr/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-lg-12">[[item.question.description]]
+                                        ([[item.question.score]]
+                                        نمره):</label>
+
+                                    <div class="col-md-12 col-lg-12">
+                                        <fieldset>
+                                                <span style="margin-right: 80px!important;"
+                                                      ng-repeat="choice in item.choices">
+                                                    <label>[[choice.text]]</label>
+                                                    <input disabled
+                                                           ng-checked="CheckChoiceChecked(user_quiz_info.user_quiz_questions, choice.id)"
+                                                           type="checkbox">
+                                                </span>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% if request.user|has_perm:'user_quiz_score' %}
+                            <div class="modal-body form-group">
+                                <label class="form-label"
+                                       for="id_score">نمره:</label>
+
+                                <input type="number" id="id_score" ng-model="user_quiz_info.score" class="form-control">
+                                <button type="button" class="btn btn-success" style="margin-top: 5px"
+                                        ng-click="SubmitScore()" ng-disabled="is_submited">
+                                    ذخیره
+                                </button>
+                            </div>
+                        {% endif %}
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" ng-disabled="is_submited">
+                                بستن
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        {% endif %}
+
+    </div>
+
+{% endblock %}
+
+{% block Scripts %}
+    <script>
+        function DeleteConfirm(id) {
+            Swal.fire({
+                title: "هشدار ! ",
+                icon: 'warning',
+                text: "آیا از حذف این آیتم اطمینان دارید؟",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: '#00aced',
+                cancelButtonColor: '#e6294b',
+                confirmButtonText: 'حذف',
+                cancelButtonText: 'انصراف'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#delete_form_' + id).submit();
+                }
+            })
+        }
+    </script>
+    <script>
+        app.controller('myCtrl', function ($scope, $http) {
+            $scope.id = null;
+            $scope.status = {};
+            $scope.user_quiz_info = {};
+            $scope.is_submited = false;
+
+            $scope.ChangeStatusModal = function (id, status) {
+                $scope.id = id;
+                $scope.status = status;
+                $('#changeStatusModal').modal('show');
+            }
+
+            $scope.ChangeStatus = function () {
+                $scope.is_submited = true;
+
+                var data = {
+                    "status": $scope.status
+                };
+
+                $http.patch(`/api/quiz/user-quiz/${$scope.id}/`, data).then(res => {
+                    createToast('success', 'وضعیت آیتم مورد نظر با موفقیت تغییر کرد.');
+                    $scope.is_submited = false;
+                    setTimeout(() => {
+                        location.reload()
+                    }, 100)
+                }).catch(err => {
+                    $scope.loading = false;
+                    parseError(err, 'خطایی رخ داد');
+                });
+            }
+
+            // User Quiz Detail
+            $scope.CheckChoiceChecked = function (answers, choice_item) {
+                if (answers.filter(x => x['answer']['id'] == choice_item).length > 0) {
+                    return true;
+                }
+                return false;
+            }
+
+            $scope.ShowQuizAnswerSheet = function (id) {
+                $scope.is_submited = true;
+
+                $http.get(`/api/quiz/user-quiz/${id}/`).then(res => {
+                    $scope.is_submited = false;
+                    console.log(res['data']);
+                    $scope.user_quiz_info = res['data'];
+                    $('#QuizDetailModal').modal('show');
+                }).catch(err => {
+                    $scope.loading = false;
+                    parseError(err, 'خطایی رخ داد');
+                });
+            }
+
+            {% if request.user|has_perm:'user_quiz_score' %}
+                $scope.SubmitScore = function () {
+                    $scope.is_submited = true;
+
+                    var data = {
+                        "score": $scope.user_quiz_info['score']
+                    };
+
+                    $http.patch(`/api/quiz/user-quiz/${$scope.user_quiz_info.id}/`, data).then(res => {
+                        createToast('success', 'نمره پاسخنامه مورد نظر با موفقیت ذخیره شد.');
+                        $scope.is_submited = false;
+                        setTimeout(() => {
+                            location.reload()
+                        }, 1500)
+                    }).catch(err => {
+                        $scope.loading = false;
+                        parseError(err, 'خطایی رخ داد');
+                    });
+                }
+            {% endif %}
+        });
+    </script>
+{% endblock %}

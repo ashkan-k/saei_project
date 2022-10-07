@@ -1,0 +1,121 @@
+body{
+    font-family:'M';
+ }
+ @font-face {
+     font-family: 'M';
+     src: url(/static/front/fonts/IRANSans/IRANSansWeb_Bold.woff);
+ }
+ .adamak1:hover{
+	cursor: pointer;
+}
+.adamak{
+    position: relative;
+    display: inline-block;
+}
+.adamak i{
+    position: absolute;
+    right: 0;
+}
+.lock{
+    position: relative;
+    display: inline-block;
+}
+.lock i{
+    position: absolute;
+    right: 0;
+}
+.log-in{
+    border: 1px solid #ecf0f4;
+    border-radius: 12px;
+    box-shadow: 0 0 4px 0 #d5dce2;
+    margin: auto;
+    margin-top: 15%;
+    margin-bottom: 15%;
+    opacity: 0.95;
+}
+.log-in h3{
+    text-align: center;
+    font-size: x-large;
+    font-weight: 400;
+    color: black;
+    padding: 14px;
+}
+
+input[type=text]{
+    outline:none;
+    border: none;
+    border-bottom: 1px solid rgb(17, 145, 145);
+    color: rgb(114, 110, 110);
+}
+input[type=password]{
+    outline:none;
+    border: none;
+    border-bottom: 1px solid rgb(17, 145, 145);
+    color: rgb(114, 110, 110);
+}
+input[type=button]{
+    border: none;
+    padding: 10px 70px;
+    width: 80%;
+    cursor: pointer;
+    color: white;
+    border: none;
+    background-color: rgb(17, 145, 145);
+    margin-right: 10%;
+}
+.checkbox{
+    font-size:small;
+    font-weight: 350;
+    padding-left: 3%;
+}
+input[type=checkbox]{
+    margin-right: 2%;
+}
+input[type=checkbox]:hover{
+    cursor: pointer;
+}
+.log-in input:hover{
+    border-bottom: 4px solid #026688;
+}
+.phone-msg{
+    color: rgb(252, 95, 95);
+    display: flex;
+    justify-content: left;
+    padding-left: 10%;
+    padding-bottom: 0%;
+}
+.username-msg{
+    color: rgb(252, 95, 95);
+    display: flex;
+    justify-content: left;
+    padding-left: 10%;
+    padding-bottom: 0%;
+}
+.email-msg{
+    color: rgb(252, 95, 95);
+    display: flex;
+    justify-content: left;
+    padding-left: 10%;
+    padding-bottom: 0%;
+}
+.password-msg{
+    color: rgb(252, 95, 95);
+    display: flex;
+    justify-content: left;
+    padding-left: 10%;
+    padding-bottom: 0%;
+}
+.repeat-the-password-msg{
+    color: rgb(252, 95, 95);
+    display: flex;
+    justify-content: left;
+    padding-left: 10%;
+   
+}
+.signup-status{
+    color: #32CD32;
+    display: flex;
+    justify-content: left;
+    padding-left: 10%;
+    padding-bottom: 0%;
+}

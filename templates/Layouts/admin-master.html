@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+{#    <link rel="shortcut icon" type="image/x-icon" href="{% static '/admin_panel/assets/img/icon.ico' %}">#}
+    <title>پنل ادمین | {% block title %}پنل ادمین{% endblock %}</title>
+    <link rel="icon" href="{% static 'front/images/logo.png' %}">
+    <link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static '/admin_panel/assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static '/admin_panel/assets/css/bootstrap.rtl.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static '/admin_panel/assets/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static '/admin_panel/assets/css/fullcalendar.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static '/admin_panel/assets/css/dataTables.bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static '/admin_panel/assets/css/select2.min.css' %}">
+    <link rel="stylesheet" type="text/css"
+          href="{% static '/admin_panel/assets/css/bootstrap-datetimepicker.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static '/admin_panel/assets/plugins/morris/morris.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static '/admin_panel/assets/css/style.css' %}">
+    <link href="{% static 'select2/select2.min.css' %}" rel="stylesheet"/>
+
+    <link rel="stylesheet" href="{% static 'css/jquery.toast.min.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css"
+          id="theme-styles">
+    <link rel="stylesheet" href="{% static 'css/kamadatepicker.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'persian_datetimepicker/persian-datepicker.min.css' %}"/>
+{#    <link rel="stylesheet" href="{% static 'timepicker/css/timepicki.css' %}"/>#}
+    <link rel="stylesheet" href="{% static 'timepicker2/dist/css/timepicker.min.css' %}"/>
+
+    <style>
+        .select2 {
+            width: 100% !important;
+        }
+    </style>
+
+    {% block Styles %}
+
+    {% endblock %}
+</head>
+
+<body ng-app="myApp" ng-controller="myCtrl">
+<div class="main-wrapper">
+    {% include 'Admin/Section/header.html' %}
+    {% include 'Admin/Section/sidebar.html' %}
+    <div class="page-wrapper">
+        <div class="content container-fluid">
+
+            {% block content %} {% endblock %}
+        </div>
+    </div>
+</div>
+
+<div class="sidebar-overlay" data-reff=""></div>
+<script type="text/javascript" src="{% static '/admin_panel/assets/js/jquery-3.2.1.min.js' %}"></script>
+<script type="text/javascript" src="{% static '/admin_panel/assets/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/angular.min.js' %}"></script>
+<script src="{% static 'js/jquery.toast.min.js' %}"></script>
+<script src="{% static 'js/helpers.js' %}"></script>
+<script type="text/javascript" src="{% static '/admin_panel/assets/js/jquery.slimscroll.js' %}"></script>
+<script type="text/javascript" src="{% static '/admin_panel/assets/js/moment.min.js' %}"></script>
+<script type="text/javascript" src="{% static '/admin_panel/assets/plugins/morris/morris.min.js' %}"></script>
+<script type="text/javascript" src="{% static '/admin_panel/assets/plugins/raphael/raphael-min.js' %}"></script>
+<script type="text/javascript" src="{% static '/admin_panel/assets/js/app.js' %}"></script>
+<script src="{% static 'select2/select2.min.js' %}"></script>
+<script src="{% static 'js/kamadatepicker.min.js' %}"></script>
+<script src="{% static 'persian_datetimepicker/persian-date.min.js' %}"></script>
+<script src="{% static 'persian_datetimepicker/persian-datepicker.min.js' %}"></script>
+<script src="{% static 'ckeditor/ckeditor.js' %}"></script>
+{#<script src="{% static 'timepicker/js/timepicki.js' %}"></script>#}
+<script src="{% static 'timepicker2/dist/js/timepicker.min.js' %}"></script>
+
+<script>
+    var app = angular.module("myApp", []);
+    app.config(function ($interpolateProvider, $httpProvider) {
+        $interpolateProvider.startSymbol('[[');
+        $interpolateProvider.endSymbol(']]');
+
+        $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+        $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+    });
+</script>
+
+{% block Scripts %}
+
+{% endblock %}
+
+</body>
+</html>

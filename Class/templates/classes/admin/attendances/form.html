@@ -1,0 +1,236 @@
+{% extends 'Layouts/admin-master.html' %}
+{% load i18n public_tags acl_tags class_tags %}
+
+{% block title %} حضور و غیاب {% endblock %}
+
+{% block content %}
+
+    <div class="row" ng-init="init()">
+        <div class="col-xs-12">
+            <div class="col-lg-12">
+                <div class="card-box">
+                    <h2 class="card-title"><b> حضور و غیاب کلاس {{ class_object.title }}</b></h2>
+
+                    <form class="form-horizontal"
+                          method="post"
+                          enctype="multipart/form-data">
+
+                        {% csrf_token %}
+
+                        {% for field in form %}
+                            {% if field.name != 'class_item' %}
+                                <div class="form-group col-lg-6 col-sm-6 col-md-12">
+                                    <label class="control-label col-lg-2" style="width: auto!important;"
+                                           for="id_{{ field.name }}">{{ field.label }}:</label>
+
+                                    <div class="col-md-10">
+                                        {{ field|addclass:"form-control" }}
+
+                                        {% if field.help_text %}
+                                            <p><small style="font-size: 14px">{{ field.help_text|safe }} </small></p>
+                                        {% endif %}
+                                        {% if field.errors %}
+                                            <p><small class="text-danger" style="font-size: 14px"
+                                                      style="color:red">{{ field.errors.0|safe }}</small></p>
+                                        {% endif %}
+                                        {% if field.non_field_errors %}
+                                            <p><small class="text-danger" style="font-size: 20px"
+                                                      style="color:red">{{ field.non_field_errors.0|safe }}</small></p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+
+                        <span id="list">
+                                                                      {% if object_list %}
+                                                                          <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>ردیف</th>
+                        <th>نام</th>
+                        <th>نام خانوادگی</th>
+                        <th>نام پدر</th>
+                        <th>تاریخ ثبت نام</th>
+                        <th>وضعیت</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for item in object_list %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+
+                            <td>{{ item.user.first_name | default:'---' }}</td>
+
+                            <td>{{ item.user.last_name | default:'---' }}</td>
+
+                            <td>{{ item.user.father_name | default:'---' }}</td>
+
+                            <td>{{ item.created_at | jdate | default:'---' }}</td>
+
+                            <td>
+                                <div class="buttons ">
+                                    <form action="{% url 'class-attendances-delete' item.id %}?next={{ request.get_full_path }}"
+                                          id="delete_form_{{ item.id }}"
+                                          method="post">
+                                        {% csrf_token %}
+
+                                        {% if user|has_perm:'class_attendance_create' %}
+                                            <span title="غایب" role="button"><i
+                                                    ng-click="UserChecked('{{ item.user.id }}', 'absent')"
+                                                    class="fa fa-close text-danger [[AbsentClass( '{{ item.user.id }}' )]]"
+                                                    style="font-size: 35px"></i></span>
+
+                                            <span title="حاضر" ng-click="UserChecked('{{ item.user.id }}', 'present')"
+                                                  role="button"><i
+                                                    class="fa fa-check text-success m-r-5 [[PresentClass( '{{ item.user.id }}' )]]"
+                                                    style="font-size: 35px"></i></span>
+                                        {% endif %}
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    </table>
+                                                                      {% else %}
+                                                                          <h4 style="text-align: center; padding: 40px">
+                                موردی یافت نشد.
+                         </h4>
+                                                                      {% endif %}
+
+
+                            {% include 'Admin/pagination.html' with page_obj=page_obj %}
+                    </span>
+
+                        <div class="col-lg-12">
+                            <div class="m-1-25 m-b-20" style="float: left !important;">
+                                <a href="{{ request.META.HTTP_REFERER }}"
+                                   ng-disabled="is_submited"
+                                   class="btn btn-danger btn-border-radius waves-effect">
+                                    بازگشت
+                                </a>
+                                <button class="btn btn-info btn-border-radius waves-effect" type="button"
+                                        ng-click="Submit()" ng-disabled="is_submited">ثبت
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block Scripts %}
+    <script>
+        kamaDatepicker('id_date', {
+            placeholder: 'تاریخ',
+            buttonsColor: 'blue',
+            markHolidays: true
+        });
+        $("#id_date").attr('autocomplete', 'off');
+
+        $('#id_date').on('change', function () {
+            $('#id_date').val($('#id_date').val().replaceAll('/', '-'))
+        })
+
+    </script>
+
+    <script>
+        {% if messages %}
+            {% for item in messages %}
+                createToast('success', '{{ item }}');
+            {% endfor %}
+        {% endif %}
+    </script>
+
+    <script>
+        app.controller('myCtrl', function ($scope, $http) {
+            $scope.id = null;
+            $scope.date = null;
+            $scope.users = [];
+            $scope.is_submited = '';
+
+            $scope.init = function () {
+                {% if object.id %}
+                    $scope.date = '{{ object.date }}'
+                    {% class_users_js_list object as js_object_list %}
+                    $scope.users = {{ js_object_list | safe }};
+                {% endif %}
+            }
+
+            $scope.PresentClass = function (user) {
+                if ($scope.users.filter(x => (x['user'] == user && x['status'] == 'present')).length > 0) {
+                    return 'fa-check-square';
+                }
+                return '';
+            }
+
+            $scope.AbsentClass = function (user) {
+                if ($scope.users.filter(x => (x['user'] == user && x['status'] == 'absent')).length > 0) {
+                    return 'fa-window-close';
+                }
+                return '';
+            }
+
+            $scope.UserChecked = function (user, status) {
+                if ($scope.users.filter(x => x['user'] == user).length == 0) {
+                    $scope.users.push({'user': user, 'status': null});
+                }
+
+                $scope.users.filter(x => x['user'] == user)[0]['status'] = status;
+            }
+
+            $scope.Submit = function () {
+                if (!$scope.date) {
+                    createToast('error', 'لطفا تاریخ جلسه را وارد کنید.');
+                    return;
+                }
+
+                {% if object_list.count == 0 %}
+                    createToast('error', 'کاربری در این کلاس وجود ندارد!');
+                    return;
+                {% endif %}
+
+                if ($scope.users.length != {{ object_list.count }}) {
+                    createToast('error', 'لطفا وضعیت (غایب/حاضر) همه کاربران را مشخص کنید.');
+                    return;
+                }
+
+                $scope.is_submited = true;
+
+                var data = {
+                    "data": $scope.users,
+                    "class_item": '{{ class_object.id }}',
+                    "date": $scope.date,
+                };
+
+                {% if object.id %}
+                    var url = `/api/class/attendance/{{ object.id }}/edit/`;
+                {% else %}
+                    var url = '/api/class/attendance/create/';
+                {% endif %}
+
+                $http.post(url, data).then(res => {
+                    createToast('success', 'با موفقیت ذخیره شد.');
+                    setTimeout(() => {
+                        $scope.is_submited = false;
+                        window.location.href = "{% url 'class-attendances-list' class_object.id %}"
+                    }, 1000)
+                }).catch(err => {
+                    $scope.is_submited = false;
+                    if (err['data']['date']) {
+                        parseError(err, 'لطفا تاریخ را در فرمت مناسب وارد کنید!(YYYY-MM-DD)');
+                        return;
+                    }
+                    parseError(err, 'خطایی رخ داد');
+                });
+            }
+        });
+    </script>
+{% endblock %}

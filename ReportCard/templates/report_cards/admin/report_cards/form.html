@@ -1,0 +1,149 @@
+{% extends 'Layouts/admin-master.html' %}
+{% load i18n public_tags %}
+
+{% block title %} {% if object %}ویرایش کارنامه{% else %}افزودن کارنامه{% endif %} {% endblock %}
+
+{% block content %}
+
+    <div class="row" ng-init="init()">
+        <div class="col-xs-12">
+            <div class="col-lg-12">
+                <div class="card-box">
+                    <h2 class="card-title"><b>{% if object %}ویرایش کارنامه{% else %}افزودن کارنامه جدید{% endif %}</b>
+                    </h2>
+
+                    <form class="form-horizontal"
+                          method="post"
+                          enctype="multipart/form-data">
+
+                        {% csrf_token %}
+
+                        {% for field in form %}
+
+                            {% if field.name in 'user,title,class_item,type' %}
+                                <div class="form-group">
+                                    <label class="control-label col-lg-2"
+                                           for="id_{{ field.name }}">{{ field.label }}:</label>
+
+                                    <div class="col-md-10">
+                                        {{ field|addclass:"form-control" }}
+
+                                        {% if field.help_text %}
+                                            <p><small style="font-size: 14px">{{ field.help_text|safe }} </small></p>
+                                        {% endif %}
+                                        {% if field.errors %}
+                                            <p><small class="text-danger" style="font-size: 14px"
+                                                      style="color:red">{{ field.errors.0|safe }}</small></p>
+                                        {% endif %}
+                                        {% if field.non_field_errors %}
+                                            <p><small class="text-danger" style="font-size: 20px"
+                                                      style="color:red">{{ field.non_field_errors.0|safe }}</small></p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                            {% elif field.name in 'certify_that,awarded,in_the,on,place_of_entry,refrence_number' %}
+
+                                <div class="form-group" ng-if="data.type == 'ttc' || data.type == 'mock'">
+                                    <label class="control-label col-lg-2"
+                                           for="id_{{ field.name }}">{{ field.label }}:</label>
+
+                                    <div class="col-md-10">
+                                        {{ field|addclass:"form-control" }}
+
+                                        {% if field.help_text %}
+                                            <p><small style="font-size: 14px">{{ field.help_text|safe }} </small></p>
+                                        {% endif %}
+                                        {% if field.errors %}
+                                            <p><small class="text-danger" style="font-size: 14px"
+                                                      style="color:red">{{ field.errors.0|safe }}</small></p>
+                                        {% endif %}
+                                        {% if field.non_field_errors %}
+                                            <p><small class="text-danger" style="font-size: 20px"
+                                                      style="color:red">{{ field.non_field_errors.0|safe }}</small></p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                            {% elif field.name in 'proudly_presented,completed_term,class_attendance,class_activity,homework,workbook,listening,speaking,reading,writing,midterm_score,final_exam,oral_score,overall,exam_status,date' %}
+
+                                <div class="form-group" ng-if="data.type == 'term'">
+                                    <label class="control-label col-lg-2"
+                                           for="id_{{ field.name }}">{{ field.label }}:</label>
+
+                                    <div class="col-md-10">
+                                        {{ field|addclass:"form-control" }}
+
+                                        {% if field.help_text %}
+                                            <p><small style="font-size: 14px">{{ field.help_text|safe }} </small></p>
+                                        {% endif %}
+                                        {% if field.errors %}
+                                            <p><small class="text-danger" style="font-size: 14px"
+                                                      style="color:red">{{ field.errors.0|safe }}</small></p>
+                                        {% endif %}
+                                        {% if field.non_field_errors %}
+                                            <p><small class="text-danger" style="font-size: 20px"
+                                                      style="color:red">{{ field.non_field_errors.0|safe }}</small></p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+
+                            {% endif %}
+
+                        {% endfor %}
+
+                        <div class="col-lg-12">
+                            <div class="m-1-25 m-b-20" style="float: left !important;">
+                                <a href="{{ request.META.HTTP_REFERER }}"
+                                   class="btn btn-danger btn-border-radius waves-effect">
+                                    بازگشت
+                                </a>
+                                <button class="btn btn-info btn-border-radius waves-effect" type="button"
+                                        onclick="submit()">ثبت
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block Scripts %}
+    <script>
+        kamaDatepicker('id_date', {
+            placeholder: 'تاریخ',
+            buttonsColor: 'blue',
+            markHolidays: true
+        });
+        $("#id_date").attr('autocomplete', 'off');
+
+        $('#id_date').on('change', function () {
+            $('#id_date').val($('#id_date').val().replaceAll('/', '-'))
+        });
+    </script>
+
+    <script>
+        {% if messages %}
+            {% for item in messages %}
+                createToast('success', '{{ item }}');
+            {% endfor %}
+        {% endif %}
+    </script>
+
+    <script>
+        app.controller('myCtrl', function ($scope, $http) {
+            $scope.data = {};
+
+            $scope.init = function () {
+                {% if object %}
+                    $scope.data['type'] = '{{ object.type }}';
+                {% endif %}
+            }
+        });
+    </script>
+{% endblock %}

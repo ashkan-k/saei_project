@@ -1,0 +1,159 @@
+{% extends 'Layouts/front-master.html' %}
+{% load static public_tags humanize shop_tags %}
+
+{% block title %}{{ object.title }} | محصولات{% endblock %}
+
+{% block Styles %}
+
+{% endblock %}
+
+{% block content %}
+
+    <!-- About -->
+
+    <div class="about">
+        <div class="container">
+            <div class="row about_row row-lg-eq-height">
+                <div class="col-lg-6">
+                    <div class="about_content mt-5">
+                        <div class="about_title">{{ object.title | default_if_none:'---' }}</div>
+                        <div class="about_text">
+                            <p>{{ object.desc | default_if_none:'---' }}</p>
+                        </div>
+                        <div class="course_header d-flex flex-row align-items-center justify-content-start mt-5">
+                            <div class="course_price ml-auto">قیمت اصلی:
+                                <span> {{ object.amount | default_if_none:'---' | persian_int | intcomma:False }} تومان</span>
+                            </div>
+                            <div class="course_price ml-auto" style="flex: auto;text-align: -webkit-center;">قیمت
+                                تخفیفی:
+                                <span> {{ object.discount_amount | default_if_none:'---' | persian_int | intcomma:False }} تومان </span>
+                            </div>
+                        </div>
+                        <div class="course_header d-flex flex-row align-items-center justify-content-start mt-5">
+                            <div class="course_price ml-auto"> دسته بندی :
+                                <a href="{% url 'category-products' object.category.slug %}"><span>    {{ object.category | default_if_none:'---' }}        </span></a>
+                            </div>
+                        </div>
+
+                        {% if not user.is_authenticated %}
+
+                            <a href="{% url 'register' %}" class="mt-5 px-5 py-2 rounded-3 btn"
+                               style="background-color: #43bfc7;">ثبت نام و خرید
+                            </a>
+
+                        {% elif user|check_user_bought_product:object %}
+
+                            {% if object.file %}
+                                <a href="{{ object.get_file }}" target="_blank" class="mt-5 px-5 py-2 rounded-3 btn"
+                                   style="background-color: #43bfc7;">دانلود
+                                </a>
+                            {% else %}
+                                <p class="mt-3 text-danger">این محصول قبلا خریداری شده است. برای دریافت آن به موسسه
+                                    مراجعه بفرمایید.</p>
+                            {% endif %}
+
+                        {% else %}
+
+                            <button ng-click="GetPaymentLink()" ng-disabled="is_submited"
+                                    class="mt-5 px-5 py-2 rounded-3 btn"
+                                    style="background-color: #43bfc7;">خرید
+                            </button>
+
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="about_image" style="margin-top: 12%;"><img src="{{ object.get_image }}"
+                                                                           alt="{{ object.title }}">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="row courses_row">
+        {% for item in similar_products %}
+             <div class="col-lg-4 col-md-6">
+                <div class="course mx-3">
+                    <div class="course_image"><img style="max-width: 585px" src="{{ item.get_image }}" alt="{{ item.title }}"></div>
+                    <div class="course_body">
+                        <div class="course_header d-flex flex-row align-items-center justify-content-start">
+{#                            <div class="course_tag"><a href="#">Featured</a></div>#}
+                            <div class="course_price ml-auto  px-3">قیمت: <span>{{ item.amount | default_if_none:'---' | persian_int | intcomma:False }} تومان</span></div>
+                        </div>
+                        <div class="course_title">
+                            <h3><a href="{% url 'products-user-detail' item.slug %}">{{ item.title | default_if_none:'---' }}</a></h3>
+                        </div>
+                        <div class="course_text">{{ item.desc | default_if_none:'---' | truncatechars:200 }}</div>
+                        <div class="course_footer d-flex align-items-center justify-content-start">
+{#                            <div class="course_author_image"><img src="images/featured_author.jpg"#}
+{#                                    alt="https://unsplash.com/@anthonytran"></div>#}
+{#                            <div class="course_author_name px-3">By <a href="#">James S. Morrison</a></div>#}
+                            <div class="course_sales ml-auto"><span>{{ item.users.count }}</span> فروش</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+        <div class="row mb-5">
+            <div class="col text-center">
+                <div class="button teachers_button rounded-2 " style="background-color: #43bfc7;"><a
+                        href="{% url 'products-user-list' %}" style="background-color: #43bfc7;">دیدن همه محصولات
+                    <div class="button_arrow" style="background-color: #2fa7af;"><i style="background-color: #2fa7af;"
+                                                                                    class="fa fa-angle-right"
+                                                                                    aria-hidden="true"></i></div>
+                </a></div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block Scripts %}
+    <script>
+        {% if messages %}
+            {% for item in messages %}
+                createToast('success', '{{ item }}');
+            {% endfor %}
+        {% endif %}
+    </script>
+
+    <script>
+        app.controller('myCtrl', function ($scope, $http) {
+            $scope.is_submited = '';
+
+            $scope.GetPaymentLink = function () {
+                var data = {
+                    'item_id': '{{ object.id }}',
+                    'item_type': 'shop',
+                }
+
+                {% if object.discount_amount %}
+                    data['amount'] = '{{ object.discount_amount }}';
+                {% else %}
+                    data['amount'] = '{{ object.amount }}';
+                {% endif %}
+
+                $scope.is_submited = true;
+
+                var url = '/api/zarinpal/payment/link/';
+
+                $http.post(url, data).then(res => {
+                    createToast('success', 'درحال انتقال به درگاه پرداخت...');
+                    console.log(res['data'])
+                    setTimeout(() => {
+                        $scope.is_submited = false;
+                        window.location.href = res['data']['link'];
+                    }, 3000)
+                }).catch(err => {
+                    $scope.is_submited = false;
+                    parseError(err, 'خطایی رخ داد');
+                });
+            }
+        });
+    </script>
+{% endblock %}

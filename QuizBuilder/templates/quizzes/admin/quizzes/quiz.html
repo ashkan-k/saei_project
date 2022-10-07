@@ -1,0 +1,131 @@
+{% extends 'Layouts/admin-master.html' %}
+{% load i18n public_tags acl_tags class_tags %}
+
+{% block title %} آزمون {% endblock %}
+
+{% block content %}
+
+    <div class="row" ng-init="init()">
+        <div class="col-lg-12">
+            <div class="card-box">
+                <div class="card-block" style="word-wrap: break-word">
+                    <h4 class="card-title">آزمون {{ object.title }}</h4>
+                    <p>{{ object.desc }}</p>
+                    <span id="timer" class="pull-right label label-danger-border" style="margin-bottom: 20px!important; font-size: 15px"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12">
+            <div class="card-box">
+
+                {% if form.non_field_errors %}
+                    <p><small class="text-danger" style="font-size: 20px"
+                              style="color:red">{{ form.non_field_errors.0|safe }}</small></p>
+                {% endif %}
+
+                {% if form.errors %}
+                    <p><small class="text-danger" style="font-size: 20px"
+                              style="color:red">{{ form.errors.0|safe }}</small></p>
+                {% endif %}
+
+                <form class="form-horizontal"
+                      method="post" id="answer_frm"
+                      enctype="multipart/form-data">
+
+                    {% csrf_token %}
+
+                    {% for question in object.questions.all %}
+
+                        <input type="hidden" id="question_{{ question.id }}" name="answers">
+
+                        {% if forloop.counter > 1 %}
+                            <hr/>
+                        {% endif %}
+                        <div class="form-group">
+                            <label class="control-label col-lg-2"
+                                   for="id_{{ field }}">{{ question.description }} ({{ question.score }} نمره):</label>
+
+                            <div class="col-md-12">
+                                <fieldset id="{{ forloop.counter }}">
+                                    {% for choice in question.choices.all %}
+
+                                        <span style="margin-right: 80px!important;">
+                                            <label for="{{ choice.text }}_{{ choice.id }}">{{ choice.text }}</label>
+                                            <input id="{{ choice.text }}_{{ choice.id }}" value="{{ choice.id }}"
+                                                   onchange="$('#question_{{ question.id }}').val(`{{ question.id }},${this.value}`)"
+                                                   name="test_{{ question.id }}"
+                                                   type="radio">
+                                        </span>
+
+                                    {% endfor %}
+                                </fieldset>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                    <div class="col-lg-12">
+                        <div class="m-1-25 m-b-20" style="float: left !important;">
+                            <a href="{{ request.META.HTTP_REFERER }}"
+                               class="btn btn-danger btn-border-radius waves-effect">
+                                بازگشت
+                            </a>
+                            <button class="btn btn-info btn-border-radius waves-effect" onclick="SubmitAnswerConfirm()"
+                                    type="button">ثبت
+                            </button>
+                        </div>
+                        <p id="demo"></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block Scripts %}
+    <script>
+        function SubmitAnswerConfirm(id) {
+            Swal.fire({
+                title: "هشدار ! ",
+                icon: 'warning',
+                text: "آیا از ثبت آزمون اطمینان دارید؟",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: '#00aced',
+                cancelButtonColor: '#e6294b',
+                confirmButtonText: 'ثبت',
+                cancelButtonText: 'انصراف'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#answer_frm').submit();
+                }
+            })
+        }
+    </script>
+
+    <script>
+        function SeperateNumbersByComma(value) {
+            var nStr = value.toString();
+            nStr = nStr.replace(/\,/g, "");
+            x = nStr.split('.');
+            x1 = x[0];
+            x2 = x.length > 1 ? '.' + x[1] : '';
+            var rgx = /(\d+)(\d{3})/;
+            while (rgx.test(x1)) {
+                x1 = x1.replace(rgx, '$1' + ',' + '$2');
+            }
+            return x1 + x2;
+        }
+
+        function formatSalePriceNumber(value) {
+            var nStr = value + '';
+            return SeperateNumbersByComma(nStr);
+        }
+    </script>
+
+    <script>
+        {% include 'quizzes/admin/quizzes/quiz.js' %}
+    </script>
+{% endblock %}

@@ -1,0 +1,30 @@
+body{
+   font-family:'M';
+}
+@font-face {
+    font-family: 'M';
+    src: url(/static/front/fonts/IRANSans/IRANSansWeb_Bold.woff);
+}
+.logo_text
+{
+	font-size: 18px;
+	font-weight: 700;
+	line-height: 0.75;
+	margin-left: 1px;
+	color: #464646;
+	text-transform: uppercase;
+	-webkit-transition: all 200ms ease;
+	-moz-transition: all 200ms ease;
+	-ms-transition: all 200ms ease;
+	-o-transition: all 200ms ease;
+	transition: all 200ms ease;
+}
+.meno:hover{
+	color: #464646;
+}
+.adamak:hover{
+	cursor: pointer;
+}
+.course_input::placeholder{
+	padding-right: 3%;
+}

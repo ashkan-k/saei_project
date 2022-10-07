@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fa" dir="">
+
+<head>
+    <title>document</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Elearn project">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .header {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .header img {
+            width: 18%;
+        }
+
+        .main img {
+            opacity: 0.1;
+            background-repeat: no-repeat;
+            width: 80%;
+            margin-left: 10%;
+        }
+
+        .form {
+            transform: translateY(-2500%);
+            margin-left: 20%;
+            display: flex;
+        }
+
+        .form input {
+            text-align: center;
+            opacity: 0.4;
+            height: 35px;
+            margin-left: 5px;
+            margin-top: 10px;
+        }
+
+        .stamp {
+            width: 200px;
+            margin-left: 5%;
+        }
+
+        .logo p {
+            margin-left: 10%;
+        }
+
+        .footer {
+            margin-left: 35%;
+        }
+
+        @media (min-width: 500px) {
+            .form {
+                transform: translateY(-840%);
+            }
+
+            .main {
+                margin-bottom: -85%;
+            }
+
+            .stamp {
+                width: 140px;
+            }
+
+            .Signature {
+                width: 150px;
+                margin-top: 10px;
+            }
+
+            .logo {
+                display: flex;
+                justify-content: center;
+            }
+
+            .footer {
+                margin-left: 5%;
+            }
+        }
+
+        @media (min-width: 523px) {
+            .form {
+                transform: translateY(-1100%);
+            }
+
+            .main {
+                margin-bottom: -75%;
+            }
+        }
+
+        @media (min-width: 668px) {
+            .main {
+                margin-bottom: -65%;
+            }
+        }
+
+        @media (min-width: 900px) {
+            .form {
+                transform: translateY(-1700%);
+            }
+
+        }
+
+        @media (min-width: 1280px) {
+
+            .main img {
+                height: 1000px;
+                width: 70%;
+                margin-left: 15%;
+            }
+
+            .logo {
+                margin-top: 30%;
+            }
+
+            .footer {
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div>
+    <div class="header">
+        <img src="/static/pdf/mock/image/Screenshot 2022-08-05 154034.png" alt="picture">
+        <img src="/static/pdf/mock/image/Screenshot 2022-08-05 154116.png" alt="picture">
+    </div>
+    <div class="main">
+
+        <img src="/static/pdf/mock/image/Screenshot 2022-08-05 210234.png" alt="picture">
+
+
+        <form action="" class="form">
+            <p>This is to certify that :</p>
+            <input type="text" spellcheck="true" style="width: 50%;" value="{{ object.certify_that | default_if_none:'---' }}">
+        </form>
+        <form action="" class="form">
+            <p>has been awarded :</p>
+            <input type="text" spellcheck="true" style="width: 40%;" value="{{ object.awarded | default_if_none:'---' }}">
+        </form>
+        <form action="" class='form'>
+            <p>in the :</p>
+            <input type="text" spellcheck="true" style="width: 49%;" value="{{ object.in_the | default_if_none:'---' }}">
+        </form>
+        <form action="" class='form'>
+            <p>on :</p>
+            <input type="text" value="{{ object.on | default_if_none:'---' }}">
+        </form>
+        <form action="" class='form'>
+            <p>place of Entry :</p>
+            <input type="text" style="width:30%;" value="{{ object.place_of_entry | default_if_none:'---' }}">
+        </form>
+        <form action="" class='form'>
+            <p>Refrence Number :</p>
+            <input type="text" style="width:30%;" value="{{ object.refrence_number | default_if_none:'---' }}">
+        </form>
+    </div>
+</div>
+
+<div class="logo">
+    <p>Branch Manager:</p>
+    <img src="/static/pdf/mock/image/2.jpg" alt="picture" class="stamp">
+    <img src="/static/pdf/mock/image/Screenshot 2022-08-05 211644.png" alt="picture" class="Signature">
+</div>
+<hr>
+<div class="footer">
+
+    <p>
+        Addess:109,Saee Builiding,Shohada St.,Nasimshahr,Tehran IRAN
+    </p>
+    <p>
+        +98 21 567 56 416 +98 21 567 67 698- +98 21 567 81 449
+    </p>
+    <div>
+        <p>Manager:+98 902 45 41 102 - +98 939 067 0055</p>
+    </div>
+</div>
+</body>
+</html>
+
+{% block Scripts %}
+    <script>
+        window.onafterprint = window.close;
+        window.print();
+    </script>
+{% endblock %}

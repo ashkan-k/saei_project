@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>document</title>
+  <style>
+    @font-face {
+      font-family: "My font";
+      src: url(/static/pdf/ttc/CENTAUR.TTF);
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    .title {
+      position: absolute;
+      top: -40px;
+      right: 10px;
+      z-index: 1000;
+      color: #f2c94c;
+      font-family: "My font";
+      text-shadow: 4px 4px 1px black;
+      font-size: 90px;
+    }
+
+    .banner-wrapper {
+      position: relative;
+    }
+
+    .banner-1 {
+      position: absolute;
+      top: 30px;
+    }
+
+    .banner-2 {
+      position: absolute;
+    }
+
+    .container {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .image-wrapper {
+      position: absolute;
+      z-index: 100;
+      margin: 60px -10px;
+    }
+
+    .inputs-wrapper {
+      margin-left: 240px;
+    }
+
+    .inputs-wrapper div input {
+      text-align: center;
+      height: 25px;
+      margin: 15px 0;
+    }
+
+    .signature-wrapper {
+      position: absolute;
+      left: 160px;
+      bottom: -140px;
+    }
+
+    .address {
+      position: absolute;
+      bottom: -330px;
+      left: 0px;
+      border-top: 1px solid #000;
+    }
+
+    @media(min-width: 500px) {
+      .title {
+        top: 0;
+        font-size: 40px;
+      }
+
+      .inputs-wrapper {
+        margin-top: 180px;
+      }
+
+      .inputs-wrapper div input {
+        width: 200px;
+      }
+
+      .inputs-wrapper div {
+        margin-bottom: -15px;
+        display: flex;
+
+      }
+
+      .signature-wrapper {
+        margin-left: 100px;
+        display: flex;
+        justify-content: center;
+      }
+      .signature-wrapper img{
+        width: 15vw;
+        margin: 0 15%;
+      }
+      .signature-wrapper p{
+       padding: 0 5%;
+       display: flex;
+       text-align: center;
+      }
+      .address {
+        margin-left: 200px;
+      }
+
+    }
+
+    @media(min-width: 768px) {
+
+      .signature-wrapper {
+        position: relative;
+        top: 330px;
+      }
+
+      .signature-wrapper img {
+        width: 110px;
+      }
+
+      .address {
+        bottom: -200px;
+        left: 220px;
+      }
+
+      .title {
+        top: 0;
+        right: 50px;
+        font-size: 50px;
+      }
+    }
+
+    @media(min-width: 1280px) {
+      .inputs-wrapper {
+        margin-top: 270px;
+      }
+
+      .inputs-wrapper div input {
+        width: 25vw;
+        margin: 15px 0;
+      }
+
+      .inputs-wrapper div {
+        margin-bottom: -15px;
+
+      }
+
+      .signature-wrapper {
+        position: relative;
+        top: 550px;
+        margin-right: 20%;
+      }
+      .signature-wrapper img{
+        width: 100px;
+        height: 100px;
+      }
+      .address {
+        margin-left: 10px;
+        margin-top: 200px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <p class="title">CERTIFICATE</p>
+  <div class="banner-wrapper">
+    <svg class="banner-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+      <path fill="#000050" fill-opacity="1"
+        d="M0,128L80,128C160,128,320,128,480,160C640,192,800,256,960,288C1120,320,1280,320,1360,320L1440,320L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z">
+      </path>
+    </svg>
+    <svg class="banner-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+      <path fill="#000036" fill-opacity="1"
+        d="M0,128L80,128C160,128,320,128,480,160C640,192,800,256,960,288C1120,320,1280,320,1360,320L1440,320L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z">
+      </path>
+    </svg>
+  </div>
+
+  <div class="container">
+    <div class="image-wrapper">
+      <img src="/static/pdf/ttc/image/Untitled-1.png" alt="picture" />
+    </div>
+
+    <div class="inputs-wrapper">
+      <div>
+        <p>This is to certify that :</p>
+        <input type="text" spellcheck="true" tabindex="1" value="{{ object.certify_that | default_if_none:'---' }}"/>
+      </div>
+
+      <div>
+        <p>has been awarded :</p>
+        <input type="text" spellcheck="true" tabindex="2" value="{{ object.awarded | default_if_none:'---' }}"/>
+      </div>
+
+      <div>
+        <p>in the :</p>
+        <input type="text" spellcheck="true" tabindex="3" value="{{ object.in_the | default_if_none:'---' }}"/>
+      </div>
+
+      <div>
+        <p>on :</p>
+        <input type="text" spellcheck="true" tabindex="4" value="{{ object.on | default_if_none:'---' }}"/>
+      </div>
+
+      <div>
+        <p>place of Entry :</p>
+        <input type="text" spellcheck="true" tabindex="5" value="{{ object.place_of_entry | default_if_none:'---' }}"/>
+      </div>
+
+      <div>
+        <p>Refrence Number :</p>
+        <input type="text" value="{{ object.refrence_number | default_if_none:'---' }}"/>
+      </div>
+      <p class="branch">Branch Manager:</p>
+    </div>
+    <div class="signature-wrapper">
+        <img src="/static/pdf/ttc/image/2.jpg" alt="picture" />
+        <p class="text-nowrap text-start" style="font-size: small">
+          President and founder <br />
+          Yarahmadi Sohrab
+        </p>
+        <img src="/static/pdf/ttc/image/CamScanner 08-21-2022 17.32.jpg" alt="picture" />
+    </div>
+    <div class="address">
+      <p class="text-nowrap">
+        Address:109,Saee Building,Shohada St.,Nasimshahr,Tehran IRAN
+      </p>
+      <p class="text-nowrap">
+        +98 21 567 67 698- +98 21 567 56 416- +98 21 567 81 449
+      </p>
+      <div class="row">
+        <p class="col-2 text-nowrap">
+          Manager:+98 902 45 41 102- +98 939 067 0055
+        </p>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
+
+{% block Scripts %}
+    <script>
+        window.onafterprint = window.close;
+        window.print();
+    </script>
+{% endblock %}

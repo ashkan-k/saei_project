@@ -1,0 +1,155 @@
+{% extends 'Layouts/admin-master.html' %}
+{% load static public_tags acl_tags %}
+{% load humanize %}
+
+{% block title %} موفقیت امیز بودن تراکنش {% endblock %}
+
+{% block content %}
+
+    <div class="row">
+
+        {% if messages %}
+            {% for item in messages %}
+                <script>
+                    Swal.fire({
+                        title: "تبریک ! 🥳",
+                        icon: 'success',
+                        text: '{{ item }}',
+                        type: "success",
+                        cancelButtonColor: 'var(--primary)',
+                        confirmButtonText: 'اوکی',
+                    })
+                </script>
+            {% endfor %}
+        {% endif %}
+
+        <div class="col-lg-12">
+            <div class="card-box">
+                <div class="card-block">
+                    <h4 class="card-title">موفقیت امیز بودن تراکنش</h4>
+
+                    <hr>
+
+                    <span id="list">
+                    <h4 class="card-title alert alert-success">تراکنش با موفقیت انجام شد.</h4>
+                                                                          <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>درگاه پرداخت</th>
+                        <th>قیمت</th>
+                        <th>شناسه پرداخت</th>
+                        <th>بخش</th>
+                        <th>وضعیت</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        
+                            <tr>
+
+                                <td>{{ payment_transaction.gateway_display | default:'---' }}</td>
+    
+    
+                                <td>{{ payment_transaction.amount | persian_int | intcomma:False | default:'---' }} تومان</td>
+    
+                                <td>{{ payment_transaction.ref_id }}</td>
+    
+                                <td><a role="button"
+                                           class="label label-{{ payment_transaction.get_item_type_class }}-border rounded">
+                                            {{ payment_transaction.item_type_display }}
+                                        </a></td>
+    
+                                <td>
+                                        <a role="button"
+                                           class="label label-{{ payment_transaction.get_status_class }}-border rounded">
+                                            {{ payment_transaction.status_display }}
+                                        </a>
+                                </td>
+    
+                            </tr>
+
+                    </tbody>
+                    </table>
+
+                    </span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block Scripts %}
+    <script>
+        function DeleteConfirm(id) {
+            Swal.fire({
+                title: "هشدار ! ",
+                icon: 'warning',
+                text: "آیا از حذف این آیتم اطمینان دارید؟",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: '#00aced',
+                cancelButtonColor: '#e6294b',
+                confirmButtonText: 'حذف',
+                cancelButtonText: 'انصراف'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#delete_form_' + id).submit();
+                }
+            })
+        }
+    </script>
+
+    <script>
+        function SeperateNumbersByComma(value) {
+            var nStr = value.toString();
+            nStr = nStr.replace(/\,/g, "");
+            x = nStr.split('.');
+            x1 = x[0];
+            x2 = x.length > 1 ? '.' + x[1] : '';
+            var rgx = /(\d+)(\d{3})/;
+            while (rgx.test(x1)) {
+                x1 = x1.replace(rgx, '$1' + ',' + '$2');
+            }
+            return x1 + x2;
+        }
+
+        function formatSalePriceNumber(value) {
+            var nStr = value + '';
+            return SeperateNumbersByComma(nStr);
+        }
+    </script>
+
+    <script>
+        app.controller('myCtrl', function ($scope, $http) {
+            $scope.id = null;
+            $scope.status = {};
+            $scope.is_submited = false;
+
+            $scope.ChangeStatusModal = function (id, status) {
+                $scope.id = id;
+                $scope.status = status;
+                $('#changeStatusModal').modal('show');
+            }
+
+            $scope.ChangeStatus = function () {
+                $scope.is_submited = true;
+
+                var data = {
+                    "status": $scope.status
+                };
+
+                $http.patch(`/api/course/user/${$scope.id}/`, data).then(res => {
+                    createToast('success', 'وضعیت آیتم مورد نظر با موفقیت تغییر کرد.');
+                    $scope.is_submited = false;
+                    setTimeout(() => {
+                        location.reload()
+                    }, 100)
+                }).catch(err => {
+                    $scope.loading = false;
+                    parseError(err, 'خطایی رخ داد');
+                });
+            }
+        });
+    </script>
+{% endblock %}

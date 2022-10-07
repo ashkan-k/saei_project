@@ -1,0 +1,441 @@
+{% extends 'Layouts/admin-master.html' %}
+{% load i18n public_tags %}
+
+{% block title %} {% if object %}ویرایش آزمون{% else %}افزودن آزمون{% endif %} {% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="col-lg-12">
+                <div class="card-box">
+                    <h2 class="card-title"><b>{% if object %}ویرایش آزمون{% else %}افزودن آزمون جدید{% endif %}</b></h2>
+
+                    <form class="form-horizontal"
+                          method="post"
+                          enctype="multipart/form-data">
+
+                        {% csrf_token %}
+
+                        {% for field in form %}
+                            <div class="form-group">
+                                <label class="control-label col-lg-2"
+                                       for="id_{{ field.name }}">{{ field.label }}:</label>
+
+                                <div class="col-md-10">
+                                    {{ field|addclass:"form-control" }}
+
+                                    {% if field.help_text %}
+                                        <p><small style="font-size: 14px">{{ field.help_text|safe }} </small></p>
+                                    {% endif %}
+                                    {% if field.errors %}
+                                        <p><small class="text-danger" style="font-size: 14px"
+                                                  style="color:red">{{ field.errors.0|safe }}</small></p>
+                                    {% endif %}
+                                    {% if field.non_field_errors %}
+                                        <p><small class="text-danger" style="font-size: 20px"
+                                                  style="color:red">{{ field.non_field_errors.0|safe }}</small></p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                        <div class="col-lg-12">
+                            <div class="m-1-25 m-b-20" style="float: left !important;">
+                                <a href="{{ request.META.HTTP_REFERER }}"
+                                   class="btn btn-danger btn-border-radius waves-effect">
+                                    بازگشت
+                                </a>
+                                <button class="btn btn-info btn-border-radius waves-effect" type="button"
+                                        onclick="submit()">ثبت
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% if request.resolver_match.kwargs.pk %}
+        <div style="margin-top: 50px!important; margin-right: 25px!important;">
+            <div>
+                <div class="card-header mb-4"></div>
+
+                <a type="button" onclick="$('#ExamQuestionModal').modal('show')">
+                    <button type="button" class="btn btn-primary">
+                        <i class="fa fa-plus"></i> افزودن سوال
+                    </button>
+                </a>
+            </div>
+            <div class="row" ng-init="init()">
+                <div class="col-12">
+                    <div class="card">
+
+                        <div class="card-body">
+                            <div ng-show="questions.length > 0" class="table-responsive">
+
+
+                                <table class="table table-hover card-table table-striped table-vcenter table-outline">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">عنوان سوال</th>
+                                        <th scope="col">اقدامات</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody id="sortable">
+                                    <tr style="cursor: pointer" ng-repeat="(key, item) in questions">
+                                        <td>
+                                            [[ key+1 ]]
+                                        </td>
+                                        <td>
+                                            [[item.description]]
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-sm btn-indigo" title="ویرایش"
+                                               ng-click="updateQuestion(item)">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+
+                                            <a class="btn btn-sm btn-indigo" title="حذف"
+                                               ng-click="removeQuestion([[item.id]])">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h4 ng-show="questions.length == 0" style="text-align: center; padding: 40px">
+                                سوالی یافت نشد.
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade bd-example-modal-lg" id="ExamQuestionModal" tabindex="-1" role="dialog"
+             aria-labelledby="bulkChangeStatusModalTitle" aria-hidden="true" dir="rtl"
+             style="text-align: right !important;">
+            <div class="modal-dialog modal-dialog-centered" role="document" style="min-width: 60%;">
+
+                <div class="modal-content">
+                    <div class="modal-header" style="width: 100%!important;">
+                        <h5 class="modal-title"
+                            id="exampleModalLongTitle">افزودن سوال</h5>
+
+                        <button type="button" class="close ml-2" data-dismiss="modal"
+                                style="position: absolute!important;left: 0!important;"
+                                aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <label class="form-label" for="question_description">
+                            متن سوال
+                        </label>
+                        <textarea id="question_description" ng-model="question.description" name="description"
+                                  class="form-control"></textarea>
+                    </div>
+
+                    <div class="modal-body">
+                        <label class="form-label" for="question_score">
+                            بارم سوال
+                        </label>
+                        <input type="number" id="question_score" ng-model="question.score" name="score"
+                               class="form-control">
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="col-12 text-justify mt-3">
+                            <label class="form-label">
+                                گزینه ها
+                            </label>
+                        </div>
+                        <div class="col-12 text-justify mt-3" ng-repeat="(id, j) in question.choices">
+                            <div class="row">
+                                <div class="col-lg-1 col-sm-1 col-md-1 col-xs-1 pl-0 ">
+                                    <div class="arrow-v mt-1 modal-body">
+                                        [[id+1]]
+                                    </div>
+                                </div>
+                                <div class="col-lg-10 col-sm-10 col-md-10 col-xs-10 modal-body">
+                                    <div class="form-row">
+                                        <input type="text" class="form-control"
+                                               ng-model="j.text"
+                                               placeholder="متن گزینه" required="">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-1 col-sm-1 col-md-1 col-xs-1" style="margin-top: 25px">
+                                    <a class="text-center" type="button" style="cursor: pointer"
+                                       ng-click="question.choices.push({ text: '', index: id+1 })"><i
+                                            class="text-center  fa fa-plus trash-custom text-success"></i></a>
+                                    &nbsp;
+                                    <a type="button" style="cursor: pointer"
+                                       ng-click="question.choices.length > 1 ? RemoveChoice(id, j) : null">
+                                        <i class="text-center  fa fa-trash text-red"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-body">
+                        <label class="form-label" for="question_description">
+                            گزینه صحیح سوال
+                        </label>
+                        <select class="form-control" ng-model="selected_answer">
+                            <option disabled selected
+                                    ng-selected="selected_answer == '' || selected_answer == undefined">گزینه صحیح را
+                                انتخاب کنید
+                            </option>
+
+                            <option ng-repeat="(id, j) in ShowChoices()"
+                                    ng-show="j.text"
+                                    ng-selected="selected_answer === id.toString()"
+                                    value="[[id]]">[[j.text]]
+                            </option>
+                        </select>
+                    </div>
+
+
+                    <div class="modal-footer">
+                        <button type="button" ng-disabled="is_submited" ng-click="CloseModal()" class="btn btn-danger"
+                                data-dismiss="modal">بستن
+                        </button>&nbsp;
+                        <button type="button" ng-click="SubmitQuestion()"
+                                ng-disabled="is_submited"
+                                class="btn btn-primary">ذخیره
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+
+{% block Scripts %}
+
+    <script>
+        kamaDatepicker('id_expire_time', {
+            placeholder: 'تاریخ پایان آزمون',
+            buttonsColor: 'blue',
+            markHolidays: true
+        });
+        $("#id_expire_time").attr('autocomplete', 'off');
+
+        $('#id_expire_time').on('change', function () {
+            $('#id_expire_time').val($('#id_expire_time').val().replaceAll('/', '-'))
+        })
+
+    </script>
+
+    <script>
+
+        app.controller('myCtrl', function ($scope, $http) {
+            $scope.questions = [];
+            $scope.contents = [];
+            $scope.deleted_choices = [];
+            $scope.data = {};
+            $scope.question = {};
+            $scope.question = {};
+            $scope.selected_answer = '';
+            $scope.is_submited = false;
+
+            $scope.init = function () {
+                {% if request.resolver_match.kwargs.pk %}
+                    $scope.question.question = '{{ form.question.text }}';
+
+                    $scope.question['contents'] = [];
+                    {% for item in form.contents.text %}
+                        $scope.question['contents'].push({{ item }});
+                    {% endfor %}
+
+                {% endif %}
+
+                $scope.question.choices = [{
+                    text: "",
+                },];
+
+                $scope.GetQuestions();
+
+                console.log($scope.question.choices)
+            }
+
+            $scope.getContents = function () {
+                if (!$scope.question.book || $scope.question.book == '') {
+                    return;
+                }
+
+                $http.get(`/api/book/${$scope.question.book}/contents/`).then(res => {
+                    $scope.contents = res.data;
+                }).catch(err => {
+                    parseError(err, 'خطایی رخ داد');
+                });
+            }
+
+            $scope.CloseModal = function () {
+                $scope.selected_answer = '';
+                $scope.question = {};
+                $scope.question.choices = [{
+                    text: "",
+                },];
+            }
+
+            $scope.ShowChoices = function () {
+                if ($scope.question['choices']) {
+                    return $scope.question['choices'].filter(x => x['text']);
+                }
+
+                return [];
+            }
+
+            $scope.$watch('question.book', function () {
+                $scope.getContents();
+            })
+
+            $scope.RemoveChoice = function (id, j) {
+                $scope.question.choices.splice(id, 1);
+                if (j['id']) {
+                    $scope.deleted_choices.push(j.id);
+                }
+            }
+
+            $scope.GetQuestions = function () {
+                $http.get(`/api/quiz/{{ request.resolver_match.kwargs.pk }}/questions/`).then(res => {
+                    $scope.questions = res.data;
+                }).catch(err => {
+                    parseError(err, 'خطایی رخ داد');
+                });
+            }
+
+            $scope.updateQuestion = function (item) {
+                $scope.question = item;
+
+                for (const item in $scope.question['choices']) {
+                    if ($scope.question['choices'][item]['is_answer'] === true) {
+                        $scope.selected_answer = item;
+                    }
+                }
+
+                $('#ExamQuestionModal').modal('show');
+            }
+
+            $scope.removeQuestion = function (itemId) {
+                let title = '{{ title|default:"حذف آیتم" }}';
+                let description = '{{ description|default:"آیا از حذف این آیتم مطمئن هستید؟ این عملیات غیرقابل بازگشت است."}}';
+                let url = '/api/quiz/questions/';
+                createSwal("warning", description, title).then((result) => {
+                    if (result.value) {
+                        $http.delete(`${url}${itemId}/`).then(function () {
+                            createToast('success', 'آیتم مورد نظر با موفقیت حذف شد.');
+                            $scope.GetQuestions();
+                        }).catch(function (err) {
+                            parseError(err);
+                        })
+                    }
+                });
+            };
+
+            $scope.SubmitQuestion = function () {
+                if (!$scope.question['description']) {
+                    createToast('error', 'لطفا متن سوال را وارد کنید!');
+                    return;
+                }
+
+                if (!$scope.question['score']) {
+                    createToast('error', 'لطفا بارم سوال را وارد کنید!');
+                    return;
+                }
+
+                for (const item in $scope.question.choices) {
+                    if (!$scope.question.choices[item]['text']) {
+                        createToast('error', `متن گزینه ${parseInt(item) + 1} خالی است!`);
+                        return;
+                    }
+
+                    const texts = [];
+
+                    for (const i in $scope.question.choices) {
+                        if ($scope.question.choices[i]['text']) {
+                            texts.push($scope.question.choices[i]['text']);
+                        }
+                    }
+
+                    const error_indexes = texts.filter(x => x == $scope.question.choices[item]['text']);
+
+                    if (error_indexes.length > 1) {
+                        createToast('error', `عنوان گزینه ${error_indexes[0]} تکرار شده است!`);
+                        return false;
+                    }
+
+                    $scope.question.choices[item]['is_answer'] = false;
+                }
+
+                if (!$scope.selected_answer || !$scope.question.choices[$scope.selected_answer]) {
+                    createToast('error', 'لطفا گزینه صحیح سوال را مشخص کنید!');
+                    return;
+                }
+
+                $scope.question.choices[$scope.selected_answer]['is_answer'] = true;
+
+                $scope.question['quiz'] = '{{ request.resolver_match.kwargs.pk }}'
+
+
+                $scope.is_submited = true;
+
+                if ($scope.question['id']) {
+                    $scope.question['deleted_choices'] = $scope.deleted_choices;
+
+                    $http.patch(`/api/quiz/questions/${$scope.question['id']}/`, $scope.question).then(res => {
+                        $scope.selected_answer = '';
+                        $scope.question = {};
+                        $scope.question.choices = [{
+                            text: "",
+                        },];
+
+                        $scope.is_submited = false;
+
+                        $scope.GetQuestions();
+                        $('#ExamQuestionModal').modal('toggle');
+                    }).catch(err => {
+                        $scope.is_submited = false;
+                        parseError(err, 'خطایی رخ داد');
+                    });
+
+                } else {
+
+                    $http.post(`/api/quiz/questions/`, $scope.question).then(res => {
+                        $scope.selected_answer = '';
+                        $scope.question = {};
+                        $scope.question.choices = [{
+                            text: "",
+                        },];
+
+                        $scope.is_submited = false;
+
+                        $scope.GetQuestions();
+                        $('#ExamQuestionModal').modal('toggle');
+                    }).catch(err => {
+                        $scope.is_submited = false;
+                        parseError(err, 'خطایی رخ داد');
+                    });
+
+                }
+            }
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,282 @@
+{% extends 'Layouts/admin-master.html' %}
+{% load i18n public_tags %}
+
+{% block title %} {% if object %}ویرایش پرداختی های قسطی{% else %}افزودن پرداختی های قسطی{% endif %} {% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="col-lg-12">
+                <div class="card-box">
+                    <h2 class="card-title"><b>{% if object %}ویرایش پرداختی های قسطی{% else %}افزودن پرداختی های قسطی
+                        جدید{% endif %}</b></h2>
+
+                    <form class="form-horizontal"
+                          method="post"
+                          enctype="multipart/form-data">
+
+                        {% csrf_token %}
+
+                        {% for field in form %}
+                            <div class="form-group">
+                                <label class="control-label col-lg-2"
+                                       for="id_{{ field.name }}">{{ field.label }}:</label>
+
+                                <div class="col-md-10">
+                                    {{ field|addclass:"form-control" }}
+
+                                    {% if field.help_text %}
+                                        <p><small style="font-size: 14px">{{ field.help_text|safe }} </small></p>
+                                    {% endif %}
+                                    {% if field.errors %}
+                                        <p><small class="text-danger" style="font-size: 14px"
+                                                  style="color:red">{{ field.errors.0|safe }}</small></p>
+                                    {% endif %}
+                                    {% if field.non_field_errors %}
+                                        <p><small class="text-danger" style="font-size: 20px"
+                                                  style="color:red">{{ field.non_field_errors.0|safe }}</small></p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                        <div class="col-lg-12">
+                            <div class="m-1-25 m-b-20" style="float: left !important;">
+                                <a href="{{ request.META.HTTP_REFERER }}"
+                                   class="btn btn-danger btn-border-radius waves-effect">
+                                    بازگشت
+                                </a>
+                                <button class="btn btn-info btn-border-radius waves-effect" type="button"
+                                        onclick="submit()">ثبت
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% if request.resolver_match.kwargs.pk %}
+        <div style="margin-top: 50px!important; margin-right: 25px!important;">
+            <div>
+                <div class="card-header mb-4"></div>
+
+                <a type="button" onclick="$('#ExamQuestionModal').modal('show')">
+                    <button type="button" class="btn btn-primary">
+                        <i class="fa fa-plus"></i> افزودن قسط
+                    </button>
+                </a>
+            </div>
+            <div class="row" ng-init="init()">
+                <div class="col-12">
+                    <div class="card">
+
+                        <div class="card-body">
+                            <div ng-show="payment_items.length > 0" class="table-responsive">
+
+
+                                <table class="table table-hover card-table table-striped table-vcenter table-outline">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">مبلغ قسط</th>
+                                        <th scope="col">اقدامات</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody id="sortable">
+                                    <tr style="cursor: pointer" ng-repeat="(key, item) in payment_items">
+                                        <td>
+                                            [[ key+1 ]]
+                                        </td>
+                                        <td>
+                                            [[item.amount]] تومان
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-sm btn-indigo" title="ویرایش"
+                                               ng-click="updateInstallmentPayment(item)">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+
+                                            <a class="btn btn-sm btn-indigo" title="حذف"
+                                               ng-click="removeInstallmentPayment([[item.id]])">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h4 ng-show="payment_items.length == 0" style="text-align: center; padding: 40px">
+                                قسطی یافت نشد.
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade bd-example-modal-lg" id="ExamQuestionModal" tabindex="-1" role="dialog"
+             aria-labelledby="bulkChangeStatusModalTitle" aria-hidden="true" dir="rtl"
+             style="text-align: right !important; margin-top: 250px">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+
+                <div class="modal-content">
+                    <div class="modal-header" style="width: 100%!important;">
+                        <h5 class="modal-title"
+                            id="exampleModalLongTitle">افزودن قسط</h5>
+
+                        <button type="button" class="close ml-2" data-dismiss="modal"
+                                style="position: absolute!important;left: 0!important;"
+                                aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <label class="form-label" for="item-amount">
+                            مبلغ قسط (به تومان)
+                        </label>
+                        <input id="item-amount" ng-model="item.amount" name="description"
+                               type="number"
+                               class="form-control">
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" ng-disabled="is_submited" ng-click="CloseModal()" class="btn btn-danger"
+                                data-dismiss="modal">بستن
+                        </button>&nbsp;
+                        <button type="button" ng-click="SubmitInstallmentPayment()"
+                                ng-disabled="is_submited"
+                                class="btn btn-primary">ذخیره
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+
+{% block Scripts %}
+
+    <script>
+        kamaDatepicker('id_payment_date', {
+            placeholder: 'سقف تاریخ پرداخت',
+            buttonsColor: 'blue',
+            markHolidays: true
+        });
+        $("#id_payment_date").attr('autocomplete', 'off');
+
+        $('#id_payment_date').on('change', function () {
+            $('#id_payment_date').val($('#id_payment_date').val().replaceAll('/', '-'))
+        })
+
+    </script>
+
+    <script>
+
+        app.controller('myCtrl', function ($scope, $http) {
+            $scope.payment_items = [];
+            $scope.deleted_payment_items = [];
+            $scope.data = {};
+            $scope.item = {};
+            $scope.item = {};
+            $scope.selected_answer = '';
+            $scope.is_submited = false;
+
+            $scope.init = function () {
+                $scope.GetInstallmentPayments();
+            }
+
+            $scope.CloseModal = function () {
+                $scope.selected_answer = '';
+                $scope.item = {};
+                $scope.item.choices = [{
+                    text: "",
+                },];
+            }
+
+            $scope.GetInstallmentPayments = function () {
+                $http.get(`/api/installment/{{ request.resolver_match.kwargs.pk }}/payment-items/`).then(res => {
+                    $scope.payment_items = res.data;
+                    console.log($scope.payment_items);
+                }).catch(err => {
+                    parseError(err, 'خطایی رخ داد');
+                });
+            }
+
+            $scope.updateInstallmentPayment = function (item) {
+                $scope.item = item;
+                $('#ExamQuestionModal').modal('show');
+            }
+
+            $scope.removeInstallmentPayment = function (itemId) {
+                let title = '{{ title|default:"حذف آیتم" }}';
+                let description = '{{ description|default:"آیا از حذف این آیتم مطمئن هستید؟ این عملیات غیرقابل بازگشت است."}}';
+                let url = '/api/installment/payment-items/';
+                createSwal("warning", description, title).then((result) => {
+                    if (result.value) {
+                        $http.delete(`${url}${itemId}/`).then(function () {
+                            createToast('success', 'آیتم مورد نظر با موفقیت حذف شد.');
+                            $scope.GetInstallmentPayments();
+                        }).catch(function (err) {
+                            parseError(err);
+                        })
+                    }
+                });
+            };
+
+            $scope.SubmitInstallmentPayment = function () {
+                if (!$scope.item['amount']) {
+                    createToast('error', 'لطفا مبلغ قسط را وارد کنید!');
+                    return;
+                }
+
+                $scope.item['installment'] = '{{ request.resolver_match.kwargs.pk }}'
+
+
+                $scope.is_submited = true;
+
+                if ($scope.item['id']) {
+                    $scope.item['deleted_payment_items'] = $scope.deleted_payment_items;
+
+                    $http.patch(`/api/installment/payment-items/${$scope.item['id']}/`, $scope.item).then(res => {
+                        $scope.item = {};
+                        $scope.is_submited = false;
+
+                        $scope.GetInstallmentPayments();
+                        $('#ExamQuestionModal').modal('toggle');
+                    }).catch(err => {
+                        $scope.is_submited = false;
+                        parseError(err, 'خطایی رخ داد');
+                    });
+
+                } else {
+
+                    $http.post(`/api/installment/payment-items/`, $scope.item).then(res => {
+                        $scope.item = {};
+
+                        $scope.is_submited = false;
+
+                        $scope.GetInstallmentPayments();
+                        $('#ExamQuestionModal').modal('toggle');
+                    }).catch(err => {
+                        $scope.is_submited = false;
+                        parseError(err, 'خطایی رخ داد');
+                    });
+
+                }
+            }
+        });
+    </script>
+{% endblock %}

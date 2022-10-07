@@ -1,0 +1,133 @@
+{% extends 'Layouts/front-master.html' %}
+{% load static public_tags humanize %}
+
+{% block title %}محصولات{% endblock %}
+
+{% block Styles %}
+
+{% endblock %}
+
+{% block content %}
+
+    <!-- Courses -->
+
+    <div class="courses">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 offset-lg-1">
+                    <div class="section_title text-end">
+                        <h2>محصولات مورد نظر خود را انتخاب کنید</h2>
+                    </div>
+                    <div class="section_subtitle text-end">{{ settings.product_intro_text | safe }}</div>
+                </div>
+            </div>
+
+            <!-- Course Search -->
+            <div class="row">
+                <div class="col">
+                    <div class="course_search">
+                        <form class="course_search_form d-flex flex-md-row flex-column align-items-start justify-content-between">
+                            <div class="course_input px-3 rounded-2"><input type="text"
+                                                                            class="course_input px-3 rounded-2"
+                                                                            placeholder="نام محصول و..." name="search"
+                                                                            value="{{ request.GET.search }}"></div>
+
+                            <div class="course_input px-3 rounded-2">
+                                <select class="course_input px-3 rounded-2" name="category">
+                                    <option value="">همه</option>
+                                    {% for item in categories %}
+                                        <option {% if item.id == request.GET.category|add:'0' %}selected{% endif %}
+                                                value="{{ item.id }}">{{ item.title }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <!--                            {#                        <div class="course_input px-3 rounded-2"><input type="text" class="course_input px-3 rounded-2"#}-->
+                            <!--                            {#                                                                        placeholder="Level"#}-->
+                            <!--                            {#                                                                        required="required"></div>#}-->
+                            <button type="submit" class="course_button rounded-2"><span
+                                    style="padding: 5px">جستجو محصول</span><span
+                                    class="button_arrow"
+                            ><i
+                                    class="fa fa-angle-right" aria-hidden="true"></i></span></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+            <br>
+            <br>
+
+            <div class="row courses_row">
+
+                {% for item in object_list %}
+                    <!-- Course -->
+                    <div class="col-lg-4 col-md-6" style="padding: 10px">
+                        <div class="course">
+                            <div class="course_image"><img src="{{ item.get_image }}"
+                                                           alt="{{ item.title | default_if_none:'---' }}"
+                                                           width="350.66" height="265.27">
+                            </div>
+                            <div class="course_body">
+                                {% if item.discount_amount %}
+
+                                    <div class="course_header d-flex flex-row align-items-center justify-content-start">
+                                        <div class="course_tag rounded-2"><a>ویژه</a></div>
+                                        <div class="course_price ml-auto  px-3">قیمت اصلی:
+                                            <span><s> {{ item.amount | default_if_none:'---' | persian_int | intcomma:False }} تومان</s></span>
+                                        </div>
+                                        <div class="course_price ml-auto  px-3">قیمت تخفیفی:
+                                            <span> {{ item.discount_amount | default_if_none:'---' | persian_int | intcomma:False }} تومان</span>
+                                        </div>
+                                    </div>
+
+                                {% else %}
+
+                                    <div class="course_header d-flex flex-row align-items-center justify-content-start">
+                                        <div class="course_price ml-auto  px-3">قیمت :
+                                            <span> {{ item.amount | default_if_none:'---' | persian_int | intcomma:False }} تومان</span>
+                                        </div>
+                                    </div>
+
+                                {% endif %}
+                                <div class="course_title">
+                                    <h3>
+                                        <a href="{% url 'products-user-detail' item.slug %}">{{ item.title | default_if_none:'---' }}</a>
+                                    </h3>
+                                </div>
+                                <div class="course_text">{{ item.desc | default_if_none:'---' | truncatechars:150 }}
+                                </div>
+                                <div class="course_footer d-flex align-items-center justify-content-start">
+                                    <div class="course_sales ml-auto">دسته بندی
+                                        :<span> {{ item.category | default_if_none:'---' }} </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            {% include 'Front/pagination.html' with page_obj=page_obj %}
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block Scripts %}
+    <script>
+        {% if messages %}
+            {% for item in messages %}
+                createToast('success', '{{ item }}');
+            {% endfor %}
+        {% endif %}
+
+
+    </script>
+{% endblock %}
+

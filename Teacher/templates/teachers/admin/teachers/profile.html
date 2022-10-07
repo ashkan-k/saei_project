@@ -1,0 +1,48 @@
+{% extends 'Layouts/admin-master.html' %}
+{% load i18n public_tags acl_tags %}
+
+{% block title %} پروفایل مدرس {% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="col-12">
+                <div class="card-box" style="height: 200px!important;">
+                    <h2 class="card-title"><b>پروفایل استاد {{ object.profile_name | default_if_none:'---' }}</b></h2>
+                    <div class="col col-sm-6 col-lg-3 col-md-4 col-xs-6">
+                        <p>نام : {{ object.user.first_name | default_if_none:'---' }}</p>
+                    </div>
+                    <div class="col col-sm-6 col-lg-3 col-md-4 col-xs-6">
+                        <p>نام خانوادگی : {{ object.user.last_name | default_if_none:'---' }}</p>
+                    </div>
+                    <div class="col col-sm-6 col-lg-3 col-md-4 col-xs-6">
+                        <p>رزمه : <a class="btn btn-danger" href="{{ object.get_resume_file }}"
+                                     target="_blank">دانلود</a></p>
+                    </div>
+
+                    {% if user|has_perm:'chats_create' and not user.is_superuser %}
+                        <div class="col-lg-12">
+                            <div class=" m-b-20" style="float: left !important;">
+                                <a href="{% url 'chats-room' object.user_id %}"
+                                   class="btn btn-info btn-border-radius waves-effect">گفتگو با استاد</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block Scripts %}
+    <script>
+        {% if messages %}
+            {% for item in messages %}
+                createToast('success', '{{ item }}');
+            {% endfor %}
+        {% endif %}
+    </script>
+{% endblock %}

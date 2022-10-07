@@ -1,0 +1,393 @@
+{% extends 'Layouts/front-master.html' %}
+{% load static public_tags humanize %}
+
+{% block Styles %}
+
+{% endblock %}
+
+{% block content %}
+    <!-- Home -->
+
+    <div class="home">
+        <div class="home_slider_container">
+
+            <!-- Home Slider -->
+            <div class="owl-carousel owl-theme home_slider">
+
+                <!-- Slider Item -->
+                {% for item in sliders %}
+                    <!-- Slider Item -->
+                    <div class="owl-item">
+                        <div class="home_slider_background" style="background-image:url({{ item.image.url }})"></div>
+                        <div class="home_container">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="home_content text-center">
+                                            <div class="home_logo"><img src="{{ item.image.url }}"
+                                                                        alt="{{ item.title }}"></div>
+                                            <div class="home_text">
+                                                <div class="home_title"> {{ item.title }} </div>
+                                                <div class="home_subtitle">{{ item.text }}</div>
+                                            </div>
+                                            <div class="home_buttons">
+                                                <div class="button home_button rounded-2"><a href="{{ item.link }}">بیشتر
+                                                    بخوانید
+                                                    <div
+                                                            class="button_arrow"><i class="fa fa-angle-left"
+                                                                                    aria-hidden="true"></i></div>
+                                                </a></div>
+                                                <div class="button home_button rounded-2"><a
+                                                        href="{% url 'classes' %}">دیدن تمامی دوره ها
+                                                    <div class="button_arrow"><i class="fa fa-angle-left"
+                                                                                 aria-hidden="true"></i></div>
+                                                </a></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Course -->
+
+    <div class="featured">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <!-- Home Slider Nav -->
+                    <div
+                            class="home_slider_nav_container d-flex flex-row align-items-start justify-content-between ">
+                        <div class="home_slider_nav home_slider_next trans_200"><i class="fa fa-angle-right"
+                                                                                   aria-hidden="true"></i>
+                        </div>
+                        <div class="home_slider_nav home_slider_prev trans_200"><i class="fa fa-angle-left"
+                                                                                   aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if last_class %}
+        <div class="featured_container my-5 d-flex justify-content-center">
+            <div class="row">
+                <div class="col-lg-6 featured_col">
+                    <div class="featured_content my-5 mx-5">
+                        <div class="featured_header d-flex flex-row align-items-center justify-content-start">
+                            <div class="featured_tag rounded-2"><a href="#">ویژه</a></div>
+                            <div class="featured_price mr-auto px-3"> قیمت:
+                                <span>{{ last_class.amount | intcomma:False | persian_int }} تومان</span></div>
+                        </div>
+                        <div class="featured_title">
+                            <h3>
+                                <a href="{% url 'class-details' last_class.slug %}">{{ last_class.title | default_if_none:'---' }}</a>
+                            </h3>
+                        </div>
+                        <div class="featured_text">{{ last_class.desc | default_if_none:'---' }}</div>
+                        <div class="featured_footer d-flex align-items-center justify-content-start">
+                            <div class="featured_author_image "><img
+                                    src="{{ last_class.teacher.user.get_avatar }}" class=""
+                                    alt="{{ last_class.teacher.profile_name | default_if_none:'---' }}">
+                            </div>
+                            <div class="featured_author_name">توسط <a
+                                    href="#">{{ last_class.teacher.profile_name | default_if_none:'---' }}</a>
+                            </div>
+                            <div class="featured_sales mx-3">
+                                <span>{{ last_class.users_limit | default_if_none:'0' }}</span> نفر ظرفیت
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 featured_col my-5">
+                    <!-- Background image artist https://unsplash.com/@jtylernix -->
+                    <div class="featured_background"
+                         style="background-image:url({{ last_class.get_cover }})">
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <!-- Courses -->
+
+    <div class="courses">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 offset-lg-1">
+                    <div class="section_title mx-5">
+                        <h2>انتخاب دوره</h2>
+                    </div>
+                    <div class="section_subtitle text-end">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت
+                        چاپ، و با
+                        استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم
+                        است.لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
+                        است، چاپگرها و متون بلکه روزنامه و مجله.
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="course_search">
+                        <form action="{% url 'classes' %}"
+                              class="course_search_form d-flex flex-md-row flex-column align-items-start justify-content-between">
+                            <div><input type="text" name="search" class="course_input py-3 rounded-2"
+                                        placeholder="عنوان دوره">
+                            </div>
+                            {#                            <div><input type="text" class="course_input rounded-2" placeholder="سطح"#}
+                            {#                                        required="required">#}
+                            {#                            </div>#}
+                            <button type="submit" class="course_button rounded-2 "><span
+                                    class=""> جستجوی دوره</span><span
+                                    class="button_arrow"><i
+                                    class="fa fa-angle-left" aria-hidden="true"></i></span></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+
+                    <!-- Courses Slider -->
+                    <div class="courses_slider_container">
+                        <div class="owl-carousel owl-theme courses_slider">
+
+                            {% for item in classes %}
+                                <!-- Slider Item -->
+                                <div class="owl-item">
+                                    <div class="course">
+                                        <div class="course_image"><img src="{{ item.get_cover }}"
+                                                                       alt="{{ item.title }}"></div>
+                                        <div class="course_body">
+                                            <div
+                                                    class="course_header d-flex flex-row align-items-center justify-content-end">
+                                                <div dir="rtl" class="course_price ml-auto">قیمت:
+                                                    <span>{{ item.amount | persian_int | intcomma:False }} تومان</span>
+                                                </div>
+                                                <div class="course_tag mx-3 rounded-2"><a href="#">ویژه</a></div>
+                                            </div>
+                                            <div class="course_title text-end">
+                                                <h3>
+                                                    <a href="{% url 'class-details' item.slug %}"> {{ item.title }} </a>
+                                                </h3>
+                                            </div>
+                                            <div dir="rtl"
+                                                 class="course_text text-end">{{ item.desc | truncatechars:200 }}</div>
+                                            <div class="course_footer d-flex align-items-center justify-content-center">
+                                                <div class="course_author_image"><img
+                                                        src="{% static 'front/images/featured_author.jpg' %}"
+                                                        alt="https://unsplash.com/@anthonytran"></div>
+                                                <div class="course_author_name">توسط <a
+                                                        href="#"> {{ item.teacher.profile_name }} </a></div>
+                                                <div class="course_sales mx-3"><span>{{ item.users.count }}</span> تعداد
+                                                    ثبت نامی
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+
+                        <!-- Courses Slider Nav -->
+                        <div class="courses_slider_nav courses_slider_prev trans_200 mx-5"><i
+                                class="fa fa-angle-left" aria-hidden="true"></i></div>
+                        <div class="courses_slider_nav courses_slider_next trans_200 mx-5"><i
+                                class="fa fa-angle-right" aria-hidden="true"></i></div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Milestones -->
+
+    <div class="milestones d-sm-none d-md-block">
+        <div class="parallax_background parallax-window" data-parallax="scroll"
+             data-image-src="{% static 'front/images/milestones.jpg' %}" data-speed="0.8"></div>
+        <div class="container">
+            <div class="row milestones_container">
+
+                <!-- Milestone -->
+                <div class="col-lg-3 milestone_col">
+                    <div class="milestone text-center">
+                        <div class="milestone_icon"><img src="{% static 'front/images/milestone_1.svg' %}" alt=""></div>
+                        <div class="milestone_counter" data-end-value="{{ classes.count | default_if_none:'0' }}">0
+                        </div>
+                        <div class="milestone_text">دوره های آنلاین</div>
+                    </div>
+                </div>
+
+                <!-- Milestone -->
+                <div class="col-lg-3 milestone_col">
+                    <div class="milestone text-center">
+                        <div class="milestone_icon"><img src="{% static 'front/images/milestone_2.svg' %}" alt=""></div>
+                        <div class="milestone_counter" data-end-value="{{ students_count | default_if_none:'0' }}">0
+                        </div>
+                        <div class="milestone_text">دانشجو</div>
+                    </div>
+                </div>
+
+                <!-- Milestone -->
+                <div class="col-lg-3 milestone_col">
+                    <div class="milestone text-center">
+                        <div class="milestone_icon"><img src="{% static 'front/images/milestone_3.svg' %}" alt=""></div>
+                        <div class="milestone_counter" data-end-value="{{ teachers_count | default_if_none:'0' }}">0
+                        </div>
+                        <div class="milestone_text">استاد</div>
+                    </div>
+                </div>
+
+                <!-- Milestone -->
+                <div class="col-lg-3 milestone_col">
+                    <div class="milestone text-center">
+                        <div class="milestone_icon"><img src="{% static 'front/images/milestone_4.svg' %}" alt=""></div>
+                        <div class="milestone_counter" data-end-value="1">0</div>
+                        <div class="milestone_text">شهر</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Sections -->
+
+    <div class="grouped_sections">
+        <div class="container">
+            <div class="row">
+
+                <!-- Why Choose Us -->
+
+                <div class="col-lg-4 grouped_col">
+                    <div class="grouped_title">چرا ما را انتخاب کنید؟</div>
+                    <div class="accordions">
+
+                        {% for item in helps %}
+                            <div class="accordion_container">
+                                <div class="accordion d-flex flex-row align-items-center px-3 rounded-2">
+                                    <div>{{ item.title }}</div>
+                                </div>
+                                <div class="accordion_panel">
+                                    <div>
+                                        <p>{{ item.desc }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+                <!-- Events -->
+
+                <div class="col-lg-4 grouped_col">
+                    <div class="grouped_title">دوره های پیش رو</div>
+                    <div class="events">
+
+                        {% for item in upcomming_classes %}
+                            <!-- Event -->
+                            <div class="event d-flex flex-row align-items-start justify-content-start">
+                                <div>
+                                    <div
+                                            class="event_date d-flex flex-column align-items-center justify-content-center rounded-2">
+                                        <div class="event_day">{{ item.created_at.day }}</div>
+                                        <div class="event_month">{{ item.created_at.month }}</div>
+                                    </div>
+                                </div>
+                                <div class="event_body">
+                                    <div class="event_title"><a
+                                            href="{% url 'class-details' item.slug %}">{{ item.title }}</a></div>
+                                    <div class="event_subtitle">محل برگزاری: پلتفرم آنلاین</div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+
+                <!-- News -->
+
+                <div class="col-lg-4 grouped_col">
+                    <div class="grouped_title"> آخرین اخبار</div>
+                    <div class="news">
+
+                        {% for item in new_blogs %}
+                            <!-- News Post -->
+                            <div class="news_post d-flex flex-row align-items-start justify-content-start">
+                                <div>
+                                    <div class="news_post_image"><img src="{{ item.get_image }}"
+                                                                      alt="{{ item.title }}"></div>
+                                </div>
+                                <div class="news_post_body">
+                                    <div class="news_post_date">{{ item.created_at | jdate | persian_int }}</div>
+                                    <div class="news_post_title"><a
+                                            href="{% url 'blogs-detail' item.slug %}">{{ item.title }}</a></div>
+                                    <div class="news_post_author">توسط <a href="#"> {{ item.user }}</a></div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video -->
+
+    <div class="video">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="video_container_outer">
+                        <div class="video_container">
+                            <!-- Video poster image artist: https://unsplash.com/@annademy -->
+                            <video id="vid1" class="video-js vjs-default-skin" controls
+                                   data-setup='{ "poster": "{{ settings.poster_image }}", "techOrder": ["youtube"], "sources": [{ "type": "video/youtube", "src": "{{ settings.poster_video }}"}], "youtube": { "iv_load_policy": 1 } }'>
+                            </video>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Join -->
+
+    <div class="join">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 offset-lg-1">
+                    <div class="section_title text-end">
+                        <h2>همین امروز عضو مجموعه بزرگ دانشجویان ساعی شوید</h2>
+                    </div>
+                    <div class="section_subtitle text-end">{{ settings.today_join_us_text }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="button join_button rounded-2"><a href="{% url 'register' %}"> همین الان ثبت نام می کنم
+            <div
+                    class="button_arrow"><i class="fa fa-angle-left" aria-hidden="true"></i></div>
+        </a></div>
+    </div>
+
+{% endblock %}
+
+{% block Scripts %}
+    <script>
+        {% if messages %}
+            {% for item in messages %}
+                createToast('success', '{{ item }}');
+            {% endfor %}
+        {% endif %}
+    </script>
+{% endblock %}

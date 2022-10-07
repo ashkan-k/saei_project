@@ -1,0 +1,273 @@
+<html lang="fa" dir="">
+
+<head>
+    <title>document</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Elearn project">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        @font-face {
+            font-family: "M";
+            src: url(/static/pdf/term/font/ITCEDSCR.TTF);
+        }
+
+        .container {
+            border: 1px solid black;
+        }
+
+        .header div input {
+            opacity: 0.5;
+            height: 25px;
+
+        }
+
+        .report {
+            font-size: xxx-large;
+            color: brown;
+            text-align: center;
+        }
+
+        .certificate {
+            font-size: 1.5cm;
+            font-family: 'M';
+            text-align: center;
+        }
+
+        .input1 {
+            display: flex;
+            justify-content: center;
+
+        }
+
+        .input1 input {
+            width: 50%;
+        }
+
+        .having {
+            display: flex;
+            justify-content: center;
+        }
+
+        .having input {
+            margin: 3%;
+        }
+
+        .having p {
+            font-size: 1.5cm;
+            font-family: 'M';
+        }
+
+        .having span {
+            font-size: 1.5cm;
+            font-family: 'M';
+        }
+
+        .img-saee {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2%;
+        }
+
+        @media (min-width: 500px) {
+            .header img {
+                width: 10%;
+                margin: 0% 0% 0% 45%;
+            }
+
+            .header div {
+                display: flex;
+                margin: 0% 0% 0% 25%;
+            }
+
+            .header div input {
+                margin-top: 3%;
+            }
+
+            .report {
+                margin: 0;
+                font-size: x-large;
+            }
+
+            .certificate {
+                font-size: 0.8cm;
+                margin: 0;
+            }
+
+            .having p {
+                font-size: 0.8cm;
+                padding-left: 2%;
+                margin: 1%;
+            }
+
+            .having span {
+                font-size: 0.8cm;
+                padding-right: 2%;
+            }
+
+            .having input {
+                margin-top: 3%;
+            }
+
+            .img-saee {
+                margin-left: 5%;
+                margin-right: 5%;
+                width: 80%;
+            }
+
+        }
+
+        @media (min-width: 1280px) {
+            .header {
+                display: flex;
+                justify-content: space-around;
+            }
+
+            .header img {
+                width: 10%;
+                height: 10%;
+            }
+
+            .header div {
+                display: flex;
+                margin-top: 15%;
+            }
+
+            .header {
+                margin-top: 1%;
+                margin-right: 48%;
+            }
+        }
+    </style>
+
+    <style>
+        input {
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <div class="header">
+        <div>
+            <p>Date: </p>
+            <input type="text" value="{{ object.date | default_if_none:'---' }}">
+        </div>
+        <img src="/static/pdf/term/image/logo 02.jpg" alt="picture">
+    </div>
+
+    <div>
+        <p class="report">Report Card</p>
+    </div>
+
+    <div class="certificate">
+        <p>This certificate is proudly presented to</p>
+    </div>
+
+    <div class="input1">
+        <input type="text" value="{{ object.proudly_presented | default_if_none:'---' }}">
+    </div>
+
+    <div class="having">
+        <p>having successfully completed a term of ?</p>
+        <input type="text" style="height: 55%;" value="{{ object.completed_term | default_if_none:'---' }}">
+        <span>at</span>
+    </div>
+
+    <div class="img-saee">
+        <img src="/static/pdf/term/image/gghgh.png" alt="picture">
+    </div>
+
+    <div>
+        <div>
+            <div style="border: 1px solid black; margin: 1% 5%; display: flex; justify-content: space-between;">
+                <ul style="list-style-type: none;">
+                    <li>Class Attendance:<span
+                            style="color: gray; font-size: large;">{{ object.class_attendance | default_if_none:'---' }}</span>%
+                    </li>
+                    <li>Class Activity:<span
+                            style="color: gray;font-size: large;">{{ object.class_activity | default_if_none:'---' }}</span>%
+                    </li>
+                    <li>Homework:<span
+                            style="color: gray; font-size: large;">{{ object.homework | default_if_none:'---' }}</span>%
+                    </li>
+                    <li>Workbook:<span
+                            style="color: gray; font-size: large;">{{ object.workbook | default_if_none:'---' }}</span>%
+                    </li>
+                </ul>
+                <ul style=" list-style-type: none; padding-right: 5%;">
+                    <li>Listening:<span
+                            style="color: gray; font-size: large;">{{ object.listening | default_if_none:'---' }}</span>%
+                    </li>
+                    <li>Speaking:<span
+                            style="color: gray; font-size: large;">{{ object.speaking | default_if_none:'---' }}</span>%
+                    </li>
+                    <li>Reading:<span
+                            style="color: gray; font-size: large;">{{ object.reading | default_if_none:'---' }}</span>%
+                    </li>
+                    <li>Writing:<span
+                            style="color: gray; font-size: large;">{{ object.writing | default_if_none:'---' }}</span>%
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <div style="display: flex; justify-content: space-around;">
+        <ul style="list-style-type: none;">
+            <li>Midterm Score:<span style="color: gray;">{{ object.midterm_score | default_if_none:'---' }}</span>%</li>
+            <li>Final Exam:<span style="color: gray;">{{ object.final_exam | default_if_none:'---' }}</span>%</li>
+        </ul>
+        <ul style="list-style-type: none;">
+            <li>Oral Score:<span style="color: gray;">{{ object.oral_score | default_if_none:'---' }}</span>%</li>
+            <li style="color: brown;">Overall:<span
+                    style="color: gray;">{{ object.overall | default_if_none:'---' }}</span>%
+            </li>
+        </ul>
+    </div>
+
+
+    <div style="display: flex; justify-content: center;">
+        <p>PASS<input type="checkbox" {% if object.exam_status == 'pass' %}checked{% endif %}></p>
+        <p>C.P.<input type="checkbox" {% if object.exam_status == 'cp' %}checked{% endif %}></p>
+        <p>FAIL<input type="checkbox" {% if object.exam_status == 'fail' %}checked{% endif %}></p>
+    </div>
+
+    <hr style="margin: 0 2%;">
+
+    <div>
+        <p style="padding-left: 5%; margin-top: 0;">Teacher: {{ object.class_item.teacher | default_if_none:'---' }}</p>
+        <div style="padding-left: 80%;">
+            <p>Head of the department:</p>
+            <img src="/static/pdf/term/image/Screenshot 2022-08-26 204213.png" alt="picture" style="width: 80%;">
+        </div>
+    </div>
+
+    <div style="display: flex ; justify-content: space-around;">
+        <ul class="">
+            <li>021 567 67 698: شعبه مرکزی</li>
+            <li>021 567 56 416: شعبه مرکزی</li>
+            <li>021 567 81 449: شعبه مرکزی</li>
+            <li>021 565 74 730: شعبه همدانک</li>
+            <li>Manager: +98 902 45 41 102 <br> +98 939 067 0055</li>
+        </ul>
+        <img src="/static/pdf/term/image/Screenshot 2022-08-16 161146.png" alt="picture" style="width: 12%;">
+        <p class="pt-5 mt-5">Branch Manager: </p>
+        <img src="/static/pdf/term/image/2.jpg" alt="picture" style="width: 10%; height: 10%;" class="pt-5 mt-5">
+    </div>
+
+</div>
+
+</body>
+
+</html>
+
+{% block Scripts %}
+    <script>
+        window.onafterprint = window.close;
+        window.print();
+    </script>
+{% endblock %}

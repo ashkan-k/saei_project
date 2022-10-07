@@ -1,0 +1,108 @@
+{% extends 'Layouts/admin-master.html' %} {% load static public_tags acl_tags %}
+{% load humanize %} {% block title %} لیست درگاه پرداخت ها {% endblock %} {% block content %}
+
+    {% block Styles %}
+        <style>
+            .selected_gateway {
+                border: gray 5px solid;
+            }
+        </style>
+    {% endblock %}
+
+    <div class="row" ng-init="init()">
+        {% if messages %} {% for item in messages %}
+            <script>
+                Swal.fire({
+                    title: "تبریک ! 🥳",
+                    icon: "success",
+                    text: "{{ item }}",
+                    type: "success",
+                    cancelButtonColor: "var(--primary)",
+                    confirmButtonText: "اوکی",
+                });
+            </script>
+        {% endfor %} {% endif %}
+
+        <div class="col-lg-12">
+            <div class="card-box">
+                <div class="card-block row">
+                    <h4 class="card-title">درگاه پرداخت ها</h4>
+
+                    <hr/>
+
+                    <div class="jumbotron">
+                        <h3>
+                            {{ object.installment.class_item | default_if_none:'---' }}
+                        </h3>
+                        <h5>
+                            مبلغ قسط: {{ object.amount | persian_int | intcomma:False | default_if_none:'---' }} تومان
+                        </h5>
+
+
+                        <div class="row">
+                            <p>انتخاب درگاه پرداخت:</p>
+                            <div class="btn btn-warning" ng-class="{selected_gateway: gateway == 'zarinpal'}">
+                                <img width="90" ng-click="PaymentGateway('zarinpal')"
+                                     src="{% static 'admin_panel/assets/img/zarinpal-badge.png' %}" alt="">
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-12">
+                        <div class="m-1-25 m-b-20" style="float: left !important;">
+                            <a href="{{ request.META.HTTP_REFERER }}"
+                               class="btn btn-danger btn-border-radius waves-effect">
+                                بازگشت
+                            </a>
+                            <button class="btn btn-info btn-border-radius waves-effect" type="button"
+                                    ng-disabled="is_submited || !gateway"
+                                    ng-click="Payment()">پرداخت
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block Scripts %}
+    <script>
+        app.controller('myCtrl', function ($scope, $http) {
+            $scope.id = null;
+            $scope.status = {};
+            $scope.gateway = null;
+            $scope.is_submited = false;
+
+            $scope.PaymentGateway = function (gateway) {
+                $scope.gateway = gateway;
+            }
+
+            $scope.Payment = function () {
+                $scope.is_submited = true;
+
+                var data = {
+                    "item_id": '{{ object.id }}',
+                    "item_type": 'installment',
+                };
+
+                data['amount'] = '{{ object.amount }}'
+
+                $http.post(`/api/zarinpal/payment/link/`, data).then(res => {
+                    createToast('success', 'درحال انتقال به درگاه پرداخت...');
+                    setTimeout(() => {
+                        $scope.is_submited = false;
+                        window.location.href = res['data']['link']
+                    }, 2000)
+                }).catch(err => {
+                    $scope.is_submited = false;
+                    parseError(err, 'خطایی رخ داد');
+                });
+            }
+        });
+    </script>
+{% endblock %}
