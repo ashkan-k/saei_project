@@ -6,5 +6,5 @@ jobs:
     runs-on: self-hosted
     steps:
       - run: git pull
-      - run: docker-compose build
-      - run: docker-compose up -d
+      - run: sudo docker-compose build
+      - run: sudo docker-compose up -d
