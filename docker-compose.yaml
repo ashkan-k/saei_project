@@ -5,8 +5,8 @@ services:
     restart: always
     container_name: saei
     build: .
-    expose:
-      - "8000"
+    ports:
+      - "8000:8000"
     environment:
       DEBUG: 'true'
     command: bash -c "python3 /app/manage.py makemigrations && python3 /app/manage.py migrate && /usr/local/bin/gunicorn config.wsgi:application -w 2 -b :8000"
