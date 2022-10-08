@@ -1,24 +1,57 @@
 version: "3.9"
    
 services:
-  db:
-    image: postgres
-    volumes:
-      - ./data/db:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
   web:
+    restart: always
+    container_name: saei
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
-    volumes:
-      - .:/code
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     environment:
-      - POSTGRES_NAME=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      DEBUG: 'true'
+    command: bash -c "python3 /app/manage.py collectstatic --noinput && python3 /app/manage.py makemigrations && python3 /app/manage.py migrate && /usr/local/bin/gunicorn DjangoBlog.wsgi:application -w 2 -b :8000"
+    networks:
+      - saei
+
+  postgres:
+    restart: always
+    container_name: postgres
+    image: postgres:latest
+    environment:
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=ppasswd
+    - POSTGRES_DB=saei
+    volumes:
+      - pgdata:/var/lib/postgresql/data/
+    networks:
+      - saei
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
     depends_on:
       - db
+    ports:
+      - "5051:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: root
+    restart: always
+    networks:
+      - saei
+
+  redis:
+    restart: always
+    container_name: redis
+    image: redis:latest
+    volumes:
+      - redisdata:/data
+    networks:
+      - saei
+
+volumes:
+  pgdata:
+  redis:
+
+networks:
+  saei:
