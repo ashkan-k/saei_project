@@ -7,4 +7,5 @@ jobs:
     steps:
       - run: git pull
       - run: sudo docker-compose build
+      - run: sudo docker-compose down
       - run: sudo docker-compose up -d
