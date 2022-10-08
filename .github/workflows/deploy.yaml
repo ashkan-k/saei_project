@@ -5,9 +5,9 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: self-hosted
     steps:
+      - run: whoami
       - uses: actions/checkout@v3 
         with:
           ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
           ref: master
           fetch-depth: 0
-      - run: whoami
