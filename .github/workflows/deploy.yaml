@@ -11,3 +11,4 @@ jobs:
           ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
           ref: master
           fetch-depth: 0
+          submodules: true
