@@ -37,6 +37,8 @@ services:
       PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
       PGADMIN_DEFAULT_PASSWORD: root
     restart: always
+    volumes:
+      - pgadmin:/var/lib/pgadmin
     networks:
       - saei
 
@@ -52,6 +54,7 @@ services:
 volumes:
   pgdata:
   redisdata:
+  pgadmin:
 
 networks:
   saei:
