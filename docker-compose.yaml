@@ -30,7 +30,7 @@ services:
     image: dpage/pgadmin4
     container_name: pgadmin
     depends_on:
-      - db
+      - postgres
     ports:
       - "5051:80"
     environment:
