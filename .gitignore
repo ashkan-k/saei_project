@@ -6,3 +6,4 @@
 /media
 /media/*
 static/root
+/.env
