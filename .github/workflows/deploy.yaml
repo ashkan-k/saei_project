@@ -9,7 +9,7 @@ jobs:
         run: git pull
       
       - name: Copy environment vars
-        run: cp /home/ubuntu/.saei.env .env && ls -a
+        run: cp /home/ubuntu/.saei.env .env && pwd
 
       - name: build images
         run: sudo docker-compose build
