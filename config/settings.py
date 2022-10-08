@@ -114,38 +114,39 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-# ! ======================= Mysql =======================#
+# # ! ======================= Mysql =======================#
+#
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': config('DB_NAME'),
+#         'USER': config('DB_USER'),
+#         'PASSWORD': config('DB_PASSWORD'),
+#         'HOST': config('DB_HOST'),
+#         'PORT': config('DB_PORT'),
+#
+#         'OPTIONS': {
+#             'sql_mode': 'traditional',
+#         }
+#     }
+# }
+#
+# # ! ======================= Mysql =======================#
+
+# ! ======================= Postgres =======================#
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST'),
-        'PORT': config('DB_PORT'),
-
-        'OPTIONS': {
-            'sql_mode': 'traditional',
-        }
+                'ENGINE': 'django.db.backends.postgresql',
+                "NAME": config('POSTGRES_DB_NAME'),
+                "USER": config('POSTGRES_DB_USER'),
+                "PASSWORD": config('POSTGRES_DB_PASSWORD'),
+                "HOST": config('POSTGRES_DB_HOST'),
+                "PORT": config('POSTGRES_DB_PORT'),
     }
 }
 
-# ! ======================= Mysql =======================#
-
-
-# ======================= pouladzadeh =======================#
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'saei',
-#         'USER': 'postgres',
-#         'PASSWORD': 'erfan',
-#         # 'HOST': '127.0.0.1',
-#         # 'PORT': '5432',
-#     }
-# }
+# ! ======================= Postgres =======================#
 
 
 # Password validation
