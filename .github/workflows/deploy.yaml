@@ -6,6 +6,5 @@ jobs:
     runs-on: self-hosted
     steps:
       - run: whoami
-      - uses: actions/checkout@v3 
-        with:
-          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Checkout 
+        uses: actions/checkout@v3 
