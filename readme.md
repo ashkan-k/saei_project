@@ -17,8 +17,8 @@
 $ sudo su - postgres
 $ psql
 
-CREATE DATABASE postgresql;
-CREATE USER postgres WITH PASSWORD 'pgpasswd';
+CREATE DATABASE saei;
+CREATE USER postgres WITH PASSWORD 'ppasswd';
 ALTER ROLE postgres SET default_transaction_isolation TO 'read committed';
 ALTER ROLE postgres SET timezone TO 'UTC';
 GRANT ALL PRIVILEGES ON DATABASE postgresql TO postgres;
