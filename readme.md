@@ -13,6 +13,20 @@
 ./manage.py init_settings
 ```
 
+```bash main database
+$ sudo su - postgres
+$ psql
+
+CREATE DATABASE postgresql;
+CREATE USER postgres WITH PASSWORD 'pgpasswd';
+ALTER ROLE postgres SET default_transaction_isolation TO 'read committed';
+ALTER ROLE postgres SET timezone TO 'UTC';
+GRANT ALL PRIVILEGES ON DATABASE postgresql TO postgres;
+ALTER USER postgres WITH SUPERUSER;
+
+\q
+
+exit;
 
 ```bash test database
 $ sudo su - postgres
