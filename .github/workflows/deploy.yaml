@@ -1,11 +1,21 @@
-name: GitHub Actions Demo
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+name: Deploy on production
+run-name: ${{ github.actor }} is deploying...🚀
 on: [push]
 jobs:
-  Explore-GitHub-Actions:
+  Deployment:
     runs-on: self-hosted
     steps:
-      - run: git pull
-      - run: sudo docker-compose build
-      - run: sudo docker-compose down
-      - run: sudo docker-compose up -d
+      - name: Checkout
+        run: git pull
+      
+      - name: Copy environment vars
+        run: cp /home/ubuntu/.saei.env ../.env
+
+      - name: build images
+        run: sudo docker-compose build
+
+      - name: Stop & Remove lastets Containers
+        run: sudo docker-compose down
+
+      - name: Rerun project
+        run: sudo docker-compose up -d
