@@ -176,6 +176,8 @@ TIME_ZONE = 'Asia/Tehran'
 
 USE_I18N = True
 
+CSRF_TRUSTED_ORIGINS = ["https://qalamesaee.com", "https://www.qalamesaee.com"]
+
 USE_L10N = True
 
 USE_TZ = True
