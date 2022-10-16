@@ -77,13 +77,13 @@
                                         {% csrf_token %}
 
                                         {% if user|has_perm:'class_attendance_create' %}
-                                            <input type="text" class="form-control" placeholder="توضیحات (اختیاری)" ng-value="ShowDescText( '{{ item.user.id }}' )" ng-model="desc_data_{{ item.id }}">
+                                            <input type="text" class="form-control" placeholder="توضیحات (اختیاری)" ng-change="SaveDescText('{{ item.user.id }}', desc_data_{{ item.id }})" ng-value="ShowDescText( '{{ item.user.id }}' )" ng-model="desc_data_{{ item.id }}">
                                             <span title="غایب" role="button"><i
-                                                    ng-click="UserChecked('{{ item.user.id }}', 'absent', desc_data_{{ item.id }})"
+                                                    ng-click="UserChecked('{{ item.user.id }}', 'absent')"
                                                     class="fa fa-close text-danger [[AbsentClass( '{{ item.user.id }}' )]]"
                                                     style="font-size: 35px"></i></span>
 
-                                            <span title="حاضر" ng-click="UserChecked('{{ item.user.id }}', 'present', desc_data_{{ item.id }})"
+                                            <span title="حاضر" ng-click="UserChecked('{{ item.user.id }}', 'present')"
                                                   role="button"><i
                                                     class="fa fa-check text-success m-r-5 [[PresentClass( '{{ item.user.id }}' )]]"
                                                     style="font-size: 35px"></i></span>
@@ -183,15 +183,16 @@
                 return $scope.users.filter(x => (x['user'] == user))[0]['desc'];
             }
 
-            $scope.UserChecked = function (user, status, desc) {
+            $scope.SaveDescText = function (user, desc) {
+                $scope.users.filter(x => x['user'] == user)[0]['desc'] = desc ? desc : null;
+            }
+
+            $scope.UserChecked = function (user, status) {
                 if ($scope.users.filter(x => x['user'] == user).length == 0) {
                     $scope.users.push({'user': user, 'status': null});
                 }
 
                 $scope.users.filter(x => x['user'] == user)[0]['status'] = status;
-                $scope.users.filter(x => x['user'] == user)[0]['desc'] = desc ? desc : null;
-
-                console.log($scope.users);
             }
 
             $scope.Submit = function () {
