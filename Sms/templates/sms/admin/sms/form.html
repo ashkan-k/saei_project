@@ -20,7 +20,7 @@
                         </div>
                     </div>
 
-                <div class="form-group col-lg-12 col-sm-12 col-md-12">
+                    <div class="form-group col-lg-12 col-sm-12 col-md-12" style="margin-right: 50px">
                         <label class="control-label col-lg-2" style="width: auto!important;"
                                for="to">به:</label>
 
@@ -73,14 +73,21 @@
                                 موردی یافت نشد.
                          </h4>
                         {% endif %}
-
-
-                        {% include 'Admin/pagination.html' with page_obj=page_obj %}
                     </span>
 
-                     <span ng-show="to == 'class'" id="list" style="margin-top: 80px!important;">
-                        dfjklsf
-                    </span>
+                    <div ng-show="to == 'class'" class="form-group col-lg-12 col-sm-12 col-md-12"
+                         style="margin-right: 30px">
+                        <label class="control-label col-lg-2" style="width: auto!important;"
+                               for="to">کلاس:</label>
+
+                        <div class="col-md-10">
+                            <select ng-model="class" id="to" class="form-control">
+                                {% for item in classes %}
+                                    <option value="{{ item.id }}">{{ item.title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
 
                     <div class="col-lg-12">
                         <div class="m-1-25 m-b-20" style="float: left !important;">
@@ -134,6 +141,18 @@
             $scope.users = [];
             $scope.is_submited = '';
 
+            $scope.$watch('class', function () {
+                if ($scope.class) {
+                    $http.get(`/api/class/${$scope.class}/students/`).then(res => {
+                        $scope.is_submited = false;
+                        $scope.users = res['data'];
+                    }).catch(err => {
+                        $scope.is_submited = false;
+                        parseError(err, 'خطایی رخ داد');
+                    });
+                }
+            });
+
             $scope.AddNewUserPhone = function (id) {
                 let index = $scope.users.indexOf(id);
                 if (index > -1) {
@@ -164,11 +183,6 @@
                 $http.post('/api/sms/group/send/', data).then(res => {
                     createToast('success', 'با موفقیت ارسال شد.');
                     $scope.is_submited = false;
-                    return;
-                    setTimeout(() => {
-                        $scope.is_submited = false;
-                        window.location.href = ""
-                    }, 1000)
                 }).catch(err => {
                     $scope.is_submited = false;
                     parseError(err, 'خطایی رخ داد');

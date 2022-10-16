@@ -18,6 +18,15 @@ class ClassViewSet(viewsets.ModelViewSet):
     queryset = Class.objects.all()
     serializer_class = ClassSerializer
 
+    @action(
+        detail=True,
+        methods=['get'],
+        url_path='students',
+    )
+    def students_list(self, request, pk):
+        student_ids = self.get_object().users.values_list('user_id', flat=True)
+        return Response(student_ids)
+
 
 class ClassUserViewSet(viewsets.ModelViewSet):
     permission_classes = [RestPermissionMixin]
