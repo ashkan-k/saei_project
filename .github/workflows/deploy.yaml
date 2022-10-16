@@ -1,6 +1,9 @@
 name: Deploy on production
 run-name: ${{ github.actor }} is deploying...🚀
-on: [push]
+on:
+  push:
+    branches:
+      - production
 jobs:
   Deployment:
     runs-on: self-hosted
