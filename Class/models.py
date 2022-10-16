@@ -71,8 +71,6 @@ class ClassUser(CustomModel):
     class_item = models.ForeignKey(verbose_name='کلاس', to=Class, on_delete=models.CASCADE, related_name='users')
     status = models.CharField(verbose_name='وضعیت', default='active', choices=CLASS_USER_STATUS.CHOICES, max_length=50)
     adobe_connect_link = models.URLField(verbose_name='لینک ادوب کانکت', null=True, blank=True)
-    adobe_connect_username = models.CharField(verbose_name='نام کاربری ادوب کانکت', max_length=255, null=True, blank=True)
-    adobe_connect_password = models.CharField(verbose_name='رمزعبور ادوب کانکت', max_length=255, null=True, blank=True)
 
     class Meta:
         verbose_name = 'کاربران کلاس ها'
@@ -109,6 +107,7 @@ class ClassUserAttendance(CustomModel):
     user = models.ForeignKey(verbose_name='کاربر', to=User, on_delete=models.CASCADE, related_name='attendances')
     class_attendance = models.ForeignKey(verbose_name='کلاس', to=ClassAttendance, on_delete=models.CASCADE,
                                          related_name='users')
+    desc = models.TextField(verbose_name='توضیحات', max_length=500, null=True, blank=True)
     status = models.CharField(verbose_name='وضعیت', choices=CLASS_USER_ATTENDANCE_STATUS.CHOICES, max_length=50)
 
     class Meta:

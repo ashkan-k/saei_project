@@ -6,7 +6,10 @@ register = template.Library()
 
 @register.simple_tag
 def class_users_js_list(value):
-    users_data = list(value.users.values('id', 'user', 'status'))
+    users_data = list(value.users.values('id', 'user', 'status', 'desc'))
+    for item in users_data:
+        if not item['desc']:
+            item['desc'] = ''
     return users_data
 
 
