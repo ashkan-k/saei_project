@@ -165,7 +165,19 @@ class ClassAttendanceDailyListView(PermissionMixin, ListView):
     model = ClassUserAttendance
 
     def get_queryset(self):
-        queryset = ClassUserAttendance.objects.filter(created_at=jdatetime.datetime.now())
+        today_date = jdatetime.datetime.now().date()
+        queryset = ClassUserAttendance.objects.filter(
+            created_at__year=today_date.year,
+            created_at__month=today_date.month,
+            created_at__day=today_date.day,
+        )
+        print(ClassUserAttendance.objects.filter(
+            created_at__year='1401'
+        ))
+        print(today_date.year)
+        print(type(today_date.year))
+        print(today_date.year == 1401)
+
         return queryset
 
 
