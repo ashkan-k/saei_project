@@ -59,7 +59,7 @@ class ClassAttendanceViewSet(viewsets.GenericViewSet):
 
         # create ClassAttendance obj and sync users of class to it(ClassUserAttendance)
         users_data = [
-            ClassUserAttendance(user_id=item['user'], status=item['status'], desc=item['desc'], class_attendance_id=instance.id)
+            ClassUserAttendance(user_id=item['user'], status=item['status'], desc=item.get('desc'), class_attendance_id=instance.id)
             for item in users_data
         ]
         ClassUserAttendance.objects.bulk_create(users_data)
@@ -82,7 +82,7 @@ class ClassAttendanceViewSet(viewsets.GenericViewSet):
         # save ClassAttendance obj and sync users of class to it(ClassUserAttendance)
         users_data = [
             ClassUserAttendance(pk=item['id'], user_id=item['user'], status=item['status'],
-                                desc=item['desc'], class_attendance_id=pk)
+                                desc=item.get('desc'), class_attendance_id=pk)
             for item in users_data
         ]
 
