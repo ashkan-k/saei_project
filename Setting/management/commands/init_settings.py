@@ -19,9 +19,9 @@ DEFAULT_SETTINGS = {
 
     # Social
     'email': """yourmail@Saei.com""",
-    'twitter': """https://twitter.com/login""",
-    'facebook': """https://www.facebook.com/login/""",
-    'pinterest': """https://www.pinterest.com/login/""",
+    'telegram': """saei""",
+    'whatsapp': """https://wa.me/qr/L7BFPCZNPX7QB1""",
+    'instagram': """saei""",
 
     # Links
     'home_link': """http://127.0.0.1:8000/""",
@@ -51,7 +51,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         if options['clear']:
-            Role.objects.all().delete()
+            Setting.objects.all().delete()
             self.stdout.write(self.style.SUCCESS(f"CLEAR"))
 
         for key, value in DEFAULT_SETTINGS.items():
