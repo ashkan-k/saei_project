@@ -56,6 +56,8 @@ class Teacher(CustomModel):
     def save(self, *args, **kwargs):
         if self.user:
             self.user.change_role(Role.objects.get(code=ROLE_CODES.TEACHER))
+            self.user.is_active = self.is_approved
+            self.user.save()
         return super().save(*args, **kwargs)
 
     def get_approved(self):
