@@ -159,25 +159,17 @@ class ClassUsersGatewayView(PermissionMixin, DetailView):
 """Class Attendance"""
 
 
-class ClassAttendanceDailyListView(PermissionMixin, ListView):
+class ClassAttendanceDailyAbsentsListView(PermissionMixin, ListView):
     permissions = ['class_attendance_list']
-    template_name = "classes/admin/attendances/daily_list.html"
+    template_name = "classes/admin/attendances/daily_absents_list.html"
     model = ClassUserAttendance
 
     def get_queryset(self):
         today_date = jdatetime.datetime.now().date()
         queryset = ClassUserAttendance.objects.filter(
-            created_at__year=today_date.year,
-            created_at__month=today_date.month,
-            created_at__day=today_date.day,
+            created_at__date=today_date.togregorian(),
+            status='absent'
         )
-        print(ClassUserAttendance.objects.filter(
-            created_at__year='1401'
-        ))
-        print(today_date.year)
-        print(type(today_date.year))
-        print(today_date.year == 1401)
-
         return queryset
 
 
