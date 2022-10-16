@@ -13,6 +13,9 @@ def upload_image(instance, filename):
     path = 'shop/' + slugify(f"{instance.title}", allow_unicode=True)
     return path + '/' + filename
 
+def upload_gallery_image(instance, filename):
+    path = 'shop/galleries/' + slugify(f"{instance.product.title}", allow_unicode=True)
+    return path + '/' + filename
 
 ###################################################################################
 
@@ -71,6 +74,25 @@ class Product(CustomModel):
     @property
     def get_file(self):
         return self.file.url if self.file else ''
+
+
+class ProductImage(CustomModel):
+    image = models.ImageField(
+        verbose_name='عکس', upload_to=upload_gallery_image,
+        validators=[validate_file_size])
+
+    product = models.ForeignKey(to=Product, verbose_name='محصول', on_delete=models.CASCADE,
+                                related_name='images', null=True)
+
+    class Meta:
+        verbose_name = 'گالری تصاویر محصولات'
+        verbose_name_plural = 'گالری تصاویر محصولات ها'
+
+    def __str__(self):
+        return self.product
+
+    def get_image_url(self):
+        return self.image.url if self.image else None
 
 
 class UserProduct(CustomModel):

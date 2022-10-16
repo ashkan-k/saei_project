@@ -18,11 +18,11 @@ $ sudo su - postgres
 $ psql
 
 CREATE DATABASE saei;
-CREATE USER postgres WITH PASSWORD 'ppasswd';
-ALTER ROLE postgres SET default_transaction_isolation TO 'read committed';
-ALTER ROLE postgres SET timezone TO 'UTC';
-GRANT ALL PRIVILEGES ON DATABASE postgresql TO postgres;
-ALTER USER postgres WITH SUPERUSER;
+CREATE USER saei_user WITH PASSWORD 'saei_password';
+ALTER ROLE saei_user SET default_transaction_isolation TO 'read committed';
+ALTER ROLE saei_user SET timezone TO 'UTC';
+GRANT ALL PRIVILEGES ON DATABASE saei TO postgres;
+ALTER USER saei_user WITH SUPERUSER;
 
 \q
 

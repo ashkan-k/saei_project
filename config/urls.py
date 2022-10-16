@@ -58,6 +58,7 @@ urlpatterns += [
     path('api/quiz/', include('QuizBuilder.api.urls')),
     path('api/installment/', include('Installment.api.urls')),
     path('api/sms/', include('Sms.api.urls')),
+    path('api/shop/', include('Shop.api.urls')),
 ]
 
 if settings.DEBUG:
