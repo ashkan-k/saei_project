@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView, UpdateView, CreateView, DetailView, TemplateView
 from ACL.mixins import PermissionMixin, VerifiedUserMixin
 from Poll.filters import PollFilters, UserPollFilters
-from Poll.forms import PollForm, UserPollEditForm, UserPollCreateForm
+from Poll.forms import PollForm, UserPollEditForm, UserPollCreateForm, UserPollDetailForm
 from Poll.models import Poll, UserPoll
 from django.conf import settings
 from django.contrib import messages
@@ -120,7 +120,8 @@ class UserPollDeleteView(VerifiedUserMixin, DeleteView):
         return resp
 
 
-class UserPollDetailView(PermissionMixin, DetailView):
+class UserPollDetailView(PermissionMixin, UpdateView):
     permissions = ['poll_detail']
     template_name = "polls/admin/user_polls/detail.html"
     model = UserPoll
+    form_class = UserPollDetailForm

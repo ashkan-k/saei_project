@@ -56,4 +56,4 @@ class UserPoll(CustomModel):
         verbose_name_plural = 'پاسخ فرم نظرسنجی ها'
 
     def __str__(self):
-        return f'{self.user}, {self.poll}'
+        return f'{self.user}-{self.poll}'

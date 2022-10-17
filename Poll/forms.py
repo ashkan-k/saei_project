@@ -20,3 +20,15 @@ class UserPollEditForm(forms.ModelForm):
     class Meta:
         model = UserPoll
         exclude = ['user', 'poll']
+
+
+class UserPollDetailForm(forms.ModelForm):
+    class Meta:
+        model = UserPoll
+        exclude = ['user', 'poll']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field in self.fields:
+            self.fields[field].disabled = True

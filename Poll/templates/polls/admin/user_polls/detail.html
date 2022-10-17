@@ -1,60 +1,59 @@
 {% extends 'Layouts/admin-master.html' %}
-{% load i18n public_tags acl_tags %}
+{% load i18n public_tags %}
 
-{% block title %} جزییات نظرسنجی {% endblock %}
+{% block title %} جزییات پاسخ نظرسنجی {% endblock %}
 
 {% block content %}
 
     <div class="row">
         <div class="col-xs-12">
-            <div class="col-12">
-                <div class="card-box" style="height: 800px!important;">
-                    <h2 class="card-title"><b>جزییات
-                        نظرسنجی {{ object.user | default_if_none:'---' }}-{{ object.poll.class_item | default_if_none:'---' }}</b>
-                    </h2>
-                    <div class="col col-sm-6 col-lg-3 col-md-4 col-xs-6">
-                        <p>نام : {{ object.user.first_name | default_if_none:'---' }}</p>
-                    </div>
-                    <div class="col col-sm-6 col-lg-3 col-md-4 col-xs-6">
-                        <p>نام خانوادگی : {{ object.user.last_name | default_if_none:'---' }}</p>
-                    </div>
-                    <div class="col col-sm-6 col-lg-3 col-md-4 col-xs-6">
-                        <p>نام پدر : {{ object.user.father_name | default_if_none:'---' }}</p>
-                    </div>
+            <div class="col-lg-12">
+                <div class="card-box">
+                    <h2 class="card-title"><b>جزییات پاسخ نظرسنجی ({{ object }})</b></h2>
 
-                    <div class="col col-sm-6 col-lg-3 col-md-4 col-xs-6">
-                        <p>مقطع تحصیلی : {{ object.user.get_education_level | default:'---' }}</p>
-                    </div>
-                    <div class="col col-sm-6 col-lg-3 col-md-4 col-xs-6">
-                        <p>پایه تحصیلی : {{ object.user.grade | default_if_none:'---' }}</p>
-                    </div>
-                    <div class="col col-sm-6 col-lg-3 col-md-4 col-xs-6">
-                        <p>کد ملی : {{ object.user.national_id | default_if_none:'---' }}</p>
-                    </div>
-                    <div class="col col-sm-6 col-lg-12 col-md-4 col-xs-6">
-                        <p>نحوه آشنایی : {{ object.user.get_intro_method | default_if_none:'---' }}</p>
-                    </div>
 
-                     <div class="col col-sm-12 col-lg-12 col-md-4 col-xs-12">
-                        <p style="word-wrap: break-word!important">عنوان : {{ object.title | default_if_none:'---' }}</p>
-                    </div>
-                    <div class="col col-sm-12 col-lg-3 col-md-4 col-xs-12">
-                        <p style="word-wrap: break-word!important">متن : {{ object.text | default_if_none:'---' }}</p>
-                    </div>
+                    <form class="form-horizontal"
+                          method="post"
+                          enctype="multipart/form-data">
+
+                        {% for field in form %}
+                            {% if field.name not in 'user,poll' %}
+                                <div class="form-group">
+                                    <label class="control-label col-lg-12"
+                                           for="id_{{ field.name }}">{{ field.label }}:</label>
+
+                                    <div class="col-md-12">
+                                        {{ field|addclass:"form-control" }}
+
+                                        {% if field.help_text %}
+                                            <p><small style="font-size: 14px">{{ field.help_text|safe }} </small></p>
+                                        {% endif %}
+                                        {% if field.errors %}
+                                            <p><small class="text-danger" style="font-size: 14px"
+                                                      style="color:red">{{ field.errors.0|safe }}</small></p>
+                                        {% endif %}
+                                        {% if field.non_field_errors %}
+                                            <p><small class="text-danger" style="font-size: 20px"
+                                                      style="color:red">{{ field.non_field_errors.0|safe }}</small></p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+
+                        <div class="col-lg-12">
+                            <div class="m-1-25 m-b-20" style="float: left !important;">
+                                <a href="{{ request.META.HTTP_REFERER }}"
+                                   class="btn btn-danger btn-border-radius waves-effect">
+                                    بازگشت
+                                </a>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
 
         </div>
     </div>
 
-{% endblock %}
-
-{% block Scripts %}
-    <script>
-        {% if messages %}
-            {% for item in messages %}
-                createToast('success', '{{ item }}');
-            {% endfor %}
-        {% endif %}
-    </script>
 {% endblock %}
