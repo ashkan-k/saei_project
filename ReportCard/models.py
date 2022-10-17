@@ -23,7 +23,7 @@ class ReportCard(CustomModel):
 
     proudly_presented = models.CharField(verbose_name='This certificate is proudly presented to', max_length=255,
                                          null=True, blank=True)
-    completed_term = models.CharField(verbose_name='having successfully completed a term of ?', max_length=255,
+    completed_term = models.CharField(verbose_name='having successfully completed a term of', max_length=255,
                                       null=True, blank=True)
     class_attendance = models.CharField(verbose_name='Class Attendance', max_length=255, null=True, blank=True)
     class_activity = models.CharField(verbose_name='Class Activity', max_length=255, null=True, blank=True)
@@ -39,7 +39,7 @@ class ReportCard(CustomModel):
     overall = models.CharField(verbose_name='Overall', max_length=255, null=True, blank=True)
     exam_status = models.CharField(verbose_name='Exam Status', choices=EXAM_STATUS.CHOICES, max_length=255, null=True,
                                    blank=True)
-    date = jmodels.jDateField(verbose_name='Date', null=True, blank=True)
+    date = models.CharField(verbose_name='Date', null=True, blank=True, max_length=255)
     type = models.CharField(verbose_name='نوع کارنامه', max_length=255, choices=REPORT_CARD_TYPE.CHOICES)
 
     class Meta:
