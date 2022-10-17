@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 from Class.models import Class
+from media.helpers import POLL_QUESTION_OPTIONS
 from utils.models import CustomModel
 
 User = get_user_model()
@@ -33,8 +34,11 @@ class UserPoll(CustomModel):
         on_delete=models.CASCADE,
         related_name='user_polls',
     )
-    title = models.CharField(verbose_name='عنوان', max_length=255)
-    text = models.TextField(verbose_name='توضیحات', max_length=500)
+    presentation_of_the_lesson_plan = models.CharField(verbose_name='ارئه طرح درس و معرفی منابع و رفرنس های معتبر', max_length=255, choices=POLL_QUESTION_OPTIONS.CHOICES)
+    mastery_of_the_teacher_on_the_subject_of_the_lesson = models.CharField(verbose_name='تسلط استاد بر موضوع درس', max_length=255, choices=POLL_QUESTION_OPTIONS.CHOICES)
+    way_of_expression = models.CharField(verbose_name='تسلط استاد بر موضوع درس', max_length=255, choices=POLL_QUESTION_OPTIONS.CHOICES)
+    method_of_expression = models.CharField(verbose_name='شیوه بیان، تفهیم و انتقال مطالب درسی', max_length=255, choices=POLL_QUESTION_OPTIONS.CHOICES)
+    teaching_method = models.CharField(verbose_name='شیوه تدریس و بکار گیری امکانات کمک آموزشی موجود', max_length=255, choices=POLL_QUESTION_OPTIONS.CHOICES)
 
     class Meta:
         verbose_name = 'پاسخ فرم نظرسنجی'
