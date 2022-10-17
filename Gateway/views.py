@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, DeleteView, UpdateView, CreateView, DetailView, FormView
 from django.urls import reverse_lazy
 from ACL.mixins import SuperUserRequiredMixin, PermissionMixin
+from Shop.models import Category
 from .filters import PaymentTransactionFilters
 from .models import *
 from django.conf import settings
@@ -30,4 +31,5 @@ class PaymentTransactionListView(PermissionMixin, ListView):
         context = super().get_context_data()
         context['status_filter_items'] = [{"name": i[1], "id": i[0]} for i in STATUS_CHOICES]
         context['item_type_filter_items'] = [{"name": i[1], "id": i[0]} for i in PAYMENT_ITEM_TYPES.CHOICES]
+        context['category_filter_items'] = [{"name": i.title, "id": i.id} for i in Category.objects.all()]
         return context

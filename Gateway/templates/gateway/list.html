@@ -32,10 +32,10 @@
                     <form id="search">
                         <div class="form-group">
                             <div class="row">
-                                {% include 'Admin/Filters/search_input.html' %}
-                                {% include 'Admin/Filters/limit_select_box.html' %}
-                                {% include 'Admin/Filters/select_box.html' with label='وضعیت' name='status' items=status_filter_items %}
-                                {% include 'Admin/Filters/select_box.html' with class='col-lg-2' label='بخش' name='item_type' items=item_type_filter_items %}
+                                {% include 'Admin/Filters/search_input.html' with class='col-lg-3' %}
+                                {% include 'Admin/Filters/select_box.html' with class='col-lg-3' label='وضعیت' name='status' items=status_filter_items %}
+                                {% include 'Admin/Filters/select_box.html' with class='col-lg-3' label='بخش' name='item_type' items=item_type_filter_items %}
+                                {% include 'Admin/Filters/select_box.html' with class='col-lg-3' label='دسته بندی فروشگاه' name='category' items=category_filter_items %}
                             </div>
                         </div>
                     </form>
@@ -66,7 +66,7 @@
 
                             <td>{{ item.amount | persian_int | intcomma:False | default:'---' }} تومان</td>
 
-                            <td>{{ item.ref_id }}</td>
+                            <td>{{ item.ref_id | default:'---' }}</td>
 
                             <td><a role="button"
                                        class="label label-{{ item.get_item_type_class }}-border rounded">

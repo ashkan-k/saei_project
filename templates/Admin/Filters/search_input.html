@@ -1,4 +1,4 @@
-<div class="col-3 col-lg-4">
+<div class="col-3 {{ class|default:'col-lg-4' }}">
     <label for="search" style="margin-right: 15px !important;">جستجو</label>
     <input style="margin-bottom: 30px !important" id="search_text"
            value="{{ request.GET.search }}" type="text" name="search"

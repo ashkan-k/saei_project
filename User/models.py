@@ -147,7 +147,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     def full_name(self):
         if self.first_name and self.last_name:
             return f"{self.first_name} {self.last_name}"
-        return self.phone
+        return self.national_id or '---'
 
     def user_role(self):
         return self.role if hasattr(self, 'role') else None
