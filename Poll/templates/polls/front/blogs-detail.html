@@ -1,0 +1,103 @@
+{% extends 'Layouts/front-master.html' %}
+{% load static public_tags humanize %}
+
+{% block title %}{{ object.title | default_if_none:'---' }}{% endblock %}
+
+{% block Styles %}
+    <link rel="stylesheet" href="{% static 'front/styles/articleDetails.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="d-sm-flex justify-content-between container">
+        <main class="container text-end bg-light main">
+            <div class="text-center article"> {{ object.title | default_if_none:'---' }} </div>
+            <hr>
+            <div class="col-lg-6 img-article">
+                <img style="max-width: 754px!important; max-height: 362px!important;" src="{{ object.get_image }}"
+                     alt="{{ object.title }}" class="img-fluid mx-xl-4 rounded-3">
+            </div>
+            <div class="d-flex justify-content-start">
+                <img class="rounded-circle p-3" src="{{ object.user.get_avatar }}"
+                     style="max-width: 75px!important; max-height: 75px!important;"
+                     alt="{{ object.user }}">
+                <p class="pt-3" style="font-size: 16px; color: black;"> {{ object.user | default_if_none:'---' }} </p>
+                <p class="pt-3 px-3" style="font-size: 15px; color: black;">{{ object.created_at | jdate }}</p>
+            </div>
+            <p style="font-size: 14px;">{{ object.text | default_if_none:'---' | safe }}</p>
+        </main>
+        <aside class="sidbar bg-light mx-sm-5">
+            <p class="text-center aside">دسته بندی ها</p>
+            <hr>
+            <ul class="mt-3">
+
+                {% for item in categories %}
+                    <li class="p-1 mx-4"><a href="{% url 'category-blogs' item.slug %}"
+                                            class="grouping">{{ item.title | default_if_none:'---' }}</a></li>
+                {% endfor %}
+
+            </ul>
+        </aside>
+    </div>
+    <div class="container " id="ansver">
+        <form action="{% url 'blogs-comments-create' %}?next_url={% url 'blogs-detail' object.slug %}" class=""
+              method="post">
+            {% csrf_token %}
+            <p class="p-2" style="color: black;">نظر خود را وارد کنید</p>
+
+            <input type="hidden" name="blog" value="{{ object.id }}">
+
+            <textarea id="" name="text" rows="8" cols="50" maxlength="150" placeholder="نظر خود را وارد نمایید..."
+                      required class="p-3 rounded-3"></textarea>
+            <br>
+            <input type="submit" value="ثبت دیدگاه شما" class="px-5 py-2 rounded-3 my-4 btn"
+                   style="background-color: #4baeb5; color:white;">
+        </form>
+    </div>
+
+    <div class="card-deck slideshow-container">
+
+        {% for item in comments %}
+            <div class="col-sm-12 d-flex justify-content-center">
+                <div class="bg-light comment card mySlides">
+                    <div class="d-flex justify-content-center">
+                        <img class="border rounded-circle imag my-2 mx-1" src="{{ item.user.get_avatar }}"
+                             alt="{{ item.user }}">
+                        <a href="http://127.0.0.1:5500/profile.html">
+                            <h4 class="pt-4 px-1"
+                                style="font-size: 15px;"> {{ item.user | default_if_none:'---' }} </h4>
+                        </a>
+                        <span class="pt-4 px-1">{{ item.user | jdate }}</span>
+                        {#                        <div class="pt-3 px-3">#}
+                        {#                            <a href="#ansver"><button type="button" onclick="ReplyComment(106064)"#}
+                        {#                                    class="border-0 rounded-3 p-1"#}
+                        {#                                    style="background-color: rgb(17, 145, 145); color: rgb(183, 251, 251);"> ثبت پاسخ#}
+                        {#                                </button></a>#}
+                        {#                            <button type="button" onclick="ReportComment(106064)" class="border-0 rounded-3 p-1"#}
+                        {#                                style="background-color: #d9ab35; color: rgb(242, 242, 169);"> گزارش </button>#}
+                        {#                        </div>#}
+                    </div>
+                    <hr>
+                    <div>
+                        <p class="px-2 py-2">{{ item.text | default_if_none:'---' }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+        <a class="next" onclick="plusSlides(1)">&#10095;</a>
+    </div>
+
+{% endblock %}
+
+{% block Scripts %}
+    <script src="{% static 'front/js/articleDetails.js' %}"></script>
+
+    <script>
+        {% if messages %}
+            {% for item in messages %}
+                createToast('success', '{{ item }}');
+            {% endfor %}
+        {% endif %}
+    </script>
+{% endblock %}

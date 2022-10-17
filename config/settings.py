@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'Installment',
     'Sms',
     'Help',
+    'Poll',
 
     'Index',
 ]

@@ -42,6 +42,7 @@ urlpatterns = [
     path('', include('Installment.urls')),
     path('', include('Sms.urls')),
     path('', include('Help.urls')),
+    path('', include('Poll.urls')),
 
 
     path('', include('Index.urls')),

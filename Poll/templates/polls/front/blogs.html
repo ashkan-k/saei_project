@@ -1,0 +1,161 @@
+{% extends 'Layouts/front-master.html' %}
+{% load static public_tags humanize %}
+
+{% block title %}بلاگ{% endblock %}
+
+{% block Styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'front/styles/news.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'front/styles/news_responsive.css' %}">
+{% endblock %}
+
+{% block content %}
+    <!-- Home -->
+
+    <div class="home">
+        <!-- Background image artist https://unsplash.com/@thepootphotographer -->
+        <div class="home_background parallax_background parallax-window" data-parallax="scroll"
+             data-speed="0.8"><img src="{% static 'front/images/news.jpg' %}" alt="picture"></div>
+        <div class="home_container">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="home_content text-center mt-5">
+                            <div class="home_title">{% if request.resolver_match.kwargs.slug %}مقالات دسته بندی
+                                {{ request.resolver_match.kwargs.slug }}{% else %}وبلاگ{% endif %}</div>
+                            <div class="breadcrumbs">
+                                <ul>
+                                    <li><a href="/">خانه</a></li>
+                                    <li>وبلاگ</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- News -->
+
+    <div class="news">
+        <div class="container">
+            <div class="row">
+
+                <!-- News Posts -->
+                <div class="col-lg-8">
+                    <div class="news_posts">
+
+                        {% for item in blogs %}
+                            <!-- News Post -->
+                            <div class="news_post">
+                                <div class="news_post_image"><img src="{{ item.get_image }}" alt="{{ item.title }}">
+                                </div>
+                                <div class="news_post_body">
+                                    <div class="news_post_date"><a href="#">{{ item.created_at | jdate }}</a></div>
+                                    <div class="news_post_title"><a
+                                            href="{% url 'blogs-detail' item.slug %}">{{ item.title }}</a></div>
+                                    <div class="news_post_meta d-flex flex-row align-items-start justify-content-start">
+                                        <div class="news_post_author">توسط <a href="#">{{ item.user }}</a></div>
+                                        <div class="news_post_comments" style="margin-right: 10px!important;"><a href="#">{{ item.blog_comments.count }}
+                                            نظر</a></div>
+                                        {#                                        <div class="news_post_tags">#}
+                                        {#                                            <span>in </span>#}
+                                        {#                                            <ul>#}
+                                        {#                                                <li><a href="#">Social Media</a></li>#}
+                                        {#                                            </ul>#}
+                                        {#                                        </div>#}
+                                    </div>
+                                    <div class="news_post_text">
+                                        <p>{{ item.text | default_if_none:'---' | truncatechars:200 | safe }}</p>
+                                    </div>
+                                    <div class="news_post_link"><a href="{% url 'blogs-detail' item.slug %}">بیشتر</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="col-lg-4">
+                    <div class="sidebar">
+                        <div class="sidebar_search">
+                            <form id="sidebar_search_form" class="sidebar_search_form">
+                                <input type="text" class="sidebar_search_input px-5" placeholder="جستجو" name="search">
+                                <button type="submit" class="sidebar_search_button"><i class="fa fa-search"
+                                                                                       aria-hidden="true"></i></button>
+                            </form>
+                        </div>
+                        <div class="sidebar_categories">
+                            <div class="sidebar_title">دسته بندی ها</div>
+                            <div class="sidebar_links">
+                                <ul>
+                                    {% for item in categories %}
+                                        <li><a href="{% url 'category-blogs' item.slug %}">{{ item.title }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="sidebar_latest_posts">
+                            <div class="sidebar_title">آخرین مقالات</div>
+                            <div class="latest_posts">
+
+                                {% for item in last_blogs %}
+                                    <!-- News Post -->
+                                    <div class="latest_post d-flex flex-row align-items-start justify-content-start">
+                                        <div>
+                                            <div class="latest_post_image"><img src="{{ item.get_image }}"
+                                                                                alt="{{ item.title }}">
+                                            </div>
+                                        </div>
+                                        <div class="latest_post_body">
+                                            <div class="latest_post_date px-3">{{ item.created_at | jdate }}</div>
+                                            <div class="latest_post_title px-3"><a
+                                                    href="{% url 'blogs-detail' item.slug %}">{{ item.title }}</a></div>
+                                            <div class="latest_post_author px-3">توسط <a href="#">{{ item.user }}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                        {#                        <div class="sidebar_elearn">#}
+                        {#                            <div class="elearn">#}
+                        {#                                <div class="elearn_background" style="background-image:url(images/elearn.jpg)">#}
+                        {#                                </div>#}
+                        {#                                <div#}
+                        {#                                        class="elearn_content d-flex flex-column align-items-center justify-content-end">#}
+                        {#                                    <div class="elearn_line">Get a 20% Discount</div>#}
+                        {#                                    <div class="elearn_link"><a href="#">Register now</a></div>#}
+                        {#                                    <div class="dcount">#}
+                        {#                                        <div#}
+                        {#                                                class="dcount_content d-flex flex-column align-items-center justify-content-center">#}
+                        {#                                            <div class="dcount_value">20%</div>#}
+                        {#                                            <div class="dcount_text">off</div>#}
+                        {#                                        </div>#}
+                        {#                                    </div>#}
+                        {#                                </div>#}
+                        {#                            </div>#}
+                        {#                        </div>#}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            {% include 'Front/pagination.html' with page_obj=page_obj %}
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block Scripts %}
+    <script>
+        {% if messages %}
+            {% for item in messages %}
+                createToast('success', '{{ item }}');
+            {% endfor %}
+        {% endif %}
+    </script>
+{% endblock %}

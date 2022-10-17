@@ -4,7 +4,6 @@ from dateutil.relativedelta import relativedelta
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.utils import timezone
-
 from Class.models import Class
 from QuizBuilder.helpers import QUIZ_STATUS, UserQuizChoice, QuizStatusClass, UserQuizStatusClass
 from QuizBuilder.mixins import QuizStartedSmsMixin
