@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView, UpdateView, CreateView, DetailView, TemplateView
-from ACL.mixins import PermissionMixin
+from ACL.mixins import PermissionMixin, VerifiedUserMixin
 from Poll.filters import PollFilters, UserPollFilters
 from Poll.forms import PollForm, UserPollEditForm, UserPollCreateForm
 from Poll.models import Poll, UserPoll
@@ -56,7 +56,7 @@ class PollDeleteView(PermissionMixin, DeleteView):
 
 """ UserPoll """
 
-class UserPollListView(PermissionMixin, ListView):
+class UserPollListView(VerifiedUserMixin, ListView):
     model = UserPoll
     context_object_name = 'user_polls'
     paginate_by = settings.PAGINATION_NUMBER
@@ -66,11 +66,11 @@ class UserPollListView(PermissionMixin, ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
         if not self.request.user.is_staff:
-            queryset = queryset.filter(user=self.request.user.classes.all())
+            queryset = queryset.filter(user=self.request.user)
         return UserPollFilters(data=self.request.GET, queryset=queryset).qs
 
 
-class UserPollCreateView(PermissionMixin, CreateView):
+class UserPollCreateView(VerifiedUserMixin, CreateView):
     template_name = "polls/admin/user_polls/form.html"
     model = UserPoll
     form_class = UserPollCreateForm
@@ -87,7 +87,7 @@ class UserPollCreateView(PermissionMixin, CreateView):
 
 
 
-class UserPollUpdateView(PermissionMixin, UpdateView):
+class UserPollUpdateView(VerifiedUserMixin, UpdateView):
     template_name = "polls/admin/user_polls/form.html"
     model = UserPoll
     form_class = UserPollEditForm
@@ -96,11 +96,11 @@ class UserPollUpdateView(PermissionMixin, UpdateView):
     def get_queryset(self):
         queryset = super().get_queryset()
         if not self.request.user.is_staff:
-            queryset = queryset.filter(user=self.request.user.classes.all())
+            queryset = queryset.filter(user=self.request.user)
         return queryset
 
 
-class UserPollDeleteView(PermissionMixin, DeleteView):
+class UserPollDeleteView(VerifiedUserMixin, DeleteView):
     model = UserPoll
     template_name = 'polls/admin/user_polls/list.html'
     success_url = reverse_lazy("user-polls-list")
@@ -108,7 +108,7 @@ class UserPollDeleteView(PermissionMixin, DeleteView):
     def get_queryset(self):
         queryset = super().get_queryset()
         if not self.request.user.is_staff:
-            queryset = queryset.filter(user=self.request.user.classes.all())
+            queryset = queryset.filter(user=self.request.user)
         return queryset
 
     def dispatch(self, *args, **kwargs):
