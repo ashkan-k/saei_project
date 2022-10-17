@@ -66,12 +66,21 @@
                                           method="post">
                                         {% csrf_token %}
 
-                                            <a href="{% url 'user-polls-update' item.id %}"
-                                               class="btn btn-primary btn-action mr-1"
+                                        {% if user|has_perm:'poll_detail' %}
+                                            <a href="{% url 'user-polls-detail' item.id %}"
+                                               class="btn btn-warning btn-action mr-1"
                                                data-toggle="tooltip" title=""
-                                               data-original-title="ویرایش"><i
-                                                    class="fas fa-pencil-alt"></i><i
-                                                    class="fa fa-pencil"> </i> </a>
+                                               data-original-title="جزییات"><i
+                                                    class="fas fa-eye-alt"></i><i
+                                                    class="fa fa-eye"> </i> </a>
+                                        {% endif %}
+
+                                        <a href="{% url 'user-polls-update' item.id %}"
+                                           class="btn btn-primary btn-action mr-1"
+                                           data-toggle="tooltip" title=""
+                                           data-original-title="ویرایش"><i
+                                                class="fas fa-pencil-alt"></i><i
+                                                class="fa fa-pencil"> </i> </a>
 
                                             <button type="button"
                                                     data-original-title="حذف"

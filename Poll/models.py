@@ -34,7 +34,7 @@ class UserPoll(CustomModel):
         related_name='user_polls',
     )
     title = models.CharField(verbose_name='عنوان', max_length=255)
-    desc = models.TextField(verbose_name='توضیحات', max_length=500)
+    text = models.TextField(verbose_name='توضیحات', max_length=500)
 
     class Meta:
         verbose_name = 'پاسخ فرم نظرسنجی'

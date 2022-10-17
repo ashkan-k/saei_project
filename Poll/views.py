@@ -22,7 +22,10 @@ class PollListView(PermissionMixin, ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
         if not self.request.user.is_staff:
-            queryset = queryset.filter(class_item__users__in=self.request.user.classes.all())
+            queryset = queryset.filter(
+                class_item__users__in=self.request.user.classes.all(),
+                is_active=True
+            )
         return PollFilters(data=self.request.GET, queryset=queryset).qs
 
 
@@ -115,3 +118,9 @@ class UserPollDeleteView(VerifiedUserMixin, DeleteView):
         resp = super().dispatch(*args, **kwargs)
         messages.success(self.request, 'آیتم مورد نظر با موفقیت حدف شد.')
         return resp
+
+
+class UserPollDetailView(PermissionMixin, DetailView):
+    permissions = ['poll_detail']
+    template_name = "polls/admin/user_polls/detail.html"
+    model = UserPoll

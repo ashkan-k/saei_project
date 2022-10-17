@@ -10,9 +10,10 @@ dashboard_urls = [
     path('dashboard/polls/delete/<int:pk>/', PollDeleteView.as_view(), name='polls-delete'),
 
     path('dashboard/polls/user/', UserPollListView.as_view(), name='user-polls-list'),
+    path('dashboard/polls/user/create/<int:pk>/', UserPollCreateView.as_view(), name='user-polls-create'),
     path('dashboard/polls/user/update/<int:pk>/', UserPollUpdateView.as_view(), name='user-polls-update'),
     path('dashboard/polls/user/delete/<int:pk>/', UserPollDeleteView.as_view(), name='user-polls-delete'),
-    path('dashboard/polls/user/create/<int:pk>/', UserPollCreateView.as_view(), name='user-polls-create'),
+    path('dashboard/polls/user/detail/<int:pk>/', UserPollDetailView.as_view(), name='user-polls-detail'),
 ]
 
 urlpatterns += dashboard_urls
