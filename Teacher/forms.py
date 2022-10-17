@@ -29,7 +29,7 @@ class TeacherForm(forms.ModelForm):
         model = User
         fields = ['first_name', 'last_name', 'phone', 'password', 'avatar', 'national_id', 'father_name',
                   'marital_status',
-                  'education_level', 'grade', 'address', 'resume_file']
+                  'education_level', 'grade', 'intro_method', 'address', 'resume_file']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

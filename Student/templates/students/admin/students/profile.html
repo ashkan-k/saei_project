@@ -30,6 +30,9 @@
                         <div class="col col-sm-6 col-lg-3 col-md-4 col-xs-6">
                             <p>کد ملی : {{ object.user.national_id | default_if_none:'---' }}</p>
                         </div>
+                         <div class="col col-sm-6 col-lg-3 col-md-4 col-xs-6">
+                            <p>نحوه آشنایی : {{ object.user.get_intro_method | default_if_none:'---' }}</p>
+                        </div>
                     {% endif %}
 
                     {% if user|has_perm:'chats_create' and not user.is_superuser %}

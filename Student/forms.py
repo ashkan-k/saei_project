@@ -11,7 +11,7 @@ class StudentForm(forms.ModelForm):
         model = User
         fields = ['first_name', 'last_name', 'phone', 'password', 'avatar', 'national_id', 'father_name',
                   'marital_status',
-                  'education_level', 'grade', 'address']
+                  'education_level', 'grade', 'intro_method', 'address']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

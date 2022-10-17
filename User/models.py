@@ -13,7 +13,7 @@ from django.core.exceptions import ValidationError
 from django_jalali.db import models as jmodels
 from ACL.permissions import PERMISSIONS
 from utils.validator import mobile_regex, mobile_validator, national_id_regex
-from .helpers import MARITAL_STATUS_CHOICES, EDUCATION_LEVEL_CHOICES
+from .helpers import MARITAL_STATUS_CHOICES, EDUCATION_LEVEL_CHOICES, INTRO_METHOD
 from .managers import UserManager
 from django.conf import settings
 from django.utils.text import slugify
@@ -87,6 +87,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         max_length=128,
         verbose_name='پایه تحصیلی',
     )
+
+    intro_method = models.CharField(verbose_name='نحوه آشنایی', choices=INTRO_METHOD.CHOICES, max_length=100, null=True, blank=True)
 
     address = models.TextField(
         null=True,
@@ -197,3 +199,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     @property
     def get_education_level(self):
         return dict(EDUCATION_LEVEL_CHOICES).get(self.education_level, '')
+
+    @property
+    def get_intro_method(self):
+        return dict(INTRO_METHOD.CHOICES).get(self.intro_method, '---')

@@ -16,6 +16,11 @@
                     <div class="col col-sm-6 col-lg-3 col-md-4 col-xs-6">
                         <p>نام خانوادگی : {{ object.user.last_name | default_if_none:'---' }}</p>
                     </div>
+                    {% if request.user.is_superuser %}
+                        <div class="col col-sm-6 col-lg-3 col-md-4 col-xs-6">
+                            <p>نحوه آشنایی : {{ object.user.get_intro_method | default_if_none:'---' }}</p>
+                        </div>
+                    {% endif %}
                     <div class="col col-sm-6 col-lg-3 col-md-4 col-xs-6">
                         <p>رزمه : <a class="btn btn-danger" href="{{ object.get_resume_file }}"
                                      target="_blank">دانلود</a></p>
