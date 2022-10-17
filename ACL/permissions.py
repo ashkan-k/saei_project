@@ -211,7 +211,8 @@ BLOG_CATEGORY_PERMISSIONS = {
         {'name': 'لیست دسته بندی مقاله', 'code': 'blog_category_list', 'description': 'دسترسی لیست دسته بندی مقاله'},
         {'name': 'افزودن دسته بندی مقاله', 'code': 'blog_category_create',
          'description': 'دسترسی ساخت دسته بندی مقاله جدید'},
-        {'name': 'ویرایش دسته بندی مقاله', 'code': 'blog_category_edit', 'description': 'دسترسی ویرایش دسته بندی مقاله'},
+        {'name': 'ویرایش دسته بندی مقاله', 'code': 'blog_category_edit',
+         'description': 'دسترسی ویرایش دسته بندی مقاله'},
         {'name': 'حذف دسته بندی مقاله', 'code': 'blog_category_delete', 'description': 'دسترسی حذف دسته بندی مقاله'},
     ]
 }
@@ -432,7 +433,6 @@ PAYMENTS_PERMISSIONS = {
 }
 PERMISSIONS.append(PAYMENTS_PERMISSIONS)
 
-
 ######################################################################
 
 BLO_COMMENTS_PERMISSIONS = {
@@ -444,6 +444,21 @@ BLO_COMMENTS_PERMISSIONS = {
     ]
 }
 PERMISSIONS.append(BLO_COMMENTS_PERMISSIONS)
+
+######################################################################
+
+POLL_PERMISSIONS = {
+    'title': 'دسترسی فرم نظرسنجی ها',
+    'permissions': [
+        {'name': 'لیست فرم نظرسنجی ها', 'code': 'poll_list', 'description': 'دسترسی لیست فرم نظرسنجی ها'},
+        {'name': 'افزودن فرم نظرسنجی', 'code': 'poll_create', 'description': 'دسترسی ساخت فرم نظرسنجی جدید'},
+        {'name': 'ویرایش فرم نظرسنجی', 'code': 'poll_edit', 'description': 'دسترسی ویرایش فرم نظرسنجی ها'},
+        {'name': 'حذف فرم نظرسنجی', 'code': 'poll_delete', 'description': 'دسترسی حذف فرم نظرسنجی ها'},
+        {'name': 'جزییات فرم نظرسنجی', 'code': 'poll_detail', 'description': 'دسترسی جزییات فرم نظرسنجی ها'},
+        {'name': 'تغییر وضعیت فرم نظرسنجی', 'code': 'poll_change_status', 'description': 'دسترسی تغییر وضعیت فرم نظرسنجی ها'},
+    ]
+}
+PERMISSIONS.append(POLL_PERMISSIONS)
 
 
 class ROLE_CODES:

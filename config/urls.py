@@ -60,6 +60,7 @@ urlpatterns += [
     path('api/installment/', include('Installment.api.urls')),
     path('api/sms/', include('Sms.api.urls')),
     path('api/shop/', include('Shop.api.urls')),
+    path('api/poll/', include('Poll.api.urls')),
 ]
 
 if settings.DEBUG:

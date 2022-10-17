@@ -27,7 +27,7 @@
                 <div class="card-block">
                     <h4 class="card-title">لیست فرم نظرسنجی ها</h4>
 
-                                     <hr>
+                    <hr>
                     <form id="search">
                         <div class="form-group">
                             <div class="row">
@@ -39,7 +39,8 @@
 
 
                     {% if user|has_perm:'poll_create' %}
-                        <a class="btn btn-primary pull-right" href="{% url 'polls-create' %}">افزودن فرم نظرسنجی جدید</a>
+                        <a class="btn btn-primary pull-right" href="{% url 'polls-create' %}">افزودن فرم نظرسنجی
+                            جدید</a>
 
                     {% endif %}
 
@@ -125,6 +126,52 @@
             </div>
         </div>
 
+        {% if user|has_perm:'poll_change_status' %}
+            <!-- Modal -->
+            <div class="modal fade bd-example-modal-lg" id="changeStatusModal" tabindex="-1" role="dialog"
+                 aria-labelledby="changeStatusModalTitle" aria-hidden="true" dir="rtl"
+                 style="text-align: right !important; margin-top: 250px">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+
+                    <div class="modal-content">
+                        <div class="modal-header" style="width: 100%!important;">
+                            <h5 class="modal-title"
+                                id="exampleModalLongTitle">تغییر وضعیت</h5>
+
+                            <button type="button" class="close ml-2" data-dismiss="modal"
+                                    style="position: absolute!important;left: 0!important; top: 10px"
+                                    aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body {% if field.errors %}has-danger{% endif %}">
+                            <label class="form-label" for="id_{{ field.name }}">
+                                تغییر وضعیت
+                            </label>
+                            <select name="is_active" class="form-control" id="" ng-model="status">
+                                <option ng-selected="status == 1" value="1">فعال</option>
+                                <option ng-selected="status == 0" value="0">غیر فعال</option>
+                            </select>
+                        </div>
+
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" ng-disabled="is_submited">
+                                بستن
+                            </button>&nbsp;
+                            <button type="button" ng-click="ChangeStatus();" ng-disabled="is_submited"
+                                    class="btn btn-primary">ذخیره
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        {% endif %}
+
     </div>
 
 {% endblock %}
@@ -148,5 +195,44 @@
                 }
             })
         }
+    </script>
+
+    <script>
+        app.controller('myCtrl', function ($scope, $http) {
+            $scope.id = null;
+            $scope.status = {};
+            $scope.is_submited = false;
+
+            $scope.ChangeStatusModal = function (id, status) {
+                if (status == 'True') {
+                    status = 1
+                } else {
+                    status = 0
+                }
+
+                $scope.id = id;
+                $scope.status = status;
+                $('#changeStatusModal').modal('show');
+            }
+
+            $scope.ChangeStatus = function () {
+                $scope.is_submited = true;
+
+                var data = {
+                    "is_active": $scope.status
+                };
+
+                $http.patch(`/api/poll/${$scope.id}/`, data).then(res => {
+                    createToast('success', 'وضعیت آیتم مورد نظر با موفقیت تغییر کرد.');
+                    $scope.is_submited = false;
+                    setTimeout(() => {
+                        location.reload()
+                    }, 100)
+                }).catch(err => {
+                    $scope.loading = false;
+                    parseError(err, 'خطایی رخ داد');
+                });
+            }
+        });
     </script>
 {% endblock %}

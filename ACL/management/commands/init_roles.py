@@ -51,6 +51,8 @@ STUDENT_PERMS = [
     'installment_detail',
     'installment_items_list',
     'installment_items_detail',
+
+    'poll_list',
 ]
 
 TEACHER_PERMS = [
