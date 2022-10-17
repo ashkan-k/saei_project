@@ -16,25 +16,29 @@ class Poll(CustomModel):
         verbose_name_plural = 'فرم نظرسنجی ها'
 
     def __str__(self):
-        return self.class_item or '---'
+        return self.class_item.__str__() or '---'
 
 
-# class UserPoll(CustomModel):
-#     """ پاسخنامه کاربر """
-#     user = models.ForeignKey(
-#         to=User,
-#         related_name='polls',
-#         verbose_name='کاربر',
-#         on_delete=models.CASCADE,
-#     )
-#     poll = models.ForeignKey(
-#         to=Poll,
-#         verbose_name='نظرسنجی',
-#         on_delete=models.CASCADE,
-#         related_name='user_polls',
-#     )
-#     title = models.CharField(verbose_name='عنوان', max_length=255)
-#     desc = models.TextField(verbose_name='توضیحات', max_length=500)
-#
-#     def __str__(self):
-#         return f'{self.user}, {self.poll}'
+class UserPoll(CustomModel):
+    """ پاسخنامه کاربر """
+    user = models.ForeignKey(
+        to=User,
+        related_name='polls',
+        verbose_name='کاربر',
+        on_delete=models.CASCADE,
+    )
+    poll = models.ForeignKey(
+        to=Poll,
+        verbose_name='نظرسنجی',
+        on_delete=models.CASCADE,
+        related_name='user_polls',
+    )
+    title = models.CharField(verbose_name='عنوان', max_length=255)
+    desc = models.TextField(verbose_name='توضیحات', max_length=500)
+
+    class Meta:
+        verbose_name = 'پاسخ فرم نظرسنجی'
+        verbose_name_plural = 'پاسخ فرم نظرسنجی ها'
+
+    def __str__(self):
+        return f'{self.user}, {self.poll}'

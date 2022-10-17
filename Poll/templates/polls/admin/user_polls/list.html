@@ -38,11 +38,6 @@
                     </form>
 
 
-                    <a class="btn btn-primary pull-right"
-                       href="{% url 'user-polls-create' %}?class={{ request.resolver_match.kwargs.pk }}">افزودن پاسخ
-                        فرم نظرسنجی جدید</a>
-
-
                     <span id="list">
                                                                                                 {% if object_list %}
                                                                                                     <table class="table table-hover">
@@ -59,7 +54,7 @@
                         <tr>
                             <td>{{ forloop.counter }}</td>
 
-                            <td>{{ item.class_item | default:'---' }}</td>
+                            <td>{{ item.poll | default:'---' }}</td>
 
                             <td>
                                 <div class="buttons ">

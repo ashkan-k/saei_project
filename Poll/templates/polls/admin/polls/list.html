@@ -88,6 +88,12 @@
                                           method="post">
                                         {% csrf_token %}
 
+                                     <a href="{% url 'user-polls-create' item.id %}"
+                                        class="btn btn-success btn-action mr-1"
+                                        data-toggle="tooltip" title=""
+                                        data-original-title="ثبت نظرسنجی"><i
+                                             class="fa fa-plus"> </i> </a>
+
                                         {% if user|has_perm:'poll_edit' %}
                                             <a href="{% url 'polls-update' item.id %}"
                                                class="btn btn-primary btn-action mr-1"

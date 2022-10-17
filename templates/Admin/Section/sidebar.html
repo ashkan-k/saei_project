@@ -18,6 +18,8 @@
                     <li class="{% if request.resolver_match.url_name == 'dashboard' %} active {% endif %}">
                         <a href="
 
+
+
                                 {% if request.user.role_code == 'student' %}{% url 'student-profile' %}{% else %}{% url 'teacher-profile' %}{% endif %}"><i
                                 class="fa fa-info"></i> اطلاعات تکمیلی</a>
                     </li>
@@ -119,30 +121,6 @@
                 {% if request.user|has_perm:'class_list,class_create,class_edit,class_delete,class_detail,course_list,course_create,course_edit,course_delete,course_detail,course_change_status,course_user_list,course_user_create,course_user_edit,course_user_delete,course_user_change_status' %}
                     <li class="menu-title">کلاس و دوره</li>
 
-                    {#                    {% if request.user|has_perm:'course_list,course_create,course_edit,course_delete,course_detail,course_change_status' %}#}
-                    {##}
-                    {#                        <li class="submenu">#}
-                    {#                            <a href="#"><i class="fa fa-graduation-cap" aria-hidden="true"></i> <span>دوره ها</span>#}
-                    {#                                <span#}
-                    {#                                        class="menu-arrow"></span></a>#}
-                    {#                            <ul class="list-unstyled" style="display: none;">#}
-                    {#                                {% if request.user|has_perm:'course_list' %}#}
-                    {#                                    <li><a href="{% url 'courses-list' %}">لیست دوره ها</a></li>#}
-                    {#                                {% endif %}#}
-                    {##}
-                    {#                                {% if request.user|has_perm:'course_create' %}#}
-                    {#                                    <li><a href="{% url 'courses-create' %}">افزودن دوره جدید</a></li>#}
-                    {#                                {% endif %}#}
-                    {##}
-                    {#                                {% if request.user|has_perm:'course_user_list' %}#}
-                    {#                                    <li><a href="{% url 'course-users-list' %}">{% if request.user.is_staff %}لیست کاربران دوره#}
-                    {#                                        ها{% else %}هنرجویان من{% endif %}</a></li>#}
-                    {#                                {% endif %}#}
-                    {#                            </ul>#}
-                    {#                        </li>#}
-                    {##}
-                    {#                    {% endif %}#}
-
                     {% if request.user|has_perm:'class_list,class_create,class_edit,class_delete,class_detail,class_user_list,class_user_create,class_user_edit,class_user_delete,class_user_change_status' %}
 
                         <li class="submenu">
@@ -204,6 +182,19 @@
                         <ul class="list-unstyled" style="display: none;">
                             <li><a href="{% url 'quizzes-list' %}">لیست آزمون ها</a></li>
                             <li><a href="{% url 'user-quizzes-list' %}">لیست پاسخنامه ها</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
+
+                {% if request.user|has_perm:'poll_list,poll_create,poll_edit,poll_delete,poll_detail,poll_change_status' %}
+                    <li class="submenu">
+                        <a href="#"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> <span>نظرسنجی</span> <span
+                                class="menu-arrow"></span></a>
+                        <ul class="list-unstyled" style="display: none;">
+                            {% if request.user|has_perm:'poll_list' %}
+                                <li><a href="{% url 'polls-list' %}">نظرسنجی ها</a></li>
+                            {% endif %}
+                            <li><a href="{% url 'user-polls-list' %}">پاسخ نظرسنجی ها</a></li>
                         </ul>
                     </li>
                 {% endif %}

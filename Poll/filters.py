@@ -21,7 +21,7 @@ class UserPollFilters(filters.FilterSet):
     @staticmethod
     def search_filter(qs, name, value):
         qs = qs.filter(
-            Q(class_item__title__icontains=value) |
+            Q(poll__class_item__title__icontains=value) |
             Q(user__first_name__icontains=value) |
             Q(user__last_name__icontains=value) |
             Q(user__phone__icontains=value) |
