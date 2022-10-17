@@ -80,8 +80,8 @@ def pay(request):
     if result.Status == 100:
         payment_transaction.authority = str(result.Authority)
         payment_transaction.save()
-        return Response({'link': 'https://sandbox.zarinpal.com/pg/StartPay/' + str(result.Authority)}, 200)
-        # return Response({'link': 'https://www.zarinpal.com/pg/StartPay/' + str(result.Authority)}, 200)
+        # return Response({'link': 'https://sandbox.zarinpal.com/pg/StartPay/' + str(result.Authority)}, 200)
+        return Response({'link': 'https://www.zarinpal.com/pg/StartPay/' + str(result.Authority)}, 200)
     else:
         return Response('Error code: ' + str(result.Status), 400)
 
