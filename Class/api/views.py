@@ -56,6 +56,12 @@ class ClassAttendanceViewSet(viewsets.GenericViewSet):
             sms_text = SMS_TEXTS['absent_message'].format(str(date), instance)
             send_sms(phone, sms_text)
 
+    def send_present_users_sms(self, users_data, instance, date):
+        present_user_phones_list = [item.user.phone for item in list(filter(lambda x: x.status == 'present', users_data))]
+        for phone in present_user_phones_list:
+            sms_text = SMS_TEXTS['present_message'].format(str(date), instance)
+            send_sms(phone, sms_text)
+
     @action(
         detail=False,
         methods=['post'],
@@ -68,13 +74,15 @@ class ClassAttendanceViewSet(viewsets.GenericViewSet):
 
         # create ClassAttendance obj and sync users of class to it(ClassUserAttendance)
         users_data = [
-            ClassUserAttendance(user_id=item['user'], status=item['status'], desc=item.get('desc'), class_attendance_id=instance.id)
+            ClassUserAttendance(user_id=item['user'], status=item['status'], desc=item.get('desc'),
+                                class_attendance_id=instance.id)
             for item in users_data
         ]
         ClassUserAttendance.objects.bulk_create(users_data)
 
-        # Send absent users sms
+        # Send absent and present users sms
         self.send_absent_users_sms(users_data, instance, serializer.validated_data.get('date'))
+        self.send_present_users_sms(users_data, instance, serializer.validated_data.get('date'))
         return Response({'status': 'ok'})
 
     @action(
@@ -97,6 +105,7 @@ class ClassAttendanceViewSet(viewsets.GenericViewSet):
 
         ClassUserAttendance.objects.bulk_update(users_data, ['status', 'desc'])
 
-        # Send absent users sms
+        # Send absent and present users sms
         self.send_absent_users_sms(users_data, instance, serializer.validated_data.get('date'))
+        self.send_present_users_sms(users_data, instance, serializer.validated_data.get('date'))
         return Response({'status': 'ok'})
