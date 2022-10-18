@@ -323,7 +323,7 @@
                 <div class="page-content page-container card-box" style="width: 100% !important" id="page-content">
                     <div class="padding">
                         <div class="container d-flex justify-content-center">
-                            <div class="col-md-12" style="width: 90% !important;">
+                            <div class="col-md-12">
                                 <div class="card card-bordered">
                                     <div class="card-header">
                                         <h4 class="card-title"><strong>گفتگو</strong></h4>
@@ -385,15 +385,10 @@
 
                                     <div class="publisher bt-1 border-light"
                                          style="background-color: #aaaaaa30!important;">
-                                        <input class="publisher-input" ng-model="text" type="text"
+{#                                        <input class="publisher-input" ng-model="text" type="text"#}
+                                        <input class="form-control" ng-model="text" type="text"
                                                my-enter="SendMessage()"
                                                placeholder="متن پیام...">
-                                        {#                                        <span class="publisher-btn file-group">#}
-                                        {#                                          <i class="fa fa-paperclip file-browser"></i>#}
-                                        {#                                          <input type="file">#}
-                                        {#                                        </span>#}
-                                        <a class="publisher-btn" href="#" data-abc="true"><i
-                                                class="fa fa-smile"></i></a>
                                         <a ng-disabled="is_submited" class="publisher-btn text-info"
                                            ng-click="SendMessage()" data-abc="true"><i
                                                 class="fa fa-paper-plane"></i></a>
