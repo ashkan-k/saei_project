@@ -103,7 +103,7 @@ class TeachersDeleteView(PermissionMixin, DeleteView):
 ##########################################################
 
 class TeacherAttendancesListView(PermissionMixin, ListView):
-    permissions = ['teacher_list']
+    permissions = ['teacher_attendance_list']
     model = TeacherAttendance
     context_object_name = 'teacher_attendances'
     paginate_by = settings.PAGINATION_NUMBER
@@ -121,7 +121,7 @@ class TeacherAttendancesListView(PermissionMixin, ListView):
 
 
 class TeacherAttendancesCreateView(PermissionMixin, CreateView):
-    permissions = ['teacher_create']
+    permissions = ['teacher_attendance_create']
     template_name = "teachers/admin/teacher_attendances/form.html"
     model = TeacherAttendance
     form_class = TeacherAttendanceForm
@@ -129,7 +129,7 @@ class TeacherAttendancesCreateView(PermissionMixin, CreateView):
 
 
 class TeacherAttendancesUpdateView(PermissionMixin, UpdateView):
-    permissions = ['teacher_edit']
+    permissions = ['teacher_attendance_edit']
     template_name = "teachers/admin/teacher_attendances/form.html"
     model = TeacherAttendance
     form_class = TeacherAttendanceForm
@@ -137,7 +137,7 @@ class TeacherAttendancesUpdateView(PermissionMixin, UpdateView):
 
 
 class TeacherAttendancesDeleteView(PermissionMixin, DeleteView):
-    permissions = ['teacher_delete']
+    permissions = ['teacher_attendance_delete']
     model = TeacherAttendance
     template_name = 'teachers/admin/teacher_attendances/list.html'
     success_url = reverse_lazy("teacher-attendances-list")
@@ -151,7 +151,7 @@ class TeacherAttendancesDeleteView(PermissionMixin, DeleteView):
 ##########################################################
 
 class TeacherPaymentsListView(PermissionMixin, ListView):
-    permissions = ['teacher_list']
+    permissions = ['teacher_payments_list']
     model = TeacherPayment
     context_object_name = 'teacher_attendances'
     paginate_by = settings.PAGINATION_NUMBER
@@ -169,7 +169,7 @@ class TeacherPaymentsListView(PermissionMixin, ListView):
 
 
 class TeacherPaymentsCreateView(PermissionMixin, CreateView):
-    permissions = ['teacher_create']
+    permissions = ['teacher_payments_create']
     template_name = "teachers/admin/teacher_payments/form.html"
     model = TeacherPayment
     form_class = TeacherPaymentForm
@@ -177,7 +177,7 @@ class TeacherPaymentsCreateView(PermissionMixin, CreateView):
 
 
 class TeacherPaymentsUpdateView(PermissionMixin, UpdateView):
-    permissions = ['teacher_edit']
+    permissions = ['teacher_payments_edit']
     template_name = "teachers/admin/teacher_payments/form.html"
     model = TeacherPayment
     form_class = TeacherPaymentForm
@@ -185,7 +185,7 @@ class TeacherPaymentsUpdateView(PermissionMixin, UpdateView):
 
 
 class TeacherPaymentsDeleteView(PermissionMixin, DeleteView):
-    permissions = ['teacher_delete']
+    permissions = ['teacher_payments_delete']
     model = TeacherPayment
     template_name = 'teachers/admin/teacher_payments/list.html'
     success_url = reverse_lazy("teacher-payments-list")

@@ -460,6 +460,35 @@ POLL_PERMISSIONS = {
 }
 PERMISSIONS.append(POLL_PERMISSIONS)
 
+######################################################################
+
+TEACHER_ATTENDANCE_PERMISSIONS = {
+    'title': 'دسترسی حضور و غیاب مدرس ها',
+    'permissions': [
+        {'name': 'لیست حضور و غیاب مدرس ها', 'code': 'teacher_attendance_list', 'description': 'دسترسی لیست حضور و غیاب مدرس ها'},
+        {'name': 'افزودن حضور و غیاب مدرس', 'code': 'teacher_attendance_create', 'description': 'دسترسی ساخت حضور و غیاب مدرس جدید'},
+        {'name': 'ویرایش حضور و غیاب مدرس', 'code': 'teacher_attendance_edit', 'description': 'دسترسی ویرایش حضور و غیاب مدرس ها'},
+        {'name': 'حذف حضور و غیاب مدرس', 'code': 'teacher_attendance_delete', 'description': 'دسترسی حذف حضور و غیاب مدرس ها'},
+        {'name': 'جزییات حضور و غیاب مدرس', 'code': 'teacher_attendance_detail', 'description': 'دسترسی جزییات حضور و غیاب مدرس ها'},
+        {'name': 'تغییر وضعیت حضور و غیاب مدرس', 'code': 'teacher_attendance_change_status', 'description': 'دسترسی تغییر وضعیت حضور و غیاب مدرس ها'},
+    ]
+}
+PERMISSIONS.append(TEACHER_ATTENDANCE_PERMISSIONS)
+
+######################################################################
+
+TEACHER_PAYMENTS_PERMISSIONS = {
+    'title': 'دسترسی پرداختی مدرس ها',
+    'permissions': [
+        {'name': 'لیست پرداختی مدرس ها', 'code': 'teacher_payments_list', 'description': 'دسترسی لیست پرداختی مدرس ها'},
+        {'name': 'افزودن پرداختی مدرس', 'code': 'teacher_payments_create', 'description': 'دسترسی ساخت پرداختی مدرس جدید'},
+        {'name': 'ویرایش پرداختی مدرس', 'code': 'teacher_payments_edit', 'description': 'دسترسی ویرایش پرداختی مدرس ها'},
+        {'name': 'حذف پرداختی مدرس', 'code': 'teacher_payments_delete', 'description': 'دسترسی حذف پرداختی مدرس ها'},
+        {'name': 'جزییات پرداختی مدرس', 'code': 'teacher_payments_detail', 'description': 'دسترسی جزییات پرداختی مدرس ها'},
+        {'name': 'تغییر وضعیت پرداختی مدرس', 'code': 'teacher_payments_change_status', 'description': 'دسترسی تغییر وضعیت پرداختی مدرس ها'},
+    ]
+}
+PERMISSIONS.append(TEACHER_PAYMENTS_PERMISSIONS)
 
 class ROLE_CODES:
     STUDENT = "student"
