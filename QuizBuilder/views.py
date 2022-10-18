@@ -86,7 +86,7 @@ class QuizFormView(PermissionMixin, CheckUerQuizExpireMixin, FormView):
     template_name = "quizzes/admin/quizzes/quiz.html"
     model = Quiz
     form_class = QuizAnswerForm
-    success_url = reverse_lazy('quizzes-list')
+    success_url = reverse_lazy('user-quizzes-list')
 
     @property
     def quiz_object(self):

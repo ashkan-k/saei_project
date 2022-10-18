@@ -38,6 +38,10 @@ DEFAULT_SETTINGS = {
     # Index Poster
     'poster_image': STATIC_URL + os.path.join('front/images/video.jpg'),
     'poster_video': 'https://youtu.be/5_MRXyYjHDk',
+
+    # Index Poster
+    'about_us_image1': STATIC_URL + os.path.join('front/images/about_1.jpg'),
+    'about_us_image2': STATIC_URL + os.path.join('front/images/about_1.jpg'),
 }
 
 

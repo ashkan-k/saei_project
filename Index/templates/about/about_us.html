@@ -46,14 +46,14 @@
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="about_image"><img src="{% static 'front/images/about_1.jpg' %}"
+                    <div class="about_image"><img src="{{ settings.about_us_image1 | striptags }}"
                                                   alt="https://unsplash.com/@jtylernix">
                     </div>
                 </div>
             </div>
             <div class="row about_row row-lg-eq-height">
                 <div class="col-lg-6 order-lg-1 order-2">
-                    <div class="about_image"><img src="{% static 'front/images/about_1.jpg' %}" alt=""></div>
+                    <div class="about_image"><img src="{{ settings.about_us_image2 | striptags }}" alt=""></div>
                 </div>
                 <div class="col-lg-6 order-lg-2 order-1">
                     <div class="about_content">
