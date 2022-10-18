@@ -14,6 +14,11 @@ dashboard_urls = [
     path('dashboard/teacher-attendances/create/', TeacherAttendancesCreateView.as_view(), name='teacher-attendances-create'),
     path('dashboard/teacher-attendances/update/<int:pk>/', TeacherAttendancesUpdateView.as_view(), name='teacher-attendances-update'),
     path('dashboard/teacher-attendances/delete/<int:pk>/', TeacherAttendancesDeleteView.as_view(), name='teacher-attendances-delete'),
+
+    path('dashboard/teacher-payments/', TeacherPaymentsListView.as_view(), name='teacher-payments-list'),
+    path('dashboard/teacher-payments/create/', TeacherPaymentsCreateView.as_view(), name='teacher-payments-create'),
+    path('dashboard/teacher-payments/update/<int:pk>/', TeacherPaymentsUpdateView.as_view(), name='teacher-payments-update'),
+    path('dashboard/teacher-payments/delete/<int:pk>/', TeacherPaymentsDeleteView.as_view(), name='teacher-payments-delete'),
 ]
 
 front_urls = [

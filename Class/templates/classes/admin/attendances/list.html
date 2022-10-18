@@ -28,16 +28,6 @@
                 <div class="card-block">
                     <h4 class="card-title">لیست حضور و غیاب کلاس {{ object.title }}</h4>
 
-                    {#                    <hr>#}
-                    {#                    <form id="search">#}
-                    {#                        <div class="form-group">#}
-                    {#                            <div class="row">#}
-                    {#                                {% include 'Admin/Filters/search_input.html' %}#}
-                    {#                                {% include 'Admin/Filters/limit_select_box.html' %}#}
-                    {#                            </div>#}
-                    {#                        </div>#}
-                    {#                    </form>#}
-
                     {% if user|has_perm:'class_attendance_create' %}
                         <a class="btn btn-primary pull-right"
                            href="{% url 'class-attendances-create' request.resolver_match.kwargs.pk %}">ثبت حضور و غیاب
