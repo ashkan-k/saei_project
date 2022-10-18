@@ -41,8 +41,8 @@
                     </form>
 
 
-                    {% if user|has_perm:'teacher_create' %}
-                        <a class="btn btn-primary pull-right" href="{% url 'teachers-create' %}">افزودن حضور و غیاب مدرس
+                    {% if user|has_perm:'teacher_attendance_create' %}
+                        <a class="btn btn-primary pull-right" href="{% url 'teacher-attendances-create' %}">افزودن حضور و غیاب مدرس
                             جدید</a>
 
                     {% endif %}
@@ -57,6 +57,7 @@
                         <th>ردیف</th>
                         <th>استاد</th>
                         <th>تاریخ</th>
+                        <th>توضیحات</th>
                         <th>اعمال</th>
                     </tr>
                     </thead>
@@ -70,15 +71,17 @@
 
                             <td>{{ item.date | jdate | default:'---' }}</td>
 
+                            <td title="{{ item.desc | default:'---' }}">{{ item.desc | default:'---' | truncatechars:50 }}</td>
+
                             <td>
                                 <div class="buttons ">
-                                    <form action="{% url 'teachers-delete' item.user.id %}"
+                                    <form action="{% url 'teacher-attendances-delete' item.id %}"
                                           id="delete_form_{{ item.id }}"
                                           method="post">
                                         {% csrf_token %}
 
-                                        {% if user|has_perm:'teacher_edit' %}
-                                            <a href="{% url 'teachers-update' item.user.id %}"
+                                        {% if user|has_perm:'teacher_attendance_edit' %}
+                                            <a href="{% url 'teacher-attendances-update' item.id %}"
                                                class="btn btn-primary btn-action mr-1"
                                                data-toggle="tooltip" title=""
                                                data-original-title="ویرایش"><i
@@ -86,7 +89,7 @@
                                                     class="fa fa-pencil"> </i> </a>
                                         {% endif %}
 
-                                        {% if user|has_perm:'teacher_delete' %}
+                                        {% if user|has_perm:'teacher_attendance_delete' %}
                                             <button type="button"
                                                     data-original-title="حذف"
                                                     data-toggle="tooltip"

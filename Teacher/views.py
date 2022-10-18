@@ -4,7 +4,7 @@ from django.views.generic import ListView, DeleteView, UpdateView, CreateView, D
 # from Subscription.models import Type
 from User.forms import UserSimpleForm
 from ACL.mixins import VerifiedUserMixin, AnonymousUserMixin, SuperUserRequiredMixin, PermissionMixin
-from .filters import TeacherFilters
+from .filters import TeacherFilters, TeacherAttendanceFilters
 from .forms import *
 from .models import Teacher
 from django.conf import settings
@@ -93,6 +93,54 @@ class TeachersDeleteView(PermissionMixin, DeleteView):
     model = User
     template_name = 'teachers/admin/teachers/list.html'
     success_url = reverse_lazy("teachers-list")
+
+    def dispatch(self, *args, **kwargs):
+        resp = super().dispatch(*args, **kwargs)
+        messages.success(self.request, 'آیتم مورد نظر با موفقیت حدف شد.')
+        return resp
+
+
+##########################################################
+
+class TeacherAttendancesListView(PermissionMixin, ListView):
+    permissions = ['teacher_list']
+    model = TeacherAttendance
+    context_object_name = 'teacher_attendances'
+    paginate_by = settings.PAGINATION_NUMBER
+    ordering = ['-created_at']
+    template_name = 'teachers/admin/teacher_attendances/list.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data()
+        context['status_filter_items'] = [{"name": i[1], "id": i[0]} for i in (('1', 'تایید شده'), ('0', 'تایید نشده'))]
+        return context
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return TeacherAttendanceFilters(data=self.request.GET, queryset=queryset).qs
+
+
+class TeacherAttendancesCreateView(PermissionMixin, CreateView):
+    permissions = ['teacher_create']
+    template_name = "teachers/admin/teacher_attendances/form.html"
+    model = TeacherAttendance
+    form_class = TeacherAttendanceForm
+    success_url = reverse_lazy("teacher-attendances-list")
+
+
+class TeacherAttendancesUpdateView(PermissionMixin, UpdateView):
+    permissions = ['teacher_edit']
+    template_name = "teachers/admin/teacher_attendances/form.html"
+    model = TeacherAttendance
+    form_class = TeacherAttendanceForm
+    success_url = reverse_lazy("teacher-attendances-list")
+
+
+class TeacherAttendancesDeleteView(PermissionMixin, DeleteView):
+    permissions = ['teacher_delete']
+    model = TeacherAttendance
+    template_name = 'teachers/admin/teacher_attendances/list.html'
+    success_url = reverse_lazy("teacher-attendances-list")
 
     def dispatch(self, *args, **kwargs):
         resp = super().dispatch(*args, **kwargs)
