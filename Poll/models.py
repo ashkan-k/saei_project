@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 from Class.models import Class
-from media.helpers import POLL_QUESTION_OPTIONS
+from .helpers import POLL_QUESTION_OPTIONS
 from utils.models import CustomModel
 
 User = get_user_model()
