@@ -56,6 +56,11 @@ class StudentsListView(PermissionMixin, ListView):
     ordering = ['-created_at']
     template_name = 'students/admin/students/list.html'
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data()
+        context['status_filter_items'] = [{"name": i[1], "id": i[0]} for i in (('1', 'تایید شده'), ('0', 'تایید نشده'))]
+        return context
+
     def get_queryset(self):
         queryset = super().get_queryset()
         return StudentFilters(data=self.request.GET, queryset=queryset).qs

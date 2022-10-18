@@ -30,9 +30,6 @@ class TeacherFilters(filters.FilterSet):
 
     @staticmethod
     def status_filter(qs, name, value):
-        if value == 1:
-            qs = qs.filter(is_approved=True)
-        else:
-            qs = qs.filter(is_approved=True)
+        qs = qs.filter(is_approved=value)
         return qs
 

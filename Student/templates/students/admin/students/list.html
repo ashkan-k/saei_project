@@ -33,6 +33,9 @@
                             <div class="row">
                                 {% include 'Admin/Filters/search_input.html' %}
                                 {% include 'Admin/Filters/limit_select_box.html' %}
+                                {% if request.user.is_staff %}
+                                    {% include 'Admin/Filters/select_box.html' with label='وضعیت' name='status' items=status_filter_items %}
+                                {% endif %}
                             </div>
                         </div>
                     </form>
