@@ -6,6 +6,7 @@ from utils.models import CustomModel
 from utils.validator import validate_file_size
 from ACL.models import Role
 from ACL.permissions import ROLE_CODES
+from django_jalali.db import models as jmodels
 
 User = get_user_model()
 
@@ -77,3 +78,31 @@ class Teacher(CustomModel):
             name = self.user.phone
 
         return name
+
+
+class TeacherPayment(CustomModel):
+    teacher = models.ForeignKey(verbose_name='استاد', to=Teacher, on_delete=models.CASCADE,
+                                related_name='teacher_attendances')
+    date = jmodels.jDateField(verbose_name='تاریخ')
+    amount = models.CharField(verbose_name='مبلغ', max_length=255)
+
+    class Meta:
+        verbose_name = 'پرداختی مدرس'
+        verbose_name_plural = 'پرداختی مدرس ها'
+
+    def __str__(self):
+        return f"{self.teacher}-{self.date}"
+
+
+class TeacherAttendance(CustomModel):
+    teacher = models.ForeignKey(verbose_name='استاد', to=Teacher, on_delete=models.CASCADE,
+                                related_name='teacher_payments')
+    date = jmodels.jDateField(verbose_name='تاریخ')
+    desc = models.TextField(verbose_name='توضیح')
+
+    class Meta:
+        verbose_name = 'حضور و غیاب مدرس'
+        verbose_name_plural = 'حضور و غیاب مدرس ها'
+
+    def __str__(self):
+        return f"{self.teacher}-{self.date}"

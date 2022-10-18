@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.core.validators import FileExtensionValidator, MinLengthValidator, MaxLengthValidator, RegexValidator
 
-from Teacher.models import Teacher
+from Teacher.models import Teacher, TeacherPayment, TeacherAttendance
 from utils.validator import validate_file_size
 
 User = get_user_model()
@@ -61,3 +61,15 @@ class TeacherForm(forms.ModelForm):
         # teacher_profile.approve()
 
         return instance
+
+
+class TeacherPaymentForm(forms.ModelForm):
+    class Meta:
+        model = TeacherPayment
+        fields = '__all__'
+
+
+class TeacherAttendanceForm(forms.ModelForm):
+    class Meta:
+        model = TeacherAttendance
+        fields = '__all__'
