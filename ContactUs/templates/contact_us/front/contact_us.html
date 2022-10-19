@@ -75,7 +75,7 @@
                                         </a>
                                     </div>
                                     <div class="contact_about_text">
-                                        <p>{{ settings.contact_us }}</p>
+                                        <p>{{ settings.contact_us | safe }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -85,15 +85,15 @@
                                     <div class="contact_info">
                                         <div class="contact_info_item">
                                             <div class="contact_info_title">آدرس:</div>
-                                            <div class="contact_info_line">{{ settings.address }}</div>
+                                            <div class="contact_info_line">{{ settings.address | safe }}</div>
                                         </div>
                                         <div class="contact_info_item">
                                             <div class="contact_info_title">تلفن:</div>
-                                            <div class="contact_info_line">{{ settings.tel }}</div>
+                                            <div class="contact_info_line">{{ settings.tel | striptags }}</div>
                                         </div>
                                         <div class="contact_info_item">
                                             <div class="contact_info_title">ایمیل:</div>
-                                            <div class="contact_info_line">{{ settings.email }}</div>
+                                            <div class="contact_info_line">{{ settings.email | striptags }}</div>
                                         </div>
                                     </div>
                                 </div>

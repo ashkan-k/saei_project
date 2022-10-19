@@ -352,7 +352,7 @@
                         <div class="video_container">
                             <!-- Video poster image artist: https://unsplash.com/@annademy -->
                             <video id="vid1" class="video-js vjs-default-skin" controls
-                                   data-setup='{ "poster": "{{ settings.poster_image }}", "techOrder": ["youtube"], "sources": [{ "type": "video/youtube", "src": "{{ settings.poster_video }}"}], "youtube": { "iv_load_policy": 1 } }'>
+                                   data-setup='{ "poster": "{{ settings.poster_image | striptags }}", "techOrder": ["youtube"], "sources": [{ "type": "video/youtube", "src": "{{ settings.poster_video }}"}], "youtube": { "iv_load_policy": 1 } }'>
                             </video>
                         </div>
                     </div>
@@ -370,7 +370,7 @@
                     <div class="section_title text-end">
                         <h2>همین امروز عضو مجموعه بزرگ دانشجویان ساعی شوید</h2>
                     </div>
-                    <div class="section_subtitle text-end">{{ settings.today_join_us_text }}</div>
+                    <div class="section_subtitle text-end">{{ settings.today_join_us_text | safe }}</div>
                 </div>
             </div>
         </div>
