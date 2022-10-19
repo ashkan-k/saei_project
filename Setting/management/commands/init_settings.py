@@ -21,6 +21,8 @@ DEFAULT_SETTINGS = {
     'email': """yourmail@Saei.com""",
     'telegram': """saei""",
     'whatsapp': """https://wa.me/qr/L7BFPCZNPX7QB1""",
+    'twitter': """saei""",
+    'youtube': """saei""",
     'instagram': """saei""",
 
     # Links
