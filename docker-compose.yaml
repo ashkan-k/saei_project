@@ -12,6 +12,8 @@ services:
     command: bash -c "python3 /app/manage.py makemigrations && python3 /app/manage.py migrate && /usr/local/bin/gunicorn config.wsgi:application -w 2 -b :8000"
     networks:
       - saei
+    volumes:
+      - media:/app/media/
 
   postgres:
     restart: always
@@ -55,6 +57,7 @@ volumes:
   pgdata:
   redisdata:
   pgadmin:
+  media:
 
 networks:
   saei:
