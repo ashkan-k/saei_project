@@ -13,7 +13,7 @@ services:
     networks:
       - saei
     volumes:
-      - media:/app/media/
+      - media:/app/media/:rw
 
   postgres:
     restart: always
