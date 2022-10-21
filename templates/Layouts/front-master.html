@@ -181,7 +181,7 @@
         </nav>
         <div class="menu_extra">
             <div style="direction: ltr!important;" class="menu_phone"><span style="direction: ltr!important;"
-                                                                            class="menu_title">تلفن:</span>{{ settings.tel | striptags }}
+                                                                            class="menu_title">تلفن:</span>{{ settings.tel | striptags | safe }}
             </div>
             <div class="menu_social">
                 <span class="menu_title">ما را دنبال کنید</span>
@@ -286,7 +286,7 @@
                             </div>
                             <div class="footer_contact_item">
                                 <div class="footer_contact_title">تلفن:</div>
-                                <div dir="ltr" class="footer_contact_line">{{ settings.tel | striptags }}</div>
+                                <div dir="ltr" class="footer_contact_line">{{ settings.tel | striptags | safe }}</div>
                             </div>
                             <div class="footer_contact_item">
                                 <div class="footer_contact_title">ایمیل:</div>
