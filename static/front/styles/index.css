@@ -28,3 +28,7 @@ body{
 .course_input::placeholder{
 	padding-right: 3%;
 }
+
+.social-icons-font{
+	font-size: 25px !important;
+}
