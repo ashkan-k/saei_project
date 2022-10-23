@@ -32,3 +32,8 @@ body{
 .social-icons-font{
 	font-size: 25px !important;
 }
+
+.prev:hover, .next:hover {
+    background-color: #43bfc7;
+    color: white;
+}
