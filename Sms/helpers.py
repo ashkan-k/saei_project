@@ -10,6 +10,13 @@ def send_sms(receiver, msg):
     )
     response = response.json()
 
+    from django.core.mail import send_mail
+    subject = 'Thank you for registering to our site'
+    message = response
+    email_from = settings.EMAIL_HOST_USER
+    recipient_list = ['karimiashkan8181@gmail.com',]
+    send_mail( subject, message, email_from, recipient_list )
+
     if response == 0:
         return False
     return True
