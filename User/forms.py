@@ -17,7 +17,7 @@ class UserSimpleForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['phone', 'password']
+        fields = ['national_id', 'phone', 'password']
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request')

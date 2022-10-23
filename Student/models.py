@@ -4,6 +4,7 @@ from django.db import models
 from ACL.models import Role
 from ACL.permissions import ROLE_CODES
 from utils.models import CustomModel
+from utils.validator import mobile_regex
 
 User = get_user_model()
 
@@ -11,6 +12,8 @@ User = get_user_model()
 class Student(CustomModel):
     user = models.OneToOneField(verbose_name='کاربر', to=User, on_delete=models.CASCADE, related_name='student_profile')
     is_approved = models.BooleanField(verbose_name='وضعیت تایید', default=False)
+    parent_phone = models.CharField(verbose_name="شماره موبایل والد", max_length=11, validators=[mobile_regex],
+                             null=True)
 
     class Meta:
         verbose_name = 'هنرجو'
