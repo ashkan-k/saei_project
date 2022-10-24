@@ -115,6 +115,11 @@
 
 {% block Scripts %}
     <script>
+        $('#id_user').select2();
+        $('#id_class_item').select2();
+    </script>
+
+    <script>
         kamaDatepicker('id_date', {
             placeholder: 'تاریخ',
             buttonsColor: 'blue',

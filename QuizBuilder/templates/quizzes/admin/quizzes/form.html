@@ -89,7 +89,7 @@
                                     <tbody id="sortable">
                                     <tr style="cursor: pointer" ng-repeat="(key, item) in questions">
                                         <td>
-                                            [[ key+1 ]]
+                                            [[ key + 1 ]]
                                         </td>
                                         <td>
                                             [[item.description]]
@@ -164,7 +164,7 @@
                             <div class="row">
                                 <div class="col-lg-1 col-sm-1 col-md-1 col-xs-1 pl-0 ">
                                     <div class="arrow-v mt-1 modal-body">
-                                        [[id+1]]
+                                        [[id + 1]]
                                     </div>
                                 </div>
                                 <div class="col-lg-10 col-sm-10 col-md-10 col-xs-10 modal-body">
@@ -228,6 +228,10 @@
 
 
 {% block Scripts %}
+
+    <script>
+        $('#id_class_item').select2();
+    </script>
 
     <script>
         kamaDatepicker('id_expire_time', {

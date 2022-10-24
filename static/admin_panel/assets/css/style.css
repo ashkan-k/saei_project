@@ -1769,3 +1769,13 @@ blockquote p {font-style: italic;font-weight: 400;}
 	.custom-menu.navbar-nav > li > a {margin-left: 10px;}
 	.profile-bg {height:180px;}
 }
+
+.select2-selection__rendered {
+    line-height: 31px !important;
+}
+.select2-container .select2-selection--single {
+    height: 35px !important;
+}
+.select2-selection__arrow {
+    height: 34px !important;
+}

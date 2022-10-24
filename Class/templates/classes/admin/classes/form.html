@@ -58,6 +58,10 @@
 {% endblock %}
 
 {% block Scripts %}
+     <script>
+        $('#id_teacher').select2();
+    </script>
+
     <script>
         $(document).ready(function () {
             $("#id_start_time").timepicker();
