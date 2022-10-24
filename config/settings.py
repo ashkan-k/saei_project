@@ -54,7 +54,6 @@ INSTALLED_APPS = [
     'Auth',
     'Student',
     'Teacher',
-    'Course',
     'Class',
     'Setting',
     'Slider',

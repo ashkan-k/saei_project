@@ -67,7 +67,7 @@
 
                             <td><a href="{% url 'classes-detail' item.id %}">{{ item.title | default:'---' }}</a></td>
 
-                            <td title="{{ item.desc }}">{{ item.desc | truncatechars:30 | default:'---' }}</td>
+                            <td title="{{ item.desc }}">{{ item.desc | truncatechars:10 | default:'---' }}</td>
 
                             <td>{{ item.amount | intcomma:False | persian_int | default:'---' }} تومان</td>
 
