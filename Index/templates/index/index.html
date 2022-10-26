@@ -2,7 +2,17 @@
 {% load static public_tags humanize %}
 
 {% block Styles %}
+    <style>
+        @media only screen and (max-width: 600px) {
+            .special_course_margin {
+                margin-top: 0px !important;
+            }
 
+            .special_course_margin_top_col {
+                margin-bottom: 0px !important;
+            }
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
@@ -78,7 +88,7 @@
     {% if special_class %}
         <div class="featured_container my-5 d-flex justify-content-center">
             <div class="row" style="width: 100%">
-                <div class="col-lg-6 featured_col">
+                <div class="col-lg-6 featured_col special_course_margin_top_col">
                     <div class="featured_content my-5 mx-5">
                         <div class="featured_header d-flex flex-row align-items-center justify-content-start">
                             <div class="featured_tag rounded-2"><a href="#">ویژه</a></div>
@@ -87,7 +97,8 @@
                         </div>
                         <div class="featured_title">
                             <h3>
-                                <a href="{% url 'class-details' special_class.slug %}">{{ special_class.title | default_if_none:'---' }}</a>
+                                <a href="{% url 'class-details' special_class.slug %}">
+                                    {{ special_class.title | default_if_none:'---' }}</a>
                             </h3>
                         </div>
                         <div class="featured_text">{{ special_class.desc | default_if_none:'---' }}</div>
@@ -105,7 +116,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 featured_col my-5">
+                <div class="col-lg-6 featured_col my-5 special_course_margin">
                     <!-- Background image artist https://unsplash.com/@jtylernix -->
                     <div class="featured_background"
                          style="background-image:url({{ special_class.get_cover }})">
