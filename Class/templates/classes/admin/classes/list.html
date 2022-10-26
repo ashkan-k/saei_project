@@ -35,6 +35,9 @@
                                 {% include 'Admin/Filters/search_input.html' %}
                                 {% include 'Admin/Filters/limit_select_box.html' %}
                                 {% include 'Admin/Filters/select_box.html' with label='وضعیت' name='status' items=status_filter_items %}
+                                {% if user.is_staff %}
+                                    {% include 'Admin/Filters/select_box.html' with label='نمایش صفحه اصلی' name='is_show_in_slider' class='col-lg-2' items=is_show_in_slider_items %}
+                                {% endif %}
                             </div>
                         </div>
                     </form>

@@ -25,6 +25,7 @@ class ClassesListView(PermissionMixin, ListView):
         context = super(ClassesListView, self).get_context_data()
         context['change_status_form'] = ClassChangeStatusForm()
         context['status_filter_items'] = [{"name": i[1], "id": i[0]} for i in CLASS_STATUS.CHOICES]
+        context['is_show_in_slider_items'] = [{"name": i[1], "id": i[0]} for i in [(1, 'نمایشی ها'), (0, 'عدم نمایشی ها')]]
         return context
 
     def get_queryset(self):

@@ -41,6 +41,8 @@ class Class(ClassStartedSmsMixin, CustomModel):
         null=True, blank=True,
         validators=[validate_file_size]
     )
+    is_special = models.BooleanField(verbose_name='ایا ویژه است؟', default=False)
+    is_show_in_slider = models.BooleanField(verbose_name='آیا در صفحه اصلی نمایش داده شود؟', default=False)
 
     class Meta:
         verbose_name = 'کلاس'

@@ -75,7 +75,7 @@
         </div>
     </div>
 
-    {% if last_class %}
+    {% if special_class %}
         <div class="featured_container my-5 d-flex justify-content-center">
             <div class="row" style="width: 1148px">
                 <div class="col-lg-6 featured_col">
@@ -83,24 +83,24 @@
                         <div class="featured_header d-flex flex-row align-items-center justify-content-start">
                             <div class="featured_tag rounded-2"><a href="#">ویژه</a></div>
                             <div class="featured_price mr-auto px-3"> قیمت:
-                                <span>{{ last_class.amount | intcomma:False | persian_int }} تومان</span></div>
+                                <span>{{ special_class.amount | intcomma:False | persian_int }} تومان</span></div>
                         </div>
                         <div class="featured_title">
                             <h3>
-                                <a href="{% url 'class-details' last_class.slug %}">{{ last_class.title | default_if_none:'---' }}</a>
+                                <a href="{% url 'class-details' special_class.slug %}">{{ special_class.title | default_if_none:'---' }}</a>
                             </h3>
                         </div>
-                        <div class="featured_text">{{ last_class.desc | default_if_none:'---' }}</div>
+                        <div class="featured_text">{{ special_class.desc | default_if_none:'---' }}</div>
                         <div class="featured_footer d-flex align-items-center justify-content-start">
                             <div class="featured_author_image "><img
-                                    src="{{ last_class.teacher.user.get_avatar }}" class=""
-                                    alt="{{ last_class.teacher.profile_name | default_if_none:'---' }}">
+                                    src="{{ special_class.teacher.user.get_avatar }}" class=""
+                                    alt="{{ special_class.teacher.profile_name | default_if_none:'---' }}">
                             </div>
                             <div class="featured_author_name">توسط <a
-                                    href="#">{{ last_class.teacher.profile_name | default_if_none:'---' }}</a>
+                                    href="#">{{ special_class.teacher.profile_name | default_if_none:'---' }}</a>
                             </div>
                             <div class="featured_sales mx-3">
-                                <span>{{ last_class.users_limit | default_if_none:'0' }}</span> نفر ظرفیت
+                                <span>{{ special_class.users_limit | default_if_none:'0' }}</span> نفر ظرفیت
                             </div>
                         </div>
                     </div>
@@ -108,7 +108,7 @@
                 <div class="col-lg-6 featured_col my-5">
                     <!-- Background image artist https://unsplash.com/@jtylernix -->
                     <div class="featured_background"
-                         style="background-image:url({{ last_class.get_cover }})">
+                         style="background-image:url({{ special_class.get_cover }})">
                     </div>
                 </div>
             </div>

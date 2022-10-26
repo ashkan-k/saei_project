@@ -7,6 +7,7 @@ from unidecode import unidecode
 class ClassFilters(filters.FilterSet):
     search = filters.CharFilter(method="search_filter")
     status = filters.CharFilter(method="status_filter")
+    is_show_in_slider = filters.CharFilter(method="is_show_in_slider_filter")
     limit = filters.CharFilter(method="limit_filter")
 
     @staticmethod
@@ -35,6 +36,11 @@ class ClassFilters(filters.FilterSet):
     @staticmethod
     def status_filter(qs, name, value):
         qs = qs.filter(status=value)
+        return qs
+
+    @staticmethod
+    def is_show_in_slider_filter(qs, name, value):
+        qs = qs.filter(is_show_in_slider=value)
         return qs
 
 

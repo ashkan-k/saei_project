@@ -17,8 +17,8 @@ class Index(TemplateView):
             'teachers_count': Teacher.objects.count(),
             'sliders': Slider.objects.all(),
             'helps': Help.objects.all(),
-            'classes': Class.objects.all(),
-            'last_class': Class.objects.filter(status='active').last(),
+            'classes': Class.objects.filter(is_show_in_slider=True),
+            'special_class': Class.objects.filter(status='active', is_special=True).last(),
             'upcomming_classes': Class.objects.filter(status='pending')[:10],
             'new_blogs': Blog.objects.order_by('-created_at')[:4],
         }
