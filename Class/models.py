@@ -62,7 +62,7 @@ class Class(ClassStartedSmsMixin, CustomModel):
             if self.pk:
                 qs = qs.exclude(id=self.pk)
             if qs.exists():
-                self.slug = str(get_random_string(length=32))
+                self.slug = str(get_random_string(length=10))
         return super().save(*args, **kwargs)
 
     @property
