@@ -11,8 +11,9 @@ from Sms.sms_texts import SMS_TEXTS
 from utils.models import CustomModel
 from Teacher.models import Teacher
 from django.utils.text import slugify
-
+from django.core.exceptions import ValidationError
 from utils.validator import validate_file_size
+from django.utils.crypto import get_random_string
 
 User = get_user_model()
 
@@ -54,6 +55,14 @@ class Class(ClassStartedSmsMixin, CustomModel):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title, True)
+
+        if self.slug:
+            qs = Class.objects.filter(
+                slug=self.slug)
+            if self.pk:
+                qs = qs.exclude(id=self.pk)
+            if qs.exists():
+                self.slug = str(get_random_string(length=32))
         return super().save(*args, **kwargs)
 
     @property
