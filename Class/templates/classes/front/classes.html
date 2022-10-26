@@ -72,7 +72,7 @@
             <br>
             <br>
             <br>
-            {% if last_class %}
+            {% if special_class %}
                 <!-- Featured Course -->
                 <div class="row featured_row">
                     <div class="col-lg-6 featured_col">
@@ -80,19 +80,19 @@
                             <div class="featured_header d-flex flex-row align-items-center justify-content-start">
                                 <div class="featured_tag rounded-2"><a >ویژه</a></div>
                                 <div class="featured_price ml-auto px-3">قیمت:
-                                    <span>{{ last_class.amount | persian_int | intcomma:False }} تومان</span></div>
+                                    <span>{{ special_class.amount | persian_int | intcomma:False }} تومان</span></div>
                             </div>
                             <div class="featured_title">
-                                <h3><a href="{% url 'class-details' last_class.slug %}">{{ last_class.title }}</a></h3>
+                                <h3><a href="{% url 'class-details' special_class.slug %}">{{ special_class.title }}</a></h3>
                             </div>
-                            <div class="featured_text">{{ last_class.desc | truncatechars:200 }}
+                            <div class="featured_text">{{ special_class.desc | truncatechars:200 }}
                             </div>
                             <div class="featured_footer d-flex align-items-center justify-content-start">
-                                <div class="featured_author_image"><img src="{{ last_class.teacher.user.get_avatar }}"
+                                <div class="featured_author_image"><img src="{{ special_class.teacher.user.get_avatar }}"
                                                                         alt=""></div>
-                                <div class="featured_author_name px-3">توسط <a href="#">{{ last_class.teacher }}</a>
+                                <div class="featured_author_name px-3">توسط <a href="#">{{ special_class.teacher }}</a>
                                 </div>
-                                <div class="featured_sales ml-auto"><span>{{ last_class.users.count }}</span> تعداد
+                                <div class="featured_sales ml-auto"><span>{{ special_class.users.count }}</span> تعداد
                                     دانشجو
                                 </div>
                             </div>
@@ -100,7 +100,7 @@
                     </div>
                     <div class="col-lg-6 featured_col">
                         <!-- Background image artist https://unsplash.com/@jtylernix -->
-                        <div class="featured_background" style="background-image:url({{ last_class.get_cover }})"></div>
+                        <div class="featured_background" style="background-image:url({{ special_class.get_cover }})"></div>
                     </div>
                 </div>
             {% endif %}

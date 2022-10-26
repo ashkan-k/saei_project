@@ -248,7 +248,7 @@ class Classes(ListView):
     template_name = 'classes/front/classes.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        kwargs.update(last_class=Class.objects.filter(status='active').last())
+        kwargs.update(special_class=Class.objects.filter(status='active', is_special=True).last())
         return super(Classes, self).get_context_data(object_list=None, **kwargs)
 
     def get_queryset(self):
