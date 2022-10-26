@@ -43,7 +43,7 @@
                     <div class="section_title text-end">
                         <h2>دوره خود را انتخاب کنید</h2>
                     </div>
-                    <div class="section_subtitle text-end">{{ settings.courses_intro_text }}</div>
+                    <div class="section_subtitle text-end">{{ settings.courses_intro_text | safe }}</div>
                 </div>
             </div>
 
@@ -113,7 +113,7 @@
 
                 {% for item in object_list %}
                     <!-- Course -->
-                    <div class="col-lg-4 col-md-6" style="padding: 10px">
+                    <div class="col-lg-4 col-md-6" style="padding: 10px; height: 581px !important;">
                         <div class="course">
                             <div class="course_image"><img src="{{ item.get_cover }}" alt="{{ item.title }}"
                                                            style="width: 100%;"
