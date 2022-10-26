@@ -7,6 +7,7 @@ from django.views.generic import CreateView, FormView
 from ACL.mixins import AnonymousUserMixin, CheckPasswordResetExpirationMixin
 from .forms import *
 from .mixins import CheckTeacherStatusMixin
+from unidecode import unidecode
 
 
 class RegisterView(AnonymousUserMixin, CreateView):
@@ -14,6 +15,12 @@ class RegisterView(AnonymousUserMixin, CreateView):
     model = User
     form_class = RegisterForm
     success_url = reverse_lazy("verify-code")
+
+    def post(self, request, *args, **kwargs):
+        request.POST._mutable = True
+        request.POST['phone'] = unidecode(request.POST.get('phone'))
+        request.POST['national_id'] = unidecode(request.POST.get('national_id'))
+        return super().post(request, *args, **kwargs)
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -27,11 +34,21 @@ class LoginView(CheckTeacherStatusMixin, LoginViewAuto):
     next_page = reverse_lazy('dashboard')
     success_url = reverse_lazy('dashboard')
 
+    def post(self, request, *args, **kwargs):
+        request.POST._mutable = True
+        request.POST['username'] = unidecode(request.POST.get('username'))
+        return super().post(request, *args, **kwargs)
+
 
 class ResetPasswordView(AnonymousUserMixin, CreateView):
     template_name = "auth/reset_password/form.html"
     form_class = PasswordResetForm
     success_url = reverse_lazy("password-reset-confirm")
+
+    def post(self, request, *args, **kwargs):
+        request.POST._mutable = True
+        request.POST['phone'] = unidecode(request.POST.get('phone'))
+        return super().post(request, *args, **kwargs)
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
