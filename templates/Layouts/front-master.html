@@ -104,7 +104,7 @@
                                         <a href="{% url 'blogs' %}" class="nav-item nav-link"
                                            style="color:rgb(64, 212, 212);">وبلاگ</a>
                                         <a href="{% url 'products-user-list' %}" class="nav-item nav-link"
-                                           style="color:rgb(64, 212, 212);">محصولات</a>
+                                           style="color:rgb(64, 212, 212);">فروشگاه</a>
                                         <a href="{% url 'student-register' %}" class="nav-item nav-link"
                                            style="color:rgb(64, 212, 212);">ثبت نام هنرجو</a>
                                         <a href="{% url 'teacher-register' %}" class="nav-item nav-link"
@@ -173,10 +173,11 @@
             <ul class="menu_mm">
                 <li class="menu_mm"><a href="/">خانه</a></li>
                 <li class="menu_mm"><a href="{% url 'classes' %}">دوره ها</a></li>
-                <li class="menu_mm"><a href="instructors.html">نقشه راه</a></li>
-                <li class="menu_mm"><a href="#">رویدادها</a></li>
+                <li class="menu_mm"><a href="{% url 'products-user-list' %}">فروشگاه</a></li>
+                <li class="menu_mm"><a href="{% url 'student-register' %}">ثبت نام هنرجو</a></li>
+                <li class="menu_mm"><a href="{% url 'teacher-register' %}">ثبت نام مدرس</a></li>
                 <li class="menu_mm"><a href="{% url 'blogs' %}">وبلاگ</a></li>
-                <li class="menu_mm"><a href="{% url 'contact_us' %}">ارتباط با ما</a></li>
+{#                <li class="menu_mm"><a href="{% url 'contact_us' %}">ارتباط با ما</a></li>#}
             </ul>
         </nav>
         <div class="menu_extra">
