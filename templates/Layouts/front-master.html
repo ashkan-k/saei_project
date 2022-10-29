@@ -31,6 +31,12 @@
           id="theme-styles">
 
     {% block Styles %}{% endblock %}
+
+    <style>
+        . hamburger{
+margin-right: -150px;
+cursor: pointer;}
+    </style>
 </head>
 
 <body ng-app="myApp" ng-controller="myCtrl">
@@ -119,8 +125,8 @@
 
                                 <!-- Hamburger -->
 
-                                <div class="hamburger menu_mm">
-                                    <i class="fa fa-bars menu_mm px-3" aria-hidden="true"></i>
+                                <div class="hamburger menu_mm d-sm-none d-inline-flex">
+                                    <i class="fa fa-bars menu _mm" aria-hidden= "true"></i>
                                 </div>
                             </nav>
 
