@@ -51,6 +51,14 @@
                            href="{% url 'class-attendances-list' request.GET.class %}">حضور و غیاب</a>
                     {% endif %}
 
+                    {% if user.is_superuser and request.GET.class %}
+                        <a class="btn btn-success pull-right m-l-5"
+                           href="{% url 'class-users-all-change-status' request.GET.class %}?next_url={{ request.get_full_path }}&status=active">فعال همه</a>
+
+                         <a class="btn btn-danger pull-right m-l-5"
+                           href="{% url 'class-users-all-change-status' request.GET.class %}?next_url={{ request.get_full_path }}&status=deactive">غیرفعال همه</a>
+                    {% endif %}
+
                     <span id="list">
                                                                       {% if object_list %}
                                                                           <table class="table table-hover">

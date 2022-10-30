@@ -56,6 +56,15 @@ class ClassUserForm(forms.ModelForm):
 
         return super().clean()
 
+    def save(self, commit=True):
+        instance = super().save(commit)
+
+        instance.status = 'deactive'
+        instance.save()
+
+        return instance
+
+
 
 class ClassUserChangeStatusForm(forms.ModelForm):
     class Meta:

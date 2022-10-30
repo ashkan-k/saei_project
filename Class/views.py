@@ -1,10 +1,12 @@
 import jdatetime
 from django.db.models import Q
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
+from django.views import View
 from django.views.generic import ListView, DeleteView, UpdateView, CreateView, DetailView, FormView
 from django.urls import reverse_lazy
 from ACL.mixins import SuperUserRequiredMixin, PermissionMixin
 # from .filters import ClassFilters
+from Installment.models import UserInstallment
 from .filters import ClassFilters, ClassUserFilters
 from .forms import *
 from .helpers import CLASS_STATUS, CLASS_USER_STATUS
@@ -25,7 +27,8 @@ class ClassesListView(PermissionMixin, ListView):
         context = super(ClassesListView, self).get_context_data()
         context['change_status_form'] = ClassChangeStatusForm()
         context['status_filter_items'] = [{"name": i[1], "id": i[0]} for i in CLASS_STATUS.CHOICES]
-        context['is_show_in_slider_items'] = [{"name": i[1], "id": i[0]} for i in [(1, 'نمایشی ها'), (0, 'عدم نمایشی ها')]]
+        context['is_show_in_slider_items'] = [{"name": i[1], "id": i[0]} for i in
+                                              [(1, 'نمایشی ها'), (0, 'عدم نمایشی ها')]]
         return context
 
     def get_queryset(self):
@@ -157,6 +160,18 @@ class ClassUsersGatewayView(PermissionMixin, DetailView):
     context_object_name = 'class_detail'
 
 
+class ClassUsersChangeAllStatusView(SuperUserRequiredMixin, View):
+    def get(self, request, pk):
+        class_item = get_object_or_404(Class, pk=pk)
+        status = request.GET.get('status')
+
+        class_item.users.update(status=status)
+        if status == 'deactive':
+            UserInstallment.objects.filter(class_item=class_item).delete()
+
+        return redirect(request.GET.get('next_url'))
+
+
 """Class Attendance"""
 
 
@@ -268,4 +283,3 @@ class ClassesDetail(DetailView):
     slug_field = 'slug'
     queryset = Class.objects.filter(status='active')
     template_name = 'classes/front/detail.html'
-

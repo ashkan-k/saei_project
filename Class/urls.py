@@ -15,6 +15,7 @@ dashboard_urls = [
     path('dashboard/class/users/update/<int:pk>/', ClassUsersUpdateView.as_view(), name='class-users-update'),
     path('dashboard/class/users/delete/<int:pk>/', ClassUsersDeleteView.as_view(), name='class-users-delete'),
     path('dashboard/class/users/gateway/<int:pk>', ClassUsersGatewayView.as_view(), name='class-users-gateway'),
+    path('dashboard/class/users/all/change-status/<int:pk>', ClassUsersChangeAllStatusView.as_view(), name='class-users-all-change-status'),
 
     path('dashboard/class/users/attendances/daily/', ClassAttendanceDailyAbsentsListView.as_view(),
          name='class-attendances-daily-list'),
