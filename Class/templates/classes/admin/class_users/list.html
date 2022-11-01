@@ -1,5 +1,5 @@
 {% extends 'Layouts/admin-master.html' %}
-{% load static public_tags acl_tags %}
+{% load static public_tags acl_tags class_tags %}
 {% load humanize %}
 
 {% block title %} لیست کاربران کلاس ها {% endblock %}
@@ -53,10 +53,12 @@
 
                     {% if user.is_superuser and request.GET.class %}
                         <a class="btn btn-success pull-right m-l-5"
-                           href="{% url 'class-users-all-change-status' request.GET.class %}?next_url={{ request.get_full_path }}&status=active">فعال همه</a>
+                           href="{% url 'class-users-all-change-status' request.GET.class %}?next_url={{ request.get_full_path }}&status=active">فعال
+                            همه</a>
 
-                         <a class="btn btn-danger pull-right m-l-5"
-                           href="{% url 'class-users-all-change-status' request.GET.class %}?next_url={{ request.get_full_path }}&status=deactive">غیرفعال همه</a>
+                        <a class="btn btn-danger pull-right m-l-5"
+                           href="{% url 'class-users-all-change-status' request.GET.class %}?next_url={{ request.get_full_path }}&status=deactive">غیرفعال
+                            همه</a>
                     {% endif %}
 
                     <span id="list">
@@ -68,7 +70,9 @@
                         <th>کلاس</th>
                         <th>کاربر</th>
                         <th>مدرس</th>
-                        <th>تاریخ شروع کلاس</th>
+                        {% if user.is_staff %}
+                            <th>مجموع اقساط</th>
+                        {% endif %}
                         <th>وضعیت</th>
                         <th>اعمال</th>
                     </tr>
@@ -85,7 +89,10 @@
 
                             <td><a href="{% url 'teachers-detail' item.class_item.teacher.id %}">{{ item.class_item.teacher | default:'---' }}</a></td>
 
-                            <td>{{ item.class_item.start_date | jdate | default:'---' }}</td>
+                            {% if user.is_staff %}
+                                {% calculate_user_class_installments_sum item item.user as installments_sum %}
+                                <td>{{ installments_sum | intcomma:False | persian_int | default:'---' }} تومان</td>
+                            {% endif %}
 
                             <td>
                                 {% if user|has_perm:'class_user_change_status' %}

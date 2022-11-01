@@ -1,5 +1,6 @@
 import jdatetime
 from django import template
+from django.db.models import Sum
 
 register = template.Library()
 
@@ -36,3 +37,13 @@ def check_class_users_exists(class_item, user):
 def get_current_class_user(class_item, user):
     user_class = user.classes.filter(class_item_id=class_item.id, status='active').first()
     return user_class
+
+
+@register.simple_tag
+def calculate_user_class_installments_sum(class_item, user):
+    installments_sum = '---'
+    installment = user.installments.filter(class_item_id=class_item.id).first()
+    if installment:
+        installments_sum = installment.installment_payments.filter(is_payment=True).aggregate(amount_sum=Sum('amount'))['amount_sum']
+
+    return installments_sum or '---'

@@ -125,13 +125,14 @@ class ProfileView(VerifiedUserMixin, UpdateView):
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        # form.fields['phone'].widget.attrs['readonly'] = True
+        form.fields['phone'].widget.attrs['readonly'] = True
         form.fields['national_id'].widget.attrs['readonly'] = True
         return form
 
     def post(self, request, *args, **kwargs):
         request.POST._mutable = True
         request.POST['national_id'] = request.user.national_id
+        request.POST['phone'] = request.user.phone
         messages.success(request, 'اطلاعات شما با موفقیت ویرایش شد.')
         return super().post(request, *args, **kwargs)
 
