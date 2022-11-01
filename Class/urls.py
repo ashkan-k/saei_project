@@ -5,6 +5,7 @@ urlpatterns = []
 
 dashboard_urls = [
     path('dashboard/classes/', ClassesListView.as_view(), name='classes-list'),
+    path('dashboard/classes/my/', ClassesListView.as_view(), name='my-classes-list'),
     path('dashboard/classes/create/', ClassesCreateView.as_view(), name='classes-create'),
     path('dashboard/classes/update/<int:pk>/', ClassesUpdateView.as_view(), name='classes-update'),
     path('dashboard/classes/delete/<int:pk>/', ClassesDeleteView.as_view(), name='classes-delete'),

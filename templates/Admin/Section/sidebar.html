@@ -22,6 +22,8 @@
 
 
 
+
+
                                 {% if request.user.role_code == 'student' %}{% url 'student-profile' %}{% else %}{% url 'teacher-profile' %}{% endif %}"><i
                                 class="fa fa-info"></i> اطلاعات تکمیلی</a>
                     </li>
@@ -132,6 +134,9 @@
                                     class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
                                 {% if request.user|has_perm:'class_list' %}
+                                    {% if request.user.role_code == 'student' %}
+                                        <li><a href="{% url 'my-classes-list' %}">دوره های من</a></li>
+                                    {% endif %}
                                     <li><a href="{% url 'classes-list' %}">لیست دوره ها</a></li>
                                 {% endif %}
 

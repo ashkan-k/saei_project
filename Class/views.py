@@ -35,6 +35,10 @@ class ClassesListView(PermissionMixin, ListView):
         queryset = super().get_queryset()
         if self.user.role_code == 'teacher':
             queryset = queryset.filter(teacher__user=self.user).distinct()
+
+        if 'my' in self.request.path:
+            my_classes_id = self.request.user.classes.values_list('class_item_id', flat=True)
+            queryset = queryset.filter(id__in=my_classes_id)
         return ClassFilters(data=self.request.GET, queryset=queryset).qs
 
 
