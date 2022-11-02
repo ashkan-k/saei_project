@@ -15,7 +15,7 @@ jobs:
         run: cp /home/ubuntu/.saei.env ../.env
 
       - name: build images
-        run: sudo docker-compose build
+        run: sudo docker-compose build --no-cache
 
       - name: Stop & Remove lastets Containers
         run: sudo docker-compose down
