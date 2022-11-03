@@ -6,4 +6,5 @@ COPY requirements.txt /app/
 RUN apt update -y && apt install gcc -y
 RUN pip install -r requirements.txt
 COPY . /app/
+RUN mv .production.env .env
 RUN python3 /app/manage.py collectstatic --noinput
