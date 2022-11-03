@@ -1,29 +1,5 @@
 @charset "utf-8";
-/* CSS Document */
 
-/******************************
-
-[Table of Contents]
-
-1. 1600px
-2. 1440px
-3. 1280px
-4. 1199px
-5. 1024px
-6. 991px
-7. 959px
-8. 880px
-9. 768px
-10. 767px
-11. 539px
-12. 479px
-13. 400px
-
-******************************/
-
-/************
-1. 1740px
-************/
 
 @media only screen and (max-width: 1740px)
 {
@@ -63,27 +39,6 @@
 	}
 }
 
-/************
-3. 1380px
-************/
-
-@media only screen and (max-width: 1380px)
-{
-	
-}
-
-/************
-3. 1280px
-************/
-
-@media only screen and (max-width: 1280px)
-{
-	
-}
-
-/************
-4. 1199px
-************/
 
 @media only screen and (max-width: 1199px)
 {
@@ -107,29 +62,6 @@
 		height: 500px;
 	}
 }
-
-/************
-4. 1100px
-************/
-
-@media only screen and (max-width: 1100px)
-{
-	
-}
-
-/************
-5. 1024px
-************/
-
-@media only screen and (max-width: 1024px)
-{
-	
-}
-
-/************
-6. 991px
-************/
-
 @media only screen and (max-width: 991px)
 {
 	.main_nav
@@ -144,7 +76,7 @@
 	}
 	.top_bar_contact_list li > div
 	{
-		font-size: 10px;
+		font-size:10px;
 	}
 	.top_bar_contact_list li:first-child
 	{
@@ -172,44 +104,9 @@
 		margin-bottom: 80px;
 	}
 }
-
-/************
-7. 959px
-************/
-
-@media only screen and (max-width: 959px)
-{
-	
-}
-
-/************
-8. 880px
-************/
-
-@media only screen and (max-width: 880px)
-{
-	
-}
-
-/************
-9. 768px
-************/
-
-@media only screen and (max-width: 768px)
-{
-	
-}
-
-/************
-10. 767px
-************/
-
 @media only screen and (max-width: 767px)
 {
-	.top_bar
-	{
-		display: none;
-	}
+	
 	.header.scrolled
 	{
 		top: 0px;
@@ -327,11 +224,11 @@
 	}
 	.header.scrolled .header_content
 	{
-		height: 50px;
+		height: 20px;
 	}
 	.logo_img
 	{
-		width: 40px;
+		width: 60px;
 	}
 	.logo_img img
 	{
@@ -372,20 +269,6 @@
 		height: 350px;
 	}
 }
-
-/************
-11. 539px
-************/
-
-@media only screen and (max-width: 539px)
-{
-	
-}
-
-/************
-12. 480px
-************/
-
 @media only screen and (max-width: 480px)
 {
 	.home_title
@@ -400,22 +283,4 @@
 	{
 		font-size: 18px;
 	}
-}
-
-/************
-13. 479px
-************/
-
-@media only screen and (max-width: 479px)
-{
-	
-}
-
-/************
-14. 400px
-************/
-
-@media only screen and (max-width: 400px)
-{
-	
 }

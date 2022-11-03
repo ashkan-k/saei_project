@@ -36,7 +36,7 @@ body{
  }
  @font-face {
 	 font-family: 'M';
-	 src: url(/static/front/fonts/IRANSans/IRANSansWeb_Bold.woff);
+	 src: url(/fonts/IRANSans/IRANSansWeb_Bold.woff);
  }
  .adamak:hover{
 	cursor: pointer;
@@ -460,7 +460,7 @@ section
 }
 .logo_text
 {
-	font-size: 18px;
+	font-size: 50px;
 	font-weight: 700;
 	line-height: 0.75;
 	margin-left: 1px;

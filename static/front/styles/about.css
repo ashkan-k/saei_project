@@ -37,7 +37,7 @@ body{
  }
  @font-face {
 	 font-family: 'M';
-	 src: url(/static/front/fonts/IRANSans/IRANSansWeb_Bold.woff);
+	 src: url(/fonts/IRANSans/IRANSansWeb_Bold.woff);
  }
  .adamak:hover{
 	cursor: pointer;
@@ -892,16 +892,16 @@ section
 /*********************************
 5. Home
 *********************************/
-
 .home
 {
 	width: 100%;
 	height: 430px;
+	margin-top: 10%;
 }
 .home_container
 {
 	position: absolute;
-	bottom: 92px;
+	bottom: 90px;
 	left: 0;
 	width: 100%;
 }
