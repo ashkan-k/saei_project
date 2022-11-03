@@ -77,3 +77,23 @@ class ClassUserFilters(filters.FilterSet):
     def status_filter(qs, name, value):
         qs = qs.filter(status=value)
         return qs
+
+
+class CategoryFilters(filters.FilterSet):
+    search = filters.CharFilter(method="search_filter")
+    limit = filters.CharFilter(method="limit_filter")
+
+    @staticmethod
+    def search_filter(qs, name, value):
+        qs = qs.filter(
+            Q(title__icontains=value)
+        ).distinct()
+        return qs
+
+    @staticmethod
+    def limit_filter(qs, name, value):
+        try:
+            qs = qs.distinct()[:int(unidecode(value))]
+        except:
+            pass
+        return qs

@@ -7,10 +7,10 @@ from django.urls import reverse_lazy
 from ACL.mixins import SuperUserRequiredMixin, PermissionMixin
 # from .filters import ClassFilters
 from Installment.models import UserInstallment
-from .filters import ClassFilters, ClassUserFilters
+from .filters import ClassFilters, ClassUserFilters, CategoryFilters
 from .forms import *
 from .helpers import CLASS_STATUS, CLASS_USER_STATUS
-from .models import Class, ClassUserAttendance, ClassAttendance
+from .models import Class, ClassUserAttendance, ClassAttendance, Category
 from django.conf import settings
 from django.contrib import messages
 
@@ -248,6 +248,49 @@ class ClassAttendancesDeleteView(PermissionMixin, DeleteView):
             next = self.request.GET.get('next')
 
         return next
+
+    def dispatch(self, *args, **kwargs):
+        resp = super().dispatch(*args, **kwargs)
+        messages.success(self.request, 'آیتم مورد نظر با موفقیت حدف شد.')
+        return resp
+
+
+"""Calss Categories"""
+
+
+class CategoryListView(PermissionMixin, ListView):
+    permissions = ['classes_categories_list']
+    model = Category
+    context_object_name = 'classes_categories'
+    paginate_by = settings.PAGINATION_NUMBER
+    ordering = ['-created_at']
+    template_name = 'classes/admin/categories/list.html'
+
+    def get_queryset(self):
+        return CategoryFilters(data=self.request.GET, queryset=super().get_queryset()).qs
+
+
+class CategoryCreateView(PermissionMixin, CreateView):
+    permissions = ['classes_categories_create']
+    template_name = "classes/admin/categories/form.html"
+    model = Category
+    form_class = CategoryForm
+    success_url = reverse_lazy("classes-categories-list")
+
+
+class CategoryUpdateView(PermissionMixin, UpdateView):
+    permissions = ['classes_categories_edit']
+    template_name = "classes/admin/categories/form.html"
+    model = Category
+    form_class = CategoryForm
+    success_url = reverse_lazy("classes-categories-list")
+
+
+class CategoryDeleteView(PermissionMixin, DeleteView):
+    permissions = ['classes_categories_delete']
+    model = Category
+    template_name = 'classes/admin/categories/list.html'
+    success_url = reverse_lazy("classes-categories-list")
 
     def dispatch(self, *args, **kwargs):
         resp = super().dispatch(*args, **kwargs)

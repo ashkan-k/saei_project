@@ -28,6 +28,11 @@ dashboard_urls = [
          name='class-attendances-update'),
     path('dashboard/class/users/attendances/delete/<int:pk>/', ClassAttendancesDeleteView.as_view(),
          name='class-attendances-delete'),
+
+    path('dashboard/classes-categories/', CategoryListView.as_view(), name='classes-categories-list'),
+    path('dashboard/classes-categories/create/', CategoryCreateView.as_view(), name='classes-categories-create'),
+    path('dashboard/classes-categories/update/<int:pk>/', CategoryUpdateView.as_view(), name='classes-categories-update'),
+    path('dashboard/classes-categories/delete/<int:pk>/', CategoryDeleteView.as_view(), name='classes-categories-delete'),
 ]
 
 front_urls = [

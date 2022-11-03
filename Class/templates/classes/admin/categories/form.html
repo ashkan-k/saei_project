@@ -1,14 +1,14 @@
 {% extends 'Layouts/admin-master.html' %}
 {% load i18n public_tags %}
 
-{% block title %} {% if object %}ویرایش کلاس{% else %}افزودن کلاس{% endif %} {% endblock %}
+{% block title %} {% if object %}ویرایش دسته بندی کلاس{% else %}افزودن دسته بندی کلاس{% endif %} {% endblock %}
 
 {% block content %}
     <div class="row">
         <div class="col-xs-12">
             <div class="col-lg-12">
                 <div class="card-box">
-                    <h2 class="card-title"><b>{% if object %}ویرایش کلاس{% else %}افزودن کلاس جدید{% endif %}</b></h2>
+                    <h2 class="card-title"><b>{% if object %}ویرایش دسته بندی کلاس{% else %}افزودن دسته بندی کلاس جدید{% endif %}</b></h2>
 
                     <form class="form-horizontal"
                           method="post"
@@ -58,18 +58,6 @@
 {% endblock %}
 
 {% block Scripts %}
-     <script>
-        $('#id_teacher').select2();
-        $('#id_category').select2();
-    </script>
-
-    <script>
-        $(document).ready(function () {
-            $("#id_start_time").timepicker();
-            $("#id_end_time").timepicker();
-        });
-    </script>
-
     <script>
         {% if messages %}
             {% for item in messages %}

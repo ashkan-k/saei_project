@@ -53,6 +53,7 @@
                     <tr>
                         <th>ردیف</th>
                         <th>نام</th>
+                        <th>دسته بندی</th>
                         <th>توضیحات</th>
                         <th>شهریه</th>
                         <th>مدرس</th>
@@ -69,6 +70,8 @@
                             <td>{{ forloop.counter }}</td>
 
                             <td><a href="{% url 'classes-detail' item.id %}">{{ item.title | default:'---' }}</a></td>
+
+                            <td>{{ item.category | default:'---' }}</td>
 
                             <td title="{{ item.desc }}">{{ item.desc | truncatechars:10 | default:'---' }}</td>
 
