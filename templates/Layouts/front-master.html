@@ -38,7 +38,7 @@
             cursor: pointer;
         }
 
-        @media only screen and (max-width: 767px) {
+        @media only screen and (max-width: 800px) {
             #top_bar {
                 display: none !important;
             }
@@ -69,6 +69,7 @@
                                         {% else %}
                                             <a href="{% url 'dashboard' %}" class="fa fa-user-o adamak"
                                                style="margin-right: 10px!important;"></a>
+                                            <li><a style="font-size: 15px;" href="{% url 'dashboard' %}">داشبورد</a></li>
                                             <li><a style="font-size: 15px;" href="{% url 'logout' %}">خروج</a></li>
                                         {% endif %}
                                     </ul>

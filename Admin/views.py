@@ -16,7 +16,7 @@ class Dashboard(VerifiedUserMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = {
-            'total_transaction_amount': PaymentTransaction.objects.aggregate(total_amount=Sum('amount'))['total_amount'],
+            'total_transaction_amount': PaymentTransaction.objects.filter(status='success').aggregate(total_amount=Sum('amount'))['total_amount'],
             'users_count': User.objects.count(),
             'students_count': Student.objects.count(),
             'teachers_count': Teacher.objects.count(),
