@@ -37,6 +37,12 @@
             margin-right: -150px;
             cursor: pointer;
         }
+
+        @media only screen and (max-width: 767px) {
+            #top_bar {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 
@@ -67,7 +73,7 @@
                                         {% endif %}
                                     </ul>
                                 </div>
-                                <ul class="top_bar_contact_list d-inline-flex">
+                                <ul class="top_bar_contact_list d-inline-flex" id="top_bar">
                                     <li>
                                         <div class="question text-nowrap">سوالی دارید؟</div>
                                     </li>
