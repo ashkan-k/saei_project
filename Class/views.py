@@ -27,6 +27,7 @@ class ClassesListView(PermissionMixin, ListView):
         context = super(ClassesListView, self).get_context_data()
         context['change_status_form'] = ClassChangeStatusForm()
         context['status_filter_items'] = [{"name": i[1], "id": i[0]} for i in CLASS_STATUS.CHOICES]
+        context['category_filter_items'] = [{"name": i.title, "id": i.id} for i in Category.objects.all()]
         context['is_show_in_slider_items'] = [{"name": i[1], "id": i[0]} for i in
                                               [(1, 'نمایشی ها'), (0, 'عدم نمایشی ها')]]
         return context
@@ -311,16 +312,22 @@ class Classes(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         kwargs.update(special_class=Class.objects.filter(status='active', is_special=True).last())
+        kwargs.update(categories=Category.objects.all())
         return super(Classes, self).get_context_data(object_list=None, **kwargs)
 
     def get_queryset(self):
         qs = super().get_queryset()
 
         search = self.request.GET.get('search')
+        category = self.request.GET.get('category')
+
         if search:
             q = Q(title__icontains=search) | Q(desc__icontains=search) | Q(
                 teacher__user__first_name__icontains=search) | Q(teacher__user__last_name__icontains=search)
             qs = qs.filter(q)
+
+        if category:
+            qs = qs.filter(category=category)
 
         return qs
 

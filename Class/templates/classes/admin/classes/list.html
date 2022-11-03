@@ -38,6 +38,7 @@
                                 {% if user.is_staff %}
                                     {% include 'Admin/Filters/select_box.html' with label='نمایش صفحه اصلی' name='is_show_in_slider' class='col-lg-2' items=is_show_in_slider_items %}
                                 {% endif %}
+                                {% include 'Admin/Filters/select_box.html' with label='دسته بندی' name='category' items=category_filter_items %}
                             </div>
                         </div>
                     </form>

@@ -1,7 +1,7 @@
 from django.views.generic import TemplateView
 
 from Blog.models import Blog
-from Class.models import Class
+from Class.models import Class, Category
 from Help.models import Help
 from Slider.models import Slider
 from Student.models import Student
@@ -21,6 +21,7 @@ class Index(TemplateView):
             'special_class': Class.objects.filter(status='active', is_special=True).last(),
             'upcomming_classes': Class.objects.filter(status='pending')[:10],
             'new_blogs': Blog.objects.order_by('-created_at')[:4],
+            'class_categories': Category.objects.all()
         }
         return context
 

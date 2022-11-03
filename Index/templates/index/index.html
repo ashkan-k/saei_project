@@ -150,6 +150,16 @@
                             <div><input type="text" name="search" class="course_input py-3 rounded-2"
                                         placeholder="عنوان دوره">
                             </div>
+
+                            <div>
+                                <select name="category" class="course_input px-3 rounded-2">
+                                    <option value="">دسته بندی</option>
+                                    {% for item in class_categories %}
+                                        <option value="{{ item.id }}"
+                                                {% if item.id == request.GET.category|add:"0" %}selected{% endif %}>{{ item.title }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
                             {#                            <div><input type="text" class="course_input rounded-2" placeholder="سطح"#}
                             {#                                        required="required">#}
                             {#                            </div>#}
