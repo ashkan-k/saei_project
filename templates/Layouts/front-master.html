@@ -33,10 +33,10 @@
     {% block Styles %}{% endblock %}
 
     <style>
-        .hamburger {
-            margin-right: -150px;
-            cursor: pointer;
-        }
+        {#.hamburger {#}
+        {#    margin-right: -150px;#}
+        {#    cursor: pointer;#}
+        {#}#}
 
         @media only screen and (max-width: 800px) {
             #top_bar {
@@ -69,7 +69,8 @@
                                         {% else %}
                                             <a href="{% url 'dashboard' %}" class="fa fa-user-o adamak"
                                                style="margin-right: 10px!important;"></a>
-                                            <li><a style="font-size: 15px;" href="{% url 'dashboard' %}">داشبورد</a></li>
+                                            <li><a style="font-size: 15px;" href="{% url 'dashboard' %}">داشبورد</a>
+                                            </li>
                                             <li><a style="font-size: 15px;" href="{% url 'logout' %}">خروج</a></li>
                                         {% endif %}
                                     </ul>
@@ -133,8 +134,8 @@
 
                                 <!-- Hamburger -->
 
-                                <div class="hamburger menu_mm d-sm-none d-inline-flex">
-                                    <i class="fa fa-bars menu _mm" aria-hidden="true"></i>
+                                <div class="hamburger menu_mm">
+                                    <i class="fa fa-bars menu_mm px-3" aria-hidden="true"></i>
                                 </div>
                             </nav>
 
