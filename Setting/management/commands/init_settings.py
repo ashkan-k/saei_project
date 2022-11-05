@@ -44,8 +44,6 @@ DEFAULT_SETTINGS = {
     # Index Poster
     'about_us_image1': STATIC_URL + os.path.join('front/images/about_1.jpg'),
     'about_us_image2': STATIC_URL + os.path.join('front/images/about_1.jpg'),
-
-    'dashboard_image': STATIC_URL + os.path.join('front/images/about_1.jpg'),
 }
 
 
