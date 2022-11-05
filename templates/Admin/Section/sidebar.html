@@ -26,6 +26,7 @@
 
 
 
+
                                 {% if request.user.role_code == 'student' %}{% url 'student-profile' %}{% else %}{% url 'teacher-profile' %}{% endif %}"><i
                                 class="fa fa-info"></i> اطلاعات تکمیلی</a>
                     </li>
@@ -359,6 +360,17 @@
 
 
                 {% if request.user.is_superuser %}
+                    <li class="menu-title">عکس داشبورد</li>
+
+                    <li class="submenu">
+                        <a href="#"><i class="fa fa-image" aria-hidden="true"></i> <span>عکس داشبورد</span> <span
+                                class="menu-arrow"></span></a>
+                        <ul class="list-unstyled" style="display: none;">
+                            <li><a href="{% url 'images-list' %}">لیست عکس داشبورد</a></li>
+                            <li><a href="{% url 'images-create' %}">افزودن عکس داشبورد جدید</a></li>
+                        </ul>
+                    </li>
+
                     <li class="menu-title">تنظیمات</li>
 
                     <li class="submenu">
