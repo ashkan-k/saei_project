@@ -30,7 +30,7 @@
 
                     <hr>
 
-                        <a class="btn btn-primary pull-right" href="{% url 'settings-create' %}">افزودن عکس داشبورد جدید</a>
+                        <a class="btn btn-primary pull-right" href="{% url 'images-create' %}">افزودن عکس داشبورد جدید</a>
 
                     <span id="list">
                                                                       {% if object_list %}
@@ -48,16 +48,16 @@
                         <tr>
                             <td>{{ forloop.counter }}</td>
 
-                            <td>{{ item.link | default:'---' }}</td>
+                            <td>{{ item.link | default:'---' | truncatechars:80 }}</td>
 
                             <td>
                                 <div class="buttons ">
-                                    <form action="{% url 'settings-delete' item.id %}"
+                                    <form action="{% url 'images-delete' item.id %}"
                                           id="delete_form_{{ item.id }}"
                                           method="post">
                                         {% csrf_token %}
 
-                                            <a href="{% url 'settings-update' item.id %}"
+                                            <a href="{% url 'images-update' item.id %}"
                                                class="btn btn-primary btn-action mr-1"
                                                data-toggle="tooltip" title=""
                                                data-original-title="ویرایش"><i

@@ -16,35 +16,35 @@ User = get_user_model()
 
 
 class DashboardImagesList(PermissionMixin, ListView):
-    permissions = ['setting_delete']
+    permissions = ['dashboard_images_delete']
     model = DashboardImage
     context_object_name = 'settings'
     paginate_by = settings.PAGINATION_NUMBER
     ordering = ['-created_at']
-    template_name = 'settings/admin/settings/list.html'
+    template_name = 'admin_app/admin/images/list.html'
 
 
 class DashboardImagesCreate(PermissionMixin, CreateView):
-    permissions = ['setting_delete']
+    permissions = ['dashboard_images_delete']
     model = DashboardImage
     form_class = DashboardImageForm
-    template_name = 'settings/admin/settings/form.html'
-    success_url = reverse_lazy('settings-list')
+    template_name = 'admin_app/admin/images/form.html'
+    success_url = reverse_lazy('images-list')
 
 
 class DashboardImagesUpdate(PermissionMixin, UpdateView):
-    permissions = ['setting_delete']
+    permissions = ['dashboard_images_delete']
     model = DashboardImage
     form_class = DashboardImageForm
-    template_name = 'settings/admin/settings/form.html'
-    success_url = reverse_lazy('settings-list')
+    template_name = 'admin_app/admin/images/form.html'
+    success_url = reverse_lazy('images-list')
 
 
 class DashboardImagesDelete(PermissionMixin, DeleteView):
-    permissions = ['setting_delete']
+    permissions = ['dashboard_images_delete']
     model = DashboardImage
-    template_name = 'settings/admin/settings/form.html'
-    success_url = reverse_lazy('settings-list')
+    template_name = 'admin_app/admin/images/form.html'
+    success_url = reverse_lazy('images-list')
 
     def dispatch(self, *args, **kwargs):
         resp = super().dispatch(*args, **kwargs)
