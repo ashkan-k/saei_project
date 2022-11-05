@@ -66,7 +66,7 @@ class Dashboard(VerifiedUserMixin, TemplateView):
             'students_count': Student.objects.count(),
             'teachers_count': Teacher.objects.count(),
             'classes_count': Class.objects.count(),
-            'dashboard_image': DashboardImage.objects.first(),
+            'dashboard_image': DashboardImage.objects.last(),
         }
 
         return context
