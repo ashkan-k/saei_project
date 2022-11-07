@@ -39,15 +39,17 @@
                                     {% include 'Admin/Filters/select_box.html' with label='نمایش صفحه اصلی' name='is_show_in_slider' class='col-lg-2' items=is_show_in_slider_items %}
                                 {% endif %}
                                 {% include 'Admin/Filters/select_box.html' with label='دسته بندی' name='category' items=category_filter_items %}
+
+                                {% if user|has_perm:'class_create' %}
+                                    <a class="btn btn-primary pull-right" style='margin-top:35px; margin-left:25px'
+                                       href="{% url 'classes-create' %}">افزودن کلاس جدید</a>
+                                {% endif %}
+
                             </div>
                         </div>
                     </form>
 
-                    {% if user|has_perm:'class_create' %}
-                        <a class="btn btn-primary pull-right" href="{% url 'classes-create' %}">افزودن کلاس جدید</a>
-                    {% endif %}
-
-                    <span id="list">
+                    <div id="list"  style="overflow-x: auto">
                                                     {% if object_list %}
                                                         <table class="table table-hover">
                     <thead>
@@ -174,7 +176,7 @@
 
 
                         {% include 'Admin/pagination.html' with page_obj=page_obj %}
-                    </span>
+                    </div>
                 </div>
             </div>
         </div>
