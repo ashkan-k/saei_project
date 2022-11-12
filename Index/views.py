@@ -35,7 +35,7 @@ class AboutUs(TemplateView):
         context = {
             'students_count': Student.objects.count(),
             'teachers_count': Teacher.objects.count(),
-            'teachers': Teacher.objects.all(),
+            'categories': Category.objects.all(),
             'sliders': Slider.objects.all(),
             'helps': Help.objects.all(),
             'classes': Class.objects.all(),
