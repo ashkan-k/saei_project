@@ -134,12 +134,7 @@
                     <div class="section_title mx-5">
                         <h2>انتخاب دوره</h2>
                     </div>
-                    <div class="section_subtitle text-end">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت
-                        چاپ، و با
-                        استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم
-                        است.لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
-                        است، چاپگرها و متون بلکه روزنامه و مجله.
-                    </div>
+                    <div class="section_subtitle text-end">{{ settings.courses_intro_text | safe }}</div>
                 </div>
             </div>
             <div class="row">
@@ -202,7 +197,7 @@
                                                  class="course_text text-end">{{ item.desc | truncatechars:200 }}</div>
                                             <div class="course_footer d-flex align-items-center justify-content-center">
                                                 <div class="course_author_image"><img
-                                                        src="{% static 'front/images/featured_author.jpg' %}"
+                                                        src="{{ special_class.teacher.user.get_avatar }}"
                                                         alt="https://unsplash.com/@anthonytran"></div>
                                                 <div class="course_author_name">توسط <a
                                                         href="#"> {{ item.teacher.profile_name }} </a></div>
