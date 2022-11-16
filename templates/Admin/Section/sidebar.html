@@ -165,7 +165,7 @@
                                         ها{% else %}هنرجویان من{% endif %}</a></li>
                                 {% endif %}
 
-                                {% if request.user|has_perm:'class_attendance_list' %}
+                                {% if request.user|has_perm:'class_daily_attendance_list' %}
                                     <li><a href="{% url 'class-attendances-daily-list' %}">غایب های روز</a></li>
                                 {% endif %}
 

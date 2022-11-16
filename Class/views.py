@@ -181,7 +181,7 @@ class ClassUsersChangeAllStatusView(SuperUserRequiredMixin, View):
 
 
 class ClassAttendanceDailyAbsentsListView(PermissionMixin, ListView):
-    permissions = ['class_attendance_list']
+    permissions = ['class_daily_attendance_list']
     template_name = "classes/admin/attendances/daily_absents_list.html"
     model = ClassUserAttendance
 

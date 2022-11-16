@@ -153,6 +153,7 @@ CLASS_ATTENDANCE_PERMISSIONS = {
     'title': 'دسترسی حضور و غیاب',
     'permissions': [
         {'name': 'لیست حضور و غیاب', 'code': 'class_attendance_list', 'description': 'دسترسی لیست حضور و غیاب'},
+        {'name': 'لیست حضور و غیاب روزانه', 'code': 'class_daily_attendance_list', 'description': 'دسترسی لیست حضور و غیاب روزانه'},
         {'name': 'افزودن حضور و غیاب', 'code': 'class_attendance_create',
          'description': 'دسترسی ساخت حضور و غیاب جدید'},
         {'name': 'ویرایش حضور و غیاب', 'code': 'class_attendance_edit', 'description': 'دسترسی ویرایش حضور و غیاب'},
