@@ -308,6 +308,10 @@
         .text-info {
             color: #48b0f7 !important;
         }
+
+        #id_file_button:hover {
+            cursor: pointer;
+        }
     </style>
 {% endblock %}
 
@@ -336,13 +340,18 @@
 
                                         <div ng-repeat="message in messages">
 
-                                            <div ng-show="message.sender.id != {{ request.user.id }}" class="media media-chat "
+                                            <div ng-show="message.sender.id != {{ request.user.id }}"
+                                                 class="media media-chat "
                                                  dir="ltr">
                                                 <img class="avatar" style="text-align: left!important;"
                                                      src="[[message.sender.avatar]]"
                                                      alt="...">
                                                 <div class="media-body" style="width: auto!important;">
-                                                    <p style="word-wrap: break-word!important;background-color: #aaaaaa30!important; color: black">
+                                                    <a style="margin: 10px" href="[[message.file]]" target="_blank"
+                                                       class="btn-success" ng-show="message.file">دانلود فایل</a>
+
+                                                    <p ng-show="message.text"
+                                                       style="word-wrap: break-word!important;background-color: #aaaaaa30!important; color: black">
                                                         [[message.text]]</p>
                                                     <p class="meta">
                                                         <time datetime="2018"
@@ -362,7 +371,12 @@
                                                      src="[[message.sender.avatar]]"
                                                      alt="...">
                                                 <div class="media-body" style="width: auto!important;">
-                                                    <p style="word-wrap: break-word!important;">[[message.text]]</p>
+                                                    <a style="margin: 10px" href="[[message.file]]" target="_blank"
+                                                       class="btn-success" ng-show="message.file">دانلود فایل</a>
+
+                                                    <p ng-show="message.text"
+                                                       style="word-wrap: break-word!important;background-color: #aaaaaa30!important; color: black">
+                                                        [[message.text]]</p>
                                                     <p class="meta">
                                                         <time datetime="2018"
                                                               style="background-color: #48b0f7!important;color: #fff">
@@ -385,10 +399,15 @@
 
                                     <div class="publisher bt-1 border-light"
                                          style="background-color: #aaaaaa30!important;">
-{#                                        <input class="publisher-input" ng-model="text" type="text"#}
+                                        {#                                        <input class="publisher-input" ng-model="text" type="text"#}
                                         <input class="form-control" ng-model="text" type="text"
                                                my-enter="SendMessage()"
                                                placeholder="متن پیام...">
+
+                                        <input type="file" id="id_file" name="id_file" style="display: none">
+                                        <a class="publisher-btn text-info" onclick="$('#id_file').click()"
+                                           id="id_file_button"><i class="fa fa-paperclip"></i></a>
+
                                         <a ng-disabled="is_submited" class="publisher-btn text-info"
                                            ng-click="SendMessage()" data-abc="true"><i
                                                 class="fa fa-paper-plane"></i></a>
@@ -468,25 +487,33 @@
             }
 
             $scope.SendMessage = function () {
-                if (!$scope.text) {
-                    $scope.text = null;
-                    return;
-                }
-                if (!$scope.text.trim()) {
-                    $scope.text = null;
-                    return;
+                if ($("#id_file")[0].files[0]) {
+                    var data = new FormData();
+                    data.append('file', $("#id_file")[0].files[0]);
+                    data.append('sender', '{{ request.user.id }}');
+                    data.append('receiver', '{{ object.id }}');
+                } else {
+                    if (!$scope.text) {
+                        $scope.text = null;
+                        return;
+                    }
+                    if (!$scope.text.trim()) {
+                        $scope.text = null;
+                        return;
+                    }
+
+                    var data = new FormData();
+                    data.append('text', $scope.text);
+                    data.append('sender', '{{ request.user.id }}');
+                    data.append('receiver', '{{ object.id }}');
                 }
 
                 $scope.is_submited = true;
-
-                var data = {
-                    "text": $scope.text,
-                    "sender": '{{ request.user.id }}',
-                };
-
-                data['receiver'] = '{{ object.id }}';
-
-                $http.post('/api/chat/', data).then(res => {
+                $http.post('/api/chat/', data, {
+                    headers: {
+                        'Content-Type': undefined
+                    },
+                }).then(res => {
                     $scope.is_submited = false;
                     $scope.text = null;
                     $scope.GetMessages();
