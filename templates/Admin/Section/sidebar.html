@@ -1,6 +1,6 @@
 {% load acl_tags %}
 
-<div class="sidebar" id="sidebar">
+<div class="sidebar" id="sidebar"  {% if request.user.is_superuser %}style="background-color: #226076 !important;"{% endif %}>
     <div class="sidebar-inner slimscroll">
         <div id="sidebar-menu" class="sidebar-menu">
             <ul>

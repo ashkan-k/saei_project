@@ -1,5 +1,5 @@
 {% load static %}
-<div class="header">
+<div class="header" {% if request.user.is_superuser %}style="background-color: #226076 !important;"{% endif %}>
     <div class="header-left">
         <a href="/" class="logo">
             <img width="50" src="{% static 'front/images/logo.png' %}"
