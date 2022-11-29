@@ -69,6 +69,9 @@
                         <th>ردیف</th>
                         <th>کلاس</th>
                         <th>کاربر</th>
+                        {% if request.user.is_superuser %}
+                            <th>موبایل کاربر</th>
+                        {% endif %}
                         <th>مدرس</th>
                         {% if user.is_staff %}
                             <th>مجموع اقساط</th>
@@ -85,7 +88,11 @@
 
                             <td>{{ item.class_item | default:'---' }}</td>
 
-                            <td><a href="{% url 'students-detail' item.user.id %}">{{ item.user | default:'---' }}</a></td>
+                            <td><a href="{% url 'students-detail' item.user.student_profile.id %}">{{ item.user | default:'---' }}</a></td>
+
+                            {% if request.user.is_superuser %}
+                                <td>{{ item.user.phone | default:'---' }}</td>
+                            {% endif %}
 
                             <td><a href="{% url 'teachers-detail' item.class_item.teacher.id %}">{{ item.class_item.teacher | default:'---' }}</a></td>
 

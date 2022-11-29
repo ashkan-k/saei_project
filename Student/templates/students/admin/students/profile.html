@@ -37,7 +37,7 @@
                          <div class="col col-sm-6 col-lg-3 col-md-4 col-xs-6">
                             <p>دوره ها :
                                 {% for item in object.user.classes.all %}
-                                    <span><a href="{% url 'class-users-update' item.id %}">{{ item.class_item }}</a></span>{% if not forloop.last %},&nbsp;{% endif %}
+                                    <span><a href="{% url 'class-users-list' %}?class={{ item.class_item.id }}">{{ item.class_item }}</a></span>{% if not forloop.last %},&nbsp;{% endif %}
                                 {% endfor %}
                             </p>
                         </div>
