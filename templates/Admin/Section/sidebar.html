@@ -1,6 +1,6 @@
 {% load acl_tags %}
 
-<div class="sidebar" id="sidebar">
+<div class="sidebar" id="sidebar"  {% if request.user.is_superuser %}style="background-color: #226076 !important;"{% endif %}>
     <div class="sidebar-inner slimscroll">
         <div id="sidebar-menu" class="sidebar-menu">
             <ul>
@@ -18,6 +18,11 @@
                 {% if request.user.role_code in 'student,teacher' %}
                     <li class="{% if request.resolver_match.url_name == 'dashboard' %} active {% endif %}">
                         <a href="
+
+
+
+
+
 
 
 
@@ -122,8 +127,20 @@
                     {% endif %}
                 {% endif %}
 
-                {% if request.user|has_perm:'class_list,class_create,class_edit,class_delete,class_detail,course_list,course_create,course_edit,course_delete,course_detail,course_change_status,course_user_list,course_user_create,course_user_edit,course_user_delete,course_user_change_status' %}
+                {% if request.user|has_perm:'class_list,class_create,class_edit,class_delete,class_detail,course_list,course_create,course_edit,course_delete,course_detail,course_change_status,course_user_list,course_user_create,course_user_edit,course_user_delete,course_user_change_status,classes_categories_list,classes_categories_create,classes_categories_edit,classes_categories_delete' %}
                     <li class="menu-title">کلاس و دوره</li>
+
+                    {% if request.user|has_perm:'classes_categories_list,classes_categories_create,classes_categories_edit,classes_categories_delete' %}
+                        <li class="submenu">
+                            <a href="#"><i class="fa fa-list" aria-hidden="true"></i> <span>دسته بندی کلاس ها</span>
+                                <span
+                                        class="menu-arrow"></span></a>
+                            <ul class="list-unstyled" style="display: none;">
+                                <li><a href="{% url 'classes-categories-list' %}">لیست دسته بندی کلاس</a></li>
+                                <li><a href="{% url 'classes-categories-create' %}">دسته بندی کلاس جدید</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
 
                     {% if request.user|has_perm:'class_list,class_create,class_edit,class_delete,class_detail,class_user_list,class_user_create,class_user_edit,class_user_delete,class_user_change_status' %}
 
@@ -132,6 +149,9 @@
                                     class="menu-arrow"></span></a>
                             <ul class="list-unstyled" style="display: none;">
                                 {% if request.user|has_perm:'class_list' %}
+                                    {% if request.user.role_code == 'student' %}
+                                        <li><a href="{% url 'my-classes-list' %}">دوره های من</a></li>
+                                    {% endif %}
                                     <li><a href="{% url 'classes-list' %}">لیست دوره ها</a></li>
                                 {% endif %}
 
@@ -145,7 +165,7 @@
                                         ها{% else %}هنرجویان من{% endif %}</a></li>
                                 {% endif %}
 
-                                {% if request.user|has_perm:'class_attendance_list' %}
+                                {% if request.user|has_perm:'class_daily_attendance_list' %}
                                     <li><a href="{% url 'class-attendances-daily-list' %}">غایب های روز</a></li>
                                 {% endif %}
 
@@ -340,6 +360,17 @@
 
 
                 {% if request.user.is_superuser %}
+                    <li class="menu-title">عکس داشبورد</li>
+
+                    <li class="submenu">
+                        <a href="#"><i class="fa fa-image" aria-hidden="true"></i> <span>عکس داشبورد</span> <span
+                                class="menu-arrow"></span></a>
+                        <ul class="list-unstyled" style="display: none;">
+                            <li><a href="{% url 'images-list' %}">لیست عکس داشبورد</a></li>
+                            <li><a href="{% url 'images-create' %}">افزودن عکس داشبورد جدید</a></li>
+                        </ul>
+                    </li>
+
                     <li class="menu-title">تنظیمات</li>
 
                     <li class="submenu">

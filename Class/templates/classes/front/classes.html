@@ -43,7 +43,7 @@
                     <div class="section_title text-end">
                         <h2>دوره خود را انتخاب کنید</h2>
                     </div>
-                    <div class="section_subtitle text-end">{{ settings.courses_intro_text | safe }}</div>
+                    <div class="section_subtitle text-end">{{ settings.courses_intro_text_lists | safe }}</div>
                 </div>
             </div>
 
@@ -56,13 +56,23 @@
                                                                             class="course_input px-3 rounded-2"
                                                                             placeholder="نام دوره و..." name="search"
                                                                             value="{{ request.GET.search }}"></div>
-<!--                            {#                        <div class="course_input px-3 rounded-2"><input type="text" class="course_input px-3 rounded-2"#}-->
-<!--                            {#                                                                        placeholder="Level"#}-->
-<!--                            {#                                                                        required="required"></div>#}-->
+
+                            <div class="course_input px-3 rounded-2">
+                                <select name="category" class="course_input px-3 rounded-2">
+                                    <option value="">دسته بندی</option>
+                                    {% for item in categories %}
+                                        <option value="{{ item.id }}"
+                                                {% if item.id == request.GET.category|add:"0" %}selected{% endif %}>{{ item.title }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <!--                            {#                        <div class="course_input px-3 rounded-2"><input type="text" class="course_input px-3 rounded-2"#}-->
+                            <!--                            {#                                                                        placeholder="Level"#}-->
+                            <!--                            {#                                                                        required="required"></div>#}-->
                             <button type="submit" class="course_button rounded-2"><span
                                     style="padding: 5px">جستجو دوره</span><span
                                     class="button_arrow"
-                                   ><i
+                            ><i
                                     class="fa fa-angle-right" aria-hidden="true"></i></span></button>
                         </form>
                     </div>
@@ -78,18 +88,20 @@
                     <div class="col-lg-6 featured_col">
                         <div class="featured_content">
                             <div class="featured_header d-flex flex-row align-items-center justify-content-start">
-                                <div class="featured_tag rounded-2"><a >ویژه</a></div>
+                                <div class="featured_tag rounded-2"><a>ویژه</a></div>
                                 <div class="featured_price ml-auto px-3">قیمت:
                                     <span>{{ special_class.amount | persian_int | intcomma:False }} تومان</span></div>
                             </div>
                             <div class="featured_title">
-                                <h3><a href="{% url 'class-details' special_class.slug %}">{{ special_class.title }}</a></h3>
+                                <h3><a href="{% url 'class-details' special_class.slug %}">{{ special_class.title }}</a>
+                                </h3>
                             </div>
                             <div class="featured_text">{{ special_class.desc | truncatechars:200 }}
                             </div>
                             <div class="featured_footer d-flex align-items-center justify-content-start">
-                                <div class="featured_author_image"><img src="{{ special_class.teacher.user.get_avatar }}"
-                                                                        alt=""></div>
+                                <div class="featured_author_image"><img
+                                        src="{{ special_class.teacher.user.get_avatar }}"
+                                        alt=""></div>
                                 <div class="featured_author_name px-3">توسط <a href="#">{{ special_class.teacher }}</a>
                                 </div>
                                 <div class="featured_sales ml-auto"><span>{{ special_class.users.count }}</span> تعداد
@@ -100,7 +112,8 @@
                     </div>
                     <div class="col-lg-6 featured_col">
                         <!-- Background image artist https://unsplash.com/@jtylernix -->
-                        <div class="featured_background" style="background-image:url({{ special_class.get_cover }})"></div>
+                        <div class="featured_background"
+                             style="background-image:url({{ special_class.get_cover }})"></div>
                     </div>
                 </div>
             {% endif %}
@@ -121,7 +134,7 @@
                             </div>
                             <div class="course_body">
                                 <div class="course_header d-flex flex-row align-items-center justify-content-start">
-                                    <div class="course_tag rounded-2"><a >ویژه</a></div>
+                                    <div class="course_tag rounded-2"><a>ویژه</a></div>
                                     <div class="course_price ml-auto  px-3">قیمت:
                                         <span> {{ item.amount | persian_int | intcomma:False }} تومان</span>
                                     </div>

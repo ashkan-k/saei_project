@@ -31,6 +31,24 @@
           id="theme-styles">
 
     {% block Styles %}{% endblock %}
+
+    <style>
+        @media only screen and (max-width: 800px) {
+            #top_bar {
+                display: none !important;
+            }
+        }
+
+        {#.course_author_image {#}
+        {#    width: 60px !important;#}
+        {#    height: 60px !important;#}
+        {#}#}
+        {##}
+        {#.featured_author_image {#}
+        {#    width: 60px !important;#}
+        {#    height: 60px !important;#}
+        {#}#}
+    </style>
 </head>
 
 <body ng-app="myApp" ng-controller="myCtrl">
@@ -47,28 +65,30 @@
                 <div class="container">
                     <div class="row">
                         <div class="col">
-                            <div class="top_bar_content d-flex flex-row align-items-center justify-content-start">
+                            <div class="top_bar_content d-inline-flex flex-row align-items-center justify-content-start">
                                 <div class="top_bar_login ml-auto">
-                                    <ul>
+                                    <ul class="text-nowrap">
                                         {% if not request.user.is_authenticated %}
-                                            <li><a href="{% url 'register' %}">ثبت نام</a></li>
-                                            <li><a href="{% url 'login' %}">ورود</a></li>
+                                            <li><a style="font-size: 15px;" href="{% url 'register' %}">ثبت نام</a></li>
+                                            <li><a style="font-size: 15px;" href="{% url 'login' %}">ورود</a></li>
                                         {% else %}
                                             <a href="{% url 'dashboard' %}" class="fa fa-user-o adamak"
                                                style="margin-right: 10px!important;"></a>
-                                            <li><a href="{% url 'logout' %}">خروج</a></li>
+                                            <li><a style="font-size: 15px;" href="{% url 'dashboard' %}">داشبورد</a>
+                                            </li>
+                                            <li><a style="font-size: 15px;" href="{% url 'logout' %}">خروج</a></li>
                                         {% endif %}
                                     </ul>
                                 </div>
-                                <ul class="top_bar_contact_list">
+                                <ul class="top_bar_contact_list d-inline-flex" id="top_bar">
                                     <li>
-                                        <div class="question">سوالی دارید؟</div>
+                                        <div class="question text-nowrap">سوالی دارید؟</div>
                                     </li>
                                     <li>
-                                        <div dir="ltr">{{ settings.tel | striptags | safe }}</div>
+                                        <div class="text-nowrap">{{ settings.tel | striptags | safe }}</div>
                                     </li>
                                     <li>
-                                        <div>{{ settings.email | striptags | safe }}</div>
+                                        <div class="text-nowrap">{{ settings.email | striptags | safe }}</div>
                                     </li>
                                 </ul>
                             </div>
@@ -177,7 +197,7 @@
                 <li class="menu_mm"><a href="{% url 'student-register' %}">ثبت نام هنرجو</a></li>
                 <li class="menu_mm"><a href="{% url 'teacher-register' %}">ثبت نام مدرس</a></li>
                 <li class="menu_mm"><a href="{% url 'blogs' %}">وبلاگ</a></li>
-{#                <li class="menu_mm"><a href="{% url 'contact_us' %}">ارتباط با ما</a></li>#}
+                {#                <li class="menu_mm"><a href="{% url 'contact_us' %}">ارتباط با ما</a></li>#}
             </ul>
         </nav>
         <div class="menu_extra">
@@ -187,18 +207,22 @@
             <div class="menu_social">
                 <span class="menu_title">ما را دنبال کنید</span>
                 <ul>
-                    <li><a href="https://t.me/{{ settings.telegram | striptags }}"><i class="fa fa-telegram social-icons-font"
-                                                                                 aria-hidden="true"></i></a></li>
-                    <li><a href="{{ settings.whatsapp | striptags }}"><i class="fa fa-whatsapp social-icons-font" aria-hidden="true"></i></a>
+                    <li><a href="https://t.me/{{ settings.telegram | striptags }}"><i
+                            class="fa fa-telegram social-icons-font"
+                            aria-hidden="true"></i></a></li>
+                    <li><a href="{{ settings.whatsapp | striptags }}"><i class="fa fa-whatsapp social-icons-font"
+                                                                         aria-hidden="true"></i></a>
                     </li>
-                    <li><a href="http://www.instagram.com/{{ settings.instagram | striptags }}"><i class="fa fa-instagram social-icons-font"
-                                                                                              aria-hidden="true"></i></a>
+                    <li><a href="http://www.instagram.com/{{ settings.instagram | striptags }}"><i
+                            class="fa fa-instagram social-icons-font"
+                            aria-hidden="true"></i></a>
                     </li>
-                    <li><a href="http://twitter.com/{{ settings.twitter | striptags }}"><i class="fa fa-twitter social-icons-font"
-                                                                                              aria-hidden="true"></i></a>
+                    <li><a href="http://twitter.com/{{ settings.twitter | striptags }}"><i
+                            class="fa fa-twitter social-icons-font"
+                            aria-hidden="true"></i></a>
                     </li>
-                     <li><a href="http://www.youtube.com/{{ settings.youtube | striptags }}"><i
-                                        class="fa fa-youtube social-icons-font" aria-hidden="true"></i></a></li>
+                    <li><a href="http://www.youtube.com/{{ settings.youtube | striptags }}"><i
+                            class="fa fa-youtube social-icons-font" aria-hidden="true"></i></a></li>
                 </ul>
             </div>
         </div>
@@ -228,16 +252,18 @@
                         </div>
                         <div class="footer_social">
                             <ul>
-                                <li><a href="https://t.me/{{ settings.telegram | striptags }}"><i class="fa fa-telegram social-icons-font"
-                                                                                             aria-hidden="true"></i></a>
+                                <li><a href="https://t.me/{{ settings.telegram | striptags }}"><i
+                                        class="fa fa-telegram social-icons-font"
+                                        aria-hidden="true"></i></a>
                                 </li>
-                                <li><a href="{{ settings.whatsapp | striptags }}"><i class="fa fa-whatsapp social-icons-font"
-                                                                                aria-hidden="true"></i></a></li>
+                                <li><a href="{{ settings.whatsapp | striptags }}"><i
+                                        class="fa fa-whatsapp social-icons-font"
+                                        aria-hidden="true"></i></a></li>
                                 <li><a href="http://www.instagram.com/{{ settings.instagram | striptags }}"><i
                                         class="fa fa-instagram social-icons-font" aria-hidden="true"></i></a></li>
-                                   <li><a href="http://www.twitter.com/{{ settings.twitter | striptags }}"><i
+                                <li><a href="http://www.twitter.com/{{ settings.twitter | striptags }}"><i
                                         class="fa fa-twitter social-icons-font" aria-hidden="true"></i></a></li>
-                                  <li><a href="http://www.youtube.com/{{ settings.youtube | striptags }}"><i
+                                <li><a href="http://www.youtube.com/{{ settings.youtube | striptags }}"><i
                                         class="fa fa-youtube social-icons-font" aria-hidden="true"></i></a></li>
                             </ul>
                         </div>

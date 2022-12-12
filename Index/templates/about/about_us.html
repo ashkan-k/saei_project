@@ -41,7 +41,7 @@
                     <div class="about_content">
                         <div class="about_title">هدف اصلی پلتفرم ما</div>
                         <div class="about_text">
-                            <p>{{ settings.our_platform_main_goal | safe }}</p>
+                            <p>{{ settings.about_us | safe }}</p>
                         </div>
                     </div>
                 </div>
@@ -130,22 +130,22 @@
             <div class="row teachers_row">
 
                 <!-- Teacher -->
-                {% for item in teachers %}
+                {% for item in categories %}
                     <div class="col-lg-4 col-md-6">
                         <div class="teacher">
-                            <div class="teacher_image"><img src="{{ item.user.get_avatar }}"
-                                                            alt="https://unsplash.com/@nickkarvounis"></div>
+                            <a href="{% url 'classes' %}?category={{ item.id }}"><div class="teacher_image"><img src="{{ item.get_cover }}"
+                                                            alt="https://unsplash.com/@nickkarvounis"></div></a>
                             <div class="teacher_body text-center">
-                                <div class="teacher_title"><a href="#">{{ item.user.full_name }}</a></div>
+                                <div class="teacher_title"><a href="{% url 'classes' %}?category={{ item.id }}">{{ item.title | default_if_none:'---' }}</a></div>
                                 <!--                        <div class="teacher_subtitle">Marketing</div>-->
-                                <div class="teacher_social">
-                                    <ul>
-                                        <li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-twitter px-4" aria-hidden="true"></i></a></li>
-                                    </ul>
-                                </div>
+{#                                <div class="teacher_social">#}
+{#                                    <ul>#}
+{#                                        <li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>#}
+{#                                        <li><a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>#}
+{#                                        <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>#}
+{#                                        <li><a href="#"><i class="fa fa-twitter px-4" aria-hidden="true"></i></a></li>#}
+{#                                    </ul>#}
+{#                                </div>#}
                             </div>
                         </div>
                     </div>

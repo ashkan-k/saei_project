@@ -368,7 +368,7 @@ section
 }
 .top_bar_contact_list li
 {
-	display: inline-block;
+	
 }
 .question
 {
@@ -387,15 +387,15 @@ section
 }
 .top_bar_contact_list li > div
 {
-	margin-left: 1px;
+	
 }
 .top_bar_contact_list li:first-child
 {
-	margin-left: 42px !important;
+	
 }
 .top_bar_contact_list li:not(:last-child)
 {
-	margin-left: 33px;
+	margin-left: 10px;
 }
 .top_bar_login
 {

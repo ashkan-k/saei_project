@@ -23,7 +23,26 @@ def upload_cover_file(instance, filename):
     return path + '/' + filename
 
 
-"""Class And Class Users Models"""
+"""Category And Class And Class Users Models"""
+
+
+class Category(CustomModel):
+    title = models.CharField(verbose_name='عنوان', max_length=255)
+    cover = models.ImageField(
+        verbose_name='عکس (کاور)', upload_to='categories',
+        null=True, blank=True,
+        validators=[validate_file_size]
+    )
+
+    class Meta:
+        verbose_name = 'دسته بندی کلاس'
+        verbose_name_plural = 'دسته بندی کلاس ها'
+
+    def __str__(self):
+        return self.title or '---'
+
+    def get_cover(self):
+        return self.cover.url if self.cover else '/static/admin_panel/assets/img/class.png'
 
 
 class Class(ClassStartedSmsMixin, CustomModel):
@@ -44,6 +63,8 @@ class Class(ClassStartedSmsMixin, CustomModel):
     )
     is_special = models.BooleanField(verbose_name='ایا ویژه است؟', default=False)
     is_show_in_slider = models.BooleanField(verbose_name='آیا در صفحه اصلی نمایش داده شود؟', default=False)
+    category = models.ForeignKey(verbose_name='دسته بندی', to=Category, on_delete=models.CASCADE,
+                                 related_name='classes', null=True)
 
     class Meta:
         verbose_name = 'کلاس'

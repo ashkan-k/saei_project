@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.core.validators import FileExtensionValidator
-from Class.models import Class, ClassUser, ClassAttendance
+from Class.models import Class, ClassUser, ClassAttendance, Category
 
 User = get_user_model()
 
@@ -22,6 +22,12 @@ class ClassForm(forms.ModelForm):
             self.data['end_time'] = end_time.replace('PM', '').replace('AM', '').strip()
 
         return super().full_clean()
+
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = '__all__'
 
 
 class ClassChangeStatusForm(forms.ModelForm):
@@ -55,6 +61,14 @@ class ClassUserForm(forms.ModelForm):
             raise forms.ValidationError('این کاربر قبلا به کلاس اضافه شده است!', code='class_item')
 
         return super().clean()
+
+    def save(self, commit=True):
+        instance = super().save(commit)
+
+        instance.status = 'deactive'
+        instance.save()
+
+        return instance
 
 
 class ClassUserChangeStatusForm(forms.ModelForm):

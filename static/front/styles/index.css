@@ -3,7 +3,7 @@ body{
 }
 @font-face {
     font-family: 'M';
-    src: url(/static/front/fonts/IRANSans/IRANSansWeb_Bold.woff);
+    src: url(/fonts/IRANSans/IRANSansWeb_Bold.woff);
 }
 .logo_text
 {
@@ -27,13 +27,4 @@ body{
 }
 .course_input::placeholder{
 	padding-right: 3%;
-}
-
-.social-icons-font{
-	font-size: 25px !important;
-}
-
-.prev:hover, .next:hover {
-    background-color: #43bfc7;
-    color: white;
 }

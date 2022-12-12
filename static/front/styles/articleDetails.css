@@ -3,7 +3,7 @@ body{
  }
  @font-face {
      font-family: 'M';
-     src: url(/static/front/fonts/IRANSans/IRANSansWeb_Bold.woff);
+     src: url(/fonts/IRANSans/IRANSansWeb_Bold.woff);
  }
  .adamak:hover{
 	cursor: pointer;
@@ -13,7 +13,7 @@ body{
     border-radius: 12px;
     box-shadow: 0 0 4px 0 #d5dce2;
     margin: auto;
-    margin-top: 15%;
+    margin-top: 22%;
     margin-bottom: 3%;
     opacity: 0.95;
     width: 95%;
@@ -31,7 +31,7 @@ body{
     border-radius: 12px;
     box-shadow: 0 0 4px 0 #d5dce2;
     margin: auto;
-    margin-top: 20%;
+    margin-top: 22%;
     margin-bottom: 20%;
     opacity: 0.95;
     width: 50%;

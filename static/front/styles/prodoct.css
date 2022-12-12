@@ -1,6 +1,5 @@
 @charset "utf-8";
 /* CSS Document */
-
 /******************************
 
 [Table of Contents]
@@ -45,6 +44,30 @@ body{
 	-webkit-text-shadow: rgba(0,0,0,.01) 0 0 1px;
 	text-shadow: rgba(0,0,0,.01) 0 0 1px;
 }
+.prev, .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 16px;
+    color: #888;
+    font-weight: bold;
+    font-size: 20px;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+  }
+  .prev{
+    right: 0;
+  }
+  .next {
+    position: absolute;
+    left: 0;
+    border-radius: 3px 0 0 3px;
+  }
+  .prev:hover, .next:hover {
+    background-color: #43bfc7;
+    color: white;
+  }
 .btn{
     background-color: #43bfc7;
     color: whitesmoke;
@@ -370,7 +393,7 @@ section
 }
 .top_bar_contact_list li
 {
-	display: inline-block;
+	
 }
 .question
 {
@@ -605,7 +628,7 @@ section
 
 .hamburger
 {
-	display: none;
+	margin-right: -150px;
 	cursor: pointer;
 }
 .hamburger i
@@ -938,6 +961,7 @@ section
 	background: #FFFFFF;
 	padding-top: 101px;
 	padding-bottom: 100px;
+	margin-top: 5%;
 }
 .course_search
 {
@@ -945,9 +969,9 @@ section
 	padding-right: 68px;
 	margin-top: 72px;
 }
-.course_search_form
+.course_search_form input
 {
-	width: 100%;
+	width: 350px;
 }
 .course_button
 {

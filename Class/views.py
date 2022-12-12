@@ -1,14 +1,16 @@
 import jdatetime
 from django.db.models import Q
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
+from django.views import View
 from django.views.generic import ListView, DeleteView, UpdateView, CreateView, DetailView, FormView
 from django.urls import reverse_lazy
 from ACL.mixins import SuperUserRequiredMixin, PermissionMixin
 # from .filters import ClassFilters
-from .filters import ClassFilters, ClassUserFilters
+from Installment.models import UserInstallment
+from .filters import ClassFilters, ClassUserFilters, CategoryFilters
 from .forms import *
 from .helpers import CLASS_STATUS, CLASS_USER_STATUS
-from .models import Class, ClassUserAttendance, ClassAttendance
+from .models import Class, ClassUserAttendance, ClassAttendance, Category
 from django.conf import settings
 from django.contrib import messages
 
@@ -25,13 +27,19 @@ class ClassesListView(PermissionMixin, ListView):
         context = super(ClassesListView, self).get_context_data()
         context['change_status_form'] = ClassChangeStatusForm()
         context['status_filter_items'] = [{"name": i[1], "id": i[0]} for i in CLASS_STATUS.CHOICES]
-        context['is_show_in_slider_items'] = [{"name": i[1], "id": i[0]} for i in [(1, 'نمایشی ها'), (0, 'عدم نمایشی ها')]]
+        context['category_filter_items'] = [{"name": i.title, "id": i.id} for i in Category.objects.all()]
+        context['is_show_in_slider_items'] = [{"name": i[1], "id": i[0]} for i in
+                                              [(1, 'نمایشی ها'), (0, 'عدم نمایشی ها')]]
         return context
 
     def get_queryset(self):
         queryset = super().get_queryset()
         if self.user.role_code == 'teacher':
             queryset = queryset.filter(teacher__user=self.user).distinct()
+
+        if 'my' in self.request.path:
+            my_classes_id = self.request.user.classes.values_list('class_item_id', flat=True)
+            queryset = queryset.filter(id__in=my_classes_id)
         return ClassFilters(data=self.request.GET, queryset=queryset).qs
 
 
@@ -157,11 +165,23 @@ class ClassUsersGatewayView(PermissionMixin, DetailView):
     context_object_name = 'class_detail'
 
 
+class ClassUsersChangeAllStatusView(SuperUserRequiredMixin, View):
+    def get(self, request, pk):
+        class_item = get_object_or_404(Class, pk=pk)
+        status = request.GET.get('status')
+
+        class_item.users.update(status=status)
+        if status == 'deactive':
+            UserInstallment.objects.filter(class_item=class_item).delete()
+
+        return redirect(request.GET.get('next_url'))
+
+
 """Class Attendance"""
 
 
 class ClassAttendanceDailyAbsentsListView(PermissionMixin, ListView):
-    permissions = ['class_attendance_list']
+    permissions = ['class_daily_attendance_list']
     template_name = "classes/admin/attendances/daily_absents_list.html"
     model = ClassUserAttendance
 
@@ -236,6 +256,49 @@ class ClassAttendancesDeleteView(PermissionMixin, DeleteView):
         return resp
 
 
+"""Calss Categories"""
+
+
+class CategoryListView(PermissionMixin, ListView):
+    permissions = ['classes_categories_list']
+    model = Category
+    context_object_name = 'classes_categories'
+    paginate_by = settings.PAGINATION_NUMBER
+    ordering = ['-created_at']
+    template_name = 'classes/admin/categories/list.html'
+
+    def get_queryset(self):
+        return CategoryFilters(data=self.request.GET, queryset=super().get_queryset()).qs
+
+
+class CategoryCreateView(PermissionMixin, CreateView):
+    permissions = ['classes_categories_create']
+    template_name = "classes/admin/categories/form.html"
+    model = Category
+    form_class = CategoryForm
+    success_url = reverse_lazy("classes-categories-list")
+
+
+class CategoryUpdateView(PermissionMixin, UpdateView):
+    permissions = ['classes_categories_edit']
+    template_name = "classes/admin/categories/form.html"
+    model = Category
+    form_class = CategoryForm
+    success_url = reverse_lazy("classes-categories-list")
+
+
+class CategoryDeleteView(PermissionMixin, DeleteView):
+    permissions = ['classes_categories_delete']
+    model = Category
+    template_name = 'classes/admin/categories/list.html'
+    success_url = reverse_lazy("classes-categories-list")
+
+    def dispatch(self, *args, **kwargs):
+        resp = super().dispatch(*args, **kwargs)
+        messages.success(self.request, 'آیتم مورد نظر با موفقیت حدف شد.')
+        return resp
+
+
 """ Front """
 
 
@@ -249,16 +312,22 @@ class Classes(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         kwargs.update(special_class=Class.objects.filter(status='active', is_special=True).last())
+        kwargs.update(categories=Category.objects.all())
         return super(Classes, self).get_context_data(object_list=None, **kwargs)
 
     def get_queryset(self):
         qs = super().get_queryset()
 
         search = self.request.GET.get('search')
+        category = self.request.GET.get('category')
+
         if search:
             q = Q(title__icontains=search) | Q(desc__icontains=search) | Q(
                 teacher__user__first_name__icontains=search) | Q(teacher__user__last_name__icontains=search)
             qs = qs.filter(q)
+
+        if category:
+            qs = qs.filter(category=category)
 
         return qs
 
@@ -268,4 +337,3 @@ class ClassesDetail(DetailView):
     slug_field = 'slug'
     queryset = Class.objects.filter(status='active')
     template_name = 'classes/front/detail.html'
-

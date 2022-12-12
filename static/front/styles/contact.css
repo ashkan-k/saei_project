@@ -35,7 +35,7 @@ body{
  }
  @font-face {
 	 font-family: 'M';
-	 src: url(/static/front/fonts/IRANSans/IRANSansWeb_Bold.woff);
+	 src: url(/fonts/IRANSans/IRANSansWeb_Bold.woff);
  }
  .adamak:hover{
 	cursor: pointer;
@@ -611,7 +611,7 @@ section
 
 .hamburger
 {
-	display: none;
+	margin-right: -150px;
 	cursor: pointer;
 }
 .hamburger i
@@ -880,6 +880,7 @@ section
 {
 	width: 100%;
 	height: 430px;
+	margin-top: 10%;
 }
 .home_container
 {
@@ -1157,32 +1158,32 @@ section
 {
 	padding-top: 49px;
 }
-.footer_social
-{
-	margin-top: 22px;
-}
-.footer_social ul li
-{
-	display: inline-block;
-}
-.footer_social ul li:not(:last-child)
-{
-	margin-right: 24px;
-}
-.footer_social ul li a i
-{
-	font-size: 16px;
-	color: #ff6600;
-	-webkit-transition: all 200ms ease;
-	-moz-transition: all 200ms ease;
-	-ms-transition: all 200ms ease;
-	-o-transition: all 200ms ease;
-	transition: all 200ms ease;
-}
-.footer_social ul li a i:hover
-{
-	color: #ffae00;
-}
+/*.footer_social*/
+/*{*/
+/*	margin-top: 22px;*/
+/*}*/
+/*.footer_social ul li*/
+/*{*/
+/*	display: inline-block;*/
+/*}*/
+/*.footer_social ul li:not(:last-child)*/
+/*{*/
+/*	margin-right: 24px;*/
+/*}*/
+/*.footer_social ul li a i*/
+/*{*/
+/*	font-size: 16px;*/
+/*	color: #ff6600;*/
+/*	-webkit-transition: all 200ms ease;*/
+/*	-moz-transition: all 200ms ease;*/
+/*	-ms-transition: all 200ms ease;*/
+/*	-o-transition: all 200ms ease;*/
+/*	transition: all 200ms ease;*/
+/*}*/
+/*.footer_social ul li a i:hover*/
+/*{*/
+/*	color: #ffae00;*/
+/*}*/
 .copyright
 {
 	font-size: 12px;

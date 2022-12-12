@@ -153,6 +153,7 @@ CLASS_ATTENDANCE_PERMISSIONS = {
     'title': 'دسترسی حضور و غیاب',
     'permissions': [
         {'name': 'لیست حضور و غیاب', 'code': 'class_attendance_list', 'description': 'دسترسی لیست حضور و غیاب'},
+        {'name': 'لیست حضور و غیاب روزانه', 'code': 'class_daily_attendance_list', 'description': 'دسترسی لیست حضور و غیاب روزانه'},
         {'name': 'افزودن حضور و غیاب', 'code': 'class_attendance_create',
          'description': 'دسترسی ساخت حضور و غیاب جدید'},
         {'name': 'ویرایش حضور و غیاب', 'code': 'class_attendance_edit', 'description': 'دسترسی ویرایش حضور و غیاب'},
@@ -455,22 +456,42 @@ POLL_PERMISSIONS = {
         {'name': 'ویرایش فرم نظرسنجی', 'code': 'poll_edit', 'description': 'دسترسی ویرایش فرم نظرسنجی ها'},
         {'name': 'حذف فرم نظرسنجی', 'code': 'poll_delete', 'description': 'دسترسی حذف فرم نظرسنجی ها'},
         {'name': 'جزییات فرم نظرسنجی', 'code': 'poll_detail', 'description': 'دسترسی جزییات فرم نظرسنجی ها'},
-        {'name': 'تغییر وضعیت فرم نظرسنجی', 'code': 'poll_change_status', 'description': 'دسترسی تغییر وضعیت فرم نظرسنجی ها'},
+        {'name': 'تغییر وضعیت فرم نظرسنجی', 'code': 'poll_change_status',
+         'description': 'دسترسی تغییر وضعیت فرم نظرسنجی ها'},
     ]
 }
 PERMISSIONS.append(POLL_PERMISSIONS)
 
 ######################################################################
 
+CLASS_CATEGORY_PERMISSIONS = {
+    'title': 'دسترسی دسته بندی کلاس ها',
+    'permissions': [
+        {'name': 'لیست دسته بندی کلاس ها', 'code': 'classes_categories_list', 'description': 'دسترسی لیست دسته بندی کلاس ها'},
+        {'name': 'افزودن دسته بندی کلاس', 'code': 'classes_categories_create', 'description': 'دسترسی ساخت دسته بندی کلاس جدید'},
+        {'name': 'ویرایش دسته بندی کلاس', 'code': 'classes_categories_edit', 'description': 'دسترسی ویرایش دسته بندی کلاس ها'},
+        {'name': 'حذف دسته بندی کلاس', 'code': 'classes_categories_delete', 'description': 'دسترسی حذف دسته بندی کلاس ها'}
+    ]
+}
+PERMISSIONS.append(CLASS_CATEGORY_PERMISSIONS)
+
+######################################################################
+
 TEACHER_ATTENDANCE_PERMISSIONS = {
     'title': 'دسترسی حضور و غیاب مدرس ها',
     'permissions': [
-        {'name': 'لیست حضور و غیاب مدرس ها', 'code': 'teacher_attendance_list', 'description': 'دسترسی لیست حضور و غیاب مدرس ها'},
-        {'name': 'افزودن حضور و غیاب مدرس', 'code': 'teacher_attendance_create', 'description': 'دسترسی ساخت حضور و غیاب مدرس جدید'},
-        {'name': 'ویرایش حضور و غیاب مدرس', 'code': 'teacher_attendance_edit', 'description': 'دسترسی ویرایش حضور و غیاب مدرس ها'},
-        {'name': 'حذف حضور و غیاب مدرس', 'code': 'teacher_attendance_delete', 'description': 'دسترسی حذف حضور و غیاب مدرس ها'},
-        {'name': 'جزییات حضور و غیاب مدرس', 'code': 'teacher_attendance_detail', 'description': 'دسترسی جزییات حضور و غیاب مدرس ها'},
-        {'name': 'تغییر وضعیت حضور و غیاب مدرس', 'code': 'teacher_attendance_change_status', 'description': 'دسترسی تغییر وضعیت حضور و غیاب مدرس ها'},
+        {'name': 'لیست حضور و غیاب مدرس ها', 'code': 'teacher_attendance_list',
+         'description': 'دسترسی لیست حضور و غیاب مدرس ها'},
+        {'name': 'افزودن حضور و غیاب مدرس', 'code': 'teacher_attendance_create',
+         'description': 'دسترسی ساخت حضور و غیاب مدرس جدید'},
+        {'name': 'ویرایش حضور و غیاب مدرس', 'code': 'teacher_attendance_edit',
+         'description': 'دسترسی ویرایش حضور و غیاب مدرس ها'},
+        {'name': 'حذف حضور و غیاب مدرس', 'code': 'teacher_attendance_delete',
+         'description': 'دسترسی حذف حضور و غیاب مدرس ها'},
+        {'name': 'جزییات حضور و غیاب مدرس', 'code': 'teacher_attendance_detail',
+         'description': 'دسترسی جزییات حضور و غیاب مدرس ها'},
+        {'name': 'تغییر وضعیت حضور و غیاب مدرس', 'code': 'teacher_attendance_change_status',
+         'description': 'دسترسی تغییر وضعیت حضور و غیاب مدرس ها'},
     ]
 }
 PERMISSIONS.append(TEACHER_ATTENDANCE_PERMISSIONS)
@@ -481,14 +502,19 @@ TEACHER_PAYMENTS_PERMISSIONS = {
     'title': 'دسترسی پرداختی مدرس ها',
     'permissions': [
         {'name': 'لیست پرداختی مدرس ها', 'code': 'teacher_payments_list', 'description': 'دسترسی لیست پرداختی مدرس ها'},
-        {'name': 'افزودن پرداختی مدرس', 'code': 'teacher_payments_create', 'description': 'دسترسی ساخت پرداختی مدرس جدید'},
-        {'name': 'ویرایش پرداختی مدرس', 'code': 'teacher_payments_edit', 'description': 'دسترسی ویرایش پرداختی مدرس ها'},
+        {'name': 'افزودن پرداختی مدرس', 'code': 'teacher_payments_create',
+         'description': 'دسترسی ساخت پرداختی مدرس جدید'},
+        {'name': 'ویرایش پرداختی مدرس', 'code': 'teacher_payments_edit',
+         'description': 'دسترسی ویرایش پرداختی مدرس ها'},
         {'name': 'حذف پرداختی مدرس', 'code': 'teacher_payments_delete', 'description': 'دسترسی حذف پرداختی مدرس ها'},
-        {'name': 'جزییات پرداختی مدرس', 'code': 'teacher_payments_detail', 'description': 'دسترسی جزییات پرداختی مدرس ها'},
-        {'name': 'تغییر وضعیت پرداختی مدرس', 'code': 'teacher_payments_change_status', 'description': 'دسترسی تغییر وضعیت پرداختی مدرس ها'},
+        {'name': 'جزییات پرداختی مدرس', 'code': 'teacher_payments_detail',
+         'description': 'دسترسی جزییات پرداختی مدرس ها'},
+        {'name': 'تغییر وضعیت پرداختی مدرس', 'code': 'teacher_payments_change_status',
+         'description': 'دسترسی تغییر وضعیت پرداختی مدرس ها'},
     ]
 }
 PERMISSIONS.append(TEACHER_PAYMENTS_PERMISSIONS)
+
 
 class ROLE_CODES:
     STUDENT = "student"

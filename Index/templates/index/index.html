@@ -134,12 +134,7 @@
                     <div class="section_title mx-5">
                         <h2>انتخاب دوره</h2>
                     </div>
-                    <div class="section_subtitle text-end">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت
-                        چاپ، و با
-                        استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم
-                        است.لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک
-                        است، چاپگرها و متون بلکه روزنامه و مجله.
-                    </div>
+                    <div class="section_subtitle text-end">{{ settings.courses_intro_text | safe }}</div>
                 </div>
             </div>
             <div class="row">
@@ -149,6 +144,16 @@
                               class="course_search_form d-flex flex-md-row flex-column align-items-start justify-content-between">
                             <div><input type="text" name="search" class="course_input py-3 rounded-2"
                                         placeholder="عنوان دوره">
+                            </div>
+
+                            <div>
+                                <select name="category" class="course_input px-3 rounded-2">
+                                    <option value="">دسته بندی</option>
+                                    {% for item in class_categories %}
+                                        <option value="{{ item.id }}"
+                                                {% if item.id == request.GET.category|add:"0" %}selected{% endif %}>{{ item.title }}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
                             {#                            <div><input type="text" class="course_input rounded-2" placeholder="سطح"#}
                             {#                                        required="required">#}
@@ -192,7 +197,7 @@
                                                  class="course_text text-end">{{ item.desc | truncatechars:200 }}</div>
                                             <div class="course_footer d-flex align-items-center justify-content-center">
                                                 <div class="course_author_image"><img
-                                                        src="{% static 'front/images/featured_author.jpg' %}"
+                                                        src="{{ item.teacher.user.get_avatar }}"
                                                         alt="https://unsplash.com/@anthonytran"></div>
                                                 <div class="course_author_name">توسط <a
                                                         href="#"> {{ item.teacher.profile_name }} </a></div>
@@ -261,7 +266,7 @@
                 <div class="col-lg-3 milestone_col">
                     <div class="milestone text-center">
                         <div class="milestone_icon"><img src="{% static 'front/images/milestone_4.svg' %}" alt=""></div>
-                        <div class="milestone_counter" data-end-value="1">0</div>
+                        <div class="milestone_counter" data-end-value="2">0</div>
                         <div class="milestone_text">شهر</div>
                     </div>
                 </div>
@@ -386,7 +391,7 @@
                 </div>
             </div>
         </div>
-        <div class="button join_button rounded-2"><a href="{% url 'register' %}"> همین الان ثبت نام می کنم
+        <div class="button join_button rounded-2"><a href="{% url 'student-register' %}"> همین الان ثبت نام می کنم
             <div
                     class="button_arrow"><i class="fa fa-angle-left" aria-hidden="true"></i></div>
         </a></div>

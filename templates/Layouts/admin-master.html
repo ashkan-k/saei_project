@@ -35,6 +35,16 @@
         .select2 {
             width: 100% !important;
         }
+
+        {% if request.user.is_superuser %}
+            .card-box{
+                background-color: #226076 !important
+            }
+
+             .card-block{
+                background-color: #226076 !important
+            }
+        {% endif %}
     </style>
 
     {% block Styles %}
